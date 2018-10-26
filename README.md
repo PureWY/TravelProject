@@ -1,6 +1,6 @@
 # TravelProject
 
--Vue.js
++ Vue.js
 -Node.js
 -Express
 -MongoDB
