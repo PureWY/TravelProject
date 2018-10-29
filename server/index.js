@@ -2,6 +2,7 @@ var express = require('express');
 var session = require('express-session');
 var mongoose = require('./config/mongoose.js');
 var bodyParser = require('body-parser');
+const cors = require('cors');
 
 //路由配置
 var routes = require('./routes');
@@ -13,6 +14,8 @@ app.set('port',process.env.PORT || 3333);
 
 //连接数据库
 var db = mongoose();
+
+app.use(cors());
 
 //引入Cooike与内存存储
 app.use(session({

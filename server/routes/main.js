@@ -8,4 +8,14 @@ router.get('/',function(req,res,next){
     });
 })
 
+router.get('/getPageList',function(req,res,next){
+    res.json({
+        code: 200,
+        message: {
+            name: 'wy',
+            age: 23
+        }
+    });
+})
+
 module.exports = router;
