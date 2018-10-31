@@ -7,23 +7,40 @@
           <img src="../../assets/img/bird.png">
           <span>&nbsp;草鹨旅行网</span>
         </div>
-        <div class="loginTitle">
+        <div class="loginTitle" v-show="isLogin">
           <span>——————&nbsp;&nbsp;</span>登录账户<span>&nbsp;&nbsp;——————</span>
         </div>
-        <div class="loginForm">
-          <el-form label-position="left" :model="ruleForm" status-icon :rules="rules" ref="ruleForm" label-width="100px" class="demo-ruleForm">
-            <el-form-item label="用户名" prop="userName">
-              <el-input v-model="ruleForm.userName" autocomplete="off"></el-input>
+        <div class="loginTitle" v-show="!isLogin">
+          <span>——————&nbsp;&nbsp;</span>注册账户<span>&nbsp;&nbsp;——————</span>
+        </div>
+        <div class="loginForm" v-show="isLogin">
+          <el-form label-position="left" :model="loginForm" status-icon :rules="rules" ref="loginForm" label-width="100px" class="demo-ruleForm">
+            <el-form-item label="用户名" prop="username">
+              <el-input v-model="loginForm.username" autocomplete="off"></el-input>
             </el-form-item>
-            <el-form-item label="密码" prop="passWord">
-              <el-input type="password" v-model="ruleForm.passWord" autocomplete="off"></el-input>
-            </el-form-item>
-            <el-form-item label="确认密码" prop="checkPass">
-              <el-input type="password" v-model="ruleForm.checkPass"></el-input>
+            <el-form-item label="密码" prop="password">
+              <el-input type="password" v-model="loginForm.password" autocomplete="off"></el-input>
             </el-form-item>
             <el-form-item class="btnGroup">
-              <el-button type="primary" @click="submitForm('ruleForm')">登录</el-button>
-              <el-button @click="resetForm('ruleForm')">立即注册</el-button>
+              <el-button type="primary" @click="handleLogin">登录</el-button>
+              <el-button @click="toRegister">立即注册</el-button>
+            </el-form-item>
+          </el-form>
+        </div>
+        <div class="loginForm" v-show="!isLogin">
+          <el-form label-position="left" :model="registerForm" status-icon :rules="regisRule" ref="registerForm" label-width="100px" class="demo-ruleForm">
+            <el-form-item label="用户名" prop="username">
+              <el-input v-model="registerForm.username" autocomplete="off"></el-input>
+            </el-form-item>
+            <el-form-item label="密码" prop="password">
+              <el-input type="password" v-model="registerForm.password" autocomplete="off"></el-input>
+            </el-form-item>
+            <el-form-item label="确认密码" prop="checkpass">
+              <el-input type="password" v-model="registerForm.checkpass"></el-input>
+            </el-form-item>
+            <el-form-item class="btnGroup">
+              <el-button type="primary" @click="handleRegister">注册</el-button>
+              <el-button @click="toLogin">返回登录</el-button>
             </el-form-item>
           </el-form>
         </div>
@@ -40,55 +57,95 @@ export default {
     var checkUser = (rule, value, callback) => {
       if (!value) {
         return callback(new Error('用户名不能为空'))
+      } else {
+        callback()
       }
     }
     var validatePass = (rule, value, callback) => {
       if (value === '') {
         callback(new Error('请输入密码'))
       } else {
-        if (this.ruleForm.checkPass !== '') {
-          this.$refs.ruleForm.validateField('checkPass')
-        }
         callback()
       }
     }
     var validatePass2 = (rule, value, callback) => {
       if (value === '') {
         callback(new Error('请再次输入密码'))
-      } else if (value !== this.ruleForm.passWord) {
-          console.log(this.ruleForm)
+      } else if (value !== this.registerForm.password) {
         callback(new Error('两次输入密码不一致!'))
       } else {
         callback()
       }
     }
     return {
-      ruleForm: {
-        userName: '',
-        passWord: '',
-        checkPass: ''
+      isLogin: true,
+      loginForm: {
+        username: '',
+        password: ''
+      },
+      registerForm: {
+        username: '',
+        password: '',
+        checkpass: ''
       },
       rules: {
-        userName: [{ validator: checkUser, trigger: 'blur' }],
-        passWord: [{ validator: validatePass, trigger: 'blur' }],
-        checkPass: [{ validator: validatePass2, trigger: 'blur' }]
+        username: [{ validator: checkUser, trigger: 'change' }],
+        password: [{ validator: validatePass, trigger: 'change' }]
+      },
+      regisRule: {
+        username: [{ validator: checkUser, trigger: 'change' }],
+        password: [{ validator: validatePass, trigger: 'change' }],
+        checkpass: [{ validator: validatePass2, trigger: 'change' }]
       }
     }
   },
 
   methods: {
-    submitForm(formName) {
-      this.$refs[formName].validate(valid => {
+    handleLogin() {
+      this.$refs.loginForm.validate(valid => {
         if (valid) {
-          alert('submit!')
+          this.loading = true
+          this.$store
+            .dispatch('LoginByUsername', this.loginForm)
+            .then(() => {
+              this.loading = false
+              console.log(this.$store.state)
+              this.$router.push({
+                path: '/'
+              })
+            })
+            .catch(e => {
+              this.loading = false
+            })
         } else {
           console.log('error submit!!')
           return false
         }
       })
     },
-    resetForm(formName) {
-      
+    handleRegister(){
+      this.$refs.registerForm.validate(valid => {
+        if (valid) {
+          this.loading = true
+          this.$store
+            .dispatch('RegisterByUsername', this.registerForm)
+            .then(() => {
+              this.loading = false
+            })
+            .catch(e => {
+              this.loading = false
+            })
+        } else {
+          console.log('error submit!!')
+          return false
+        }
+      })
+    },
+    toRegister() {
+      this.isLogin = false
+    },
+    toLogin(){
+      this.isLogin = true
     }
   }
 }

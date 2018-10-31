@@ -1,5 +1,7 @@
 const mongoose = require('mongoose');
 const config = require('./config');
+//引入模型
+var User = require('../models/User.js');
 
 module.exports = () => {
     mongoose.connect(config.mongodb);   //连接数据库
