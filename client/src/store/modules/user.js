@@ -40,7 +40,6 @@ const user = {
                     const data = response.data
                     commit('SET_TOKEN', data._TK)
                     commit('SET_USER', data.body.userAccount)
-                    commit('SET_TIME', data.body.loginTime)
                     setToken(response.data._TK)
                     setAdmin(data.body.userAccount)
                     if(data.code == 200){
@@ -56,7 +55,7 @@ const user = {
             commit
         },userInfo){
             return new Promise((resolve,reject) => {
-                register(userInfo).then(response => {
+                register({username: userInfo.username,password: userInfo.password}).then(response => {
                     const data = response.data
                     if(data.code == 200){
                         resolve()
