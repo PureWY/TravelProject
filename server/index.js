@@ -2,12 +2,15 @@ var express = require('express');
 var session = require('express-session');
 var mongoose = require('./config/mongoose.js');
 var bodyParser = require('body-parser');
-const cors = require('cors');
+var cors = require('cors');
 
 //路由配置
 var routes = require('./routes');
 
 var app = express();
+
+//解决跨域
+app.use(cors());
 
 //设置端口
 app.set('port',process.env.PORT || 3333);
@@ -15,7 +18,12 @@ app.set('port',process.env.PORT || 3333);
 //连接数据库
 var db = mongoose();
 
-app.use(cors());
+//post请求URL解析
+app.use(bodyParser.json());
+
+app.use(bodyParser.urlencoded({
+  extended: true
+}));
 
 //引入Cooike与内存存储
 app.use(session({
@@ -30,10 +38,6 @@ app.use(session({
 //路由目录
 routes(app);
 
-//post请求URL解析
-app.use(bodyParser.urlencoded({
-    extended: false
-}))
 
 //开启监听端口
 app.listen(app.get('port'), () => {
