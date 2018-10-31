@@ -108,10 +108,11 @@ export default {
           this.$store
             .dispatch('LoginByUsername', this.loginForm)
             .then(() => {
+              console.log("登陆成功")
               this.loading = false
-              console.log(this.$store.state)
+              this.$message.success('登录成功!')
               this.$router.push({
-                path: '/'
+                path: '/home'
               })
             })
             .catch(e => {
@@ -130,6 +131,7 @@ export default {
           this.$store
             .dispatch('RegisterByUsername', this.registerForm)
             .then(() => {
+              this.$message.success('注册成功!')
               this.loading = false
             })
             .catch(e => {
