@@ -51,7 +51,7 @@
 
 <script>
 export default {
-  name: 'Home',
+  name: 'login',
   data() {
     //表单验证规则
     var checkUser = (rule, value, callback) => {
@@ -112,7 +112,7 @@ export default {
               this.loading = false
               this.$message.success('登录成功!')
               this.$router.push({
-                path: '/home'
+                path: '/main'
               })
             })
             .catch(e => {

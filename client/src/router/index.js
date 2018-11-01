@@ -9,8 +9,16 @@ export default new Router({
   routes: [
     {
       path: '/',
-      name: 'Home',
-      component: _import('home/index'),
+      name: 'login',
+      component: _import('login/index'),
+      meta: {
+        title: '登录'
+      }
+    },
+    {
+      path: '/main',
+      name: 'main',
+      component: _import('main/index'),
       meta: {
         title: '主页面'
       }
