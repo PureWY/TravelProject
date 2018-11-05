@@ -1,5 +1,5 @@
 <template>
-  <div class="hotelContainer">
+  <div class="carContainer">
     <div class="photoContent">
       <section class="photoFont">
         <div class="fontStyle">
@@ -10,23 +10,16 @@
             <div class="hotelContent">
                 <div class="hotelTab">
                     <div class="goAndBack">
-                        <el-dropdown trigger="click"> 
                         <span class="el-dropdown-link">
-                            1间房，2名旅客
+                            相同还车地点
                             <i class="el-icon-arrow-down el-icon--right"></i>
                         </span>
-                        <el-dropdown-menu slot="dropdown">
-                            <el-dropdown-item>2间房，4名旅客</el-dropdown-item>
-                            <el-dropdown-item>3间房，6名旅客</el-dropdown-item>
-                            <el-dropdown-item>4间房，8名旅客</el-dropdown-item>
-                        </el-dropdown-menu>
-                        </el-dropdown>
                     </div>
                 </div>
                 <div class="hotelSelect">
                     <el-form :inline="true" :model="formInline" class="queryForm">
                     <el-form-item>
-                        <el-select class="placePicker" v-model="formInline.region" placeholder="住宿地">
+                        <el-select class="placePicker" v-model="formInline.region" placeholder="租车点">
                         <el-option label="区域一" value="shanghai"></el-option>
                         <el-option label="区域二" value="beijing"></el-option>
                         </el-select>
@@ -39,8 +32,8 @@
                         align="right"
                         unlink-panels
                         range-separator="|"
-                        start-placeholder="住店日期"
-                        end-placeholder="离店日期"
+                        start-placeholder="租车日期"
+                        end-placeholder="还车日期"
                         :picker-options="pickerOptions">
                         </el-date-picker>
                     </el-form-item>
@@ -57,7 +50,7 @@
 
 <script>
 export default {
-  name: 'hotelComponent',
+  name: 'carComponent',
   data() {
     return {
       formInline: {
@@ -103,7 +96,7 @@ export default {
 </script>
 
 <style lang="scss">
-.hotelContainer {
+.carContainer {
   width: 100%;
   margin-top: -3px;
   background-color: #e9451a;

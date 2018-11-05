@@ -218,6 +218,8 @@ export default {
                             color: #fff;
                             font-weight: 500;
                             background-color: #EC744F;
+                            padding-left: 20px;
+                            text-align: left;
                         }
                         .el-input__inner::-webkit-input-placeholder{
                             color: #FAE4DD;
