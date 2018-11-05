@@ -1,8 +1,8 @@
 <template>
     <div class="mainContainer">
-        <headerComponent></headerComponent>
+        <headerComponent @check-tab="checkTab"></headerComponent>
         <planeComponent v-show="chooiceTab == 'plane'"></planeComponent>
-        <hotel-component v-show="chooiceTab == 'hotel'"></hotel-component>
+        <hotelComponent v-show="chooiceTab == 'hotel'"></hotelComponent>
         <carComponent v-show="chooiceTab == 'car'"></carComponent>
         <commonComponent></commonComponent>
     </div>
@@ -23,7 +23,9 @@ export default {
         }
     },
     methods: {
-        
+        checkTab(tab){
+            this.chooiceTab = tab;
+        }
     }
 
 }

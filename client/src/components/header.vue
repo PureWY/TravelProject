@@ -9,10 +9,10 @@
           </div>
           <div class="headerNav">
             <el-tabs v-model="activeName" @tab-click="handleClick">
-              <el-tab-pane label="机票" name="first"></el-tab-pane>
-              <el-tab-pane label="酒店" name="second"></el-tab-pane>
-              <el-tab-pane label="租车" name="third"></el-tab-pane>
-              <el-tab-pane label="更多" name="fourth"></el-tab-pane>
+              <el-tab-pane label="机票" name="plane"></el-tab-pane>
+              <el-tab-pane label="酒店" name="hotel"></el-tab-pane>
+              <el-tab-pane label="租车" name="car"></el-tab-pane>
+              <el-tab-pane label="更多" name="more"></el-tab-pane>
             </el-tabs>
           </div>
         </div>
@@ -36,12 +36,12 @@ export default {
   name: 'headerComponent',
   data() {
     return {
-      activeName: 'first'
+      activeName: 'plane'
     }
   },
   methods: {
-    handleClick(tab, event) {
-      console.log(tab, event)
+    handleClick(tab) {
+      this.$emit('check-tab',tab.name)
     }
   }
 }
