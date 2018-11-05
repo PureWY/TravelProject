@@ -6,9 +6,9 @@
           <h2 class="title">同时搜索数百家旅游网站</h2>
         </div>
       </section>
-      <section class="hotelSearch">
-            <div class="hotelContent">
-                <div class="hotelTab">
+      <section class="carSearch">
+            <div class="carContent">
+                <div class="carTab">
                     <div class="goAndBack">
                         <span class="el-dropdown-link">
                             相同还车地点
@@ -16,7 +16,7 @@
                         </span>
                     </div>
                 </div>
-                <div class="hotelSelect">
+                <div class="carSelect">
                     <el-form :inline="true" :model="formInline" class="queryForm">
                     <el-form-item>
                         <el-select class="placePicker" v-model="formInline.region" placeholder="租车点">
@@ -118,14 +118,14 @@ export default {
         }
       }
     }
-    .hotelSearch{
+    .carSearch{
         width: 100%;
         background-color: #e9451a;
-        .hotelContent{
+        .carContent{
             margin: 0 auto;
             max-width: 70em;
             height: 195px;
-            .hotelTab{
+            .carTab{
                 height: 20%;
                 padding: 30px 0px 0px;
                 display: flex;
@@ -138,7 +138,7 @@ export default {
                 font-weight: 500;
                 }
             }
-            .hotelSelect{
+            .carSelect{
                 height: 100px;
                 padding: 0px;
                 display: flex;

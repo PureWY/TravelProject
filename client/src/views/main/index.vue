@@ -19,7 +19,7 @@ export default {
     components: {headerComponent,planeComponent,commonComponent,hotelComponent,carComponent},
     data(){
         return{ 
-            chooiceTab: 'plane'
+            chooiceTab: 'car'
         }
     },
     methods: {
