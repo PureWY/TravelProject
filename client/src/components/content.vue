@@ -195,6 +195,7 @@ export default {
   }
   .yourPlan {
     height: 550px;
+    padding-bottom: 30px;
     .planTitle {
       height: 135px;
       margin-bottom: 60px;
