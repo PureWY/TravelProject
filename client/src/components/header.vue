@@ -22,7 +22,9 @@
               <a class="headerA">旅程</a>
             </div>
             <div class="headerLog">
-              <a class="headerA">登录</a>
+              <a v-if="username" class="headerA">{{username}}</a>
+              <a v-if="username" class="headerA" @click="handleLogOut">注销</a>
+              <a v-else class="headerA">登录</a>
             </div>
           </div>
         </div>
@@ -34,6 +36,7 @@
 <script>
 export default {
   name: 'headerComponent',
+  props: ['username'],
   data() {
     return {
       activeName: 'plane'
@@ -42,6 +45,26 @@ export default {
   methods: {
     handleClick(tab) {
       this.$emit('check-tab',tab.name)
+    },
+    handleLogOut(){
+      this.$confirm('确认注销用户？', '提示', {
+          cancelButtonText: '取消',
+          confirmButtonText: '确定',
+          type: 'warning'
+        }).then(() => {
+          this.$store.dispatch('LogOut').then(() => {
+            this.$message.success('注销成功!')
+            this.loading = false
+            this.$router.push('/')
+          }).catch(e => {
+              this.loading = false
+          })
+        }).catch(() => {
+          this.$message({
+            type: 'info',
+            message: '已取消'
+          });          
+        });
     }
   }
 }
@@ -115,6 +138,7 @@ export default {
               .headerA{
                 font-size: 14px;
                 font-weight: 500;
+                margin: 0 10px;
               }
               .headerA:hover{
                   cursor: pointer;
@@ -126,13 +150,12 @@ export default {
               .headerA{
                 font-size: 14px;
                 font-weight: 500;
+                margin: 0 10px;
               }
               .headerA:hover{
                   cursor: pointer;
                   color: #ea4d1a;
               }
-          }
-          .headerFlag{
           }
         }
       }
