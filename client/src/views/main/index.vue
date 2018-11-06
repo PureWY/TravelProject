@@ -4,19 +4,25 @@
         <planeComponent v-show="chooiceTab == 'plane'"></planeComponent>
         <hotelComponent v-show="chooiceTab == 'hotel'"></hotelComponent>
         <carComponent v-show="chooiceTab == 'car'"></carComponent>
+        <registerComponent></registerComponent>
         <commonComponent></commonComponent>
+        <footerComponent></footerComponent>
     </div>
 </template>
 
 <script>
 import headerComponent from '../../components/header'
 import planeComponent from '../../components/plane'
-import commonComponent from '../../components/content'
+import registerComponent from '../../components/register'
 import hotelComponent from '../../components/hotel'
 import carComponent from '../../components/car'
+import commonComponent from '../../components/content'
+import footerComponent from '../../components/footer'
 export default {
     name: 'mainPage',
-    components: {headerComponent,planeComponent,commonComponent,hotelComponent,carComponent},
+    components: {headerComponent,planeComponent,
+    registerComponent,hotelComponent,carComponent,
+    commonComponent,footerComponent},
     data(){
         return{ 
             chooiceTab: 'car'
