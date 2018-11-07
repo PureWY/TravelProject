@@ -6,7 +6,7 @@ var User = require('../models/User');
 
 router.post('/',function(req,res,next){
         User.findOne({
-            userName: req.body.username
+            userphone: req.body.userphone
         },(err,doc)=>{
             if(err){
                 res.json({
@@ -20,8 +20,11 @@ router.post('/',function(req,res,next){
                 });
             }else{
                 let userInfo = {
-                    userName: req.body.username,
-                    passWord: req.body.password
+                    userphone: req.body.userphone,
+                    password: req.body.password,
+                    username: '',
+                    usercard: '',
+                    useraddress: ''
                 }
                 new User(userInfo).save((err, doc) => {
                     if (!err) {

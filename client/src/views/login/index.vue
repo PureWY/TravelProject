@@ -15,8 +15,8 @@
         </div>
         <div class="loginForm" v-show="isLogin">
           <el-form label-position="left" :model="loginForm" status-icon :rules="rules" ref="loginForm" label-width="100px" class="demo-ruleForm">
-            <el-form-item prop="username">
-              <el-input v-model="loginForm.username" placeholder="UserName" autocomplete="off"></el-input>
+            <el-form-item prop="userphone">
+              <el-input v-model="loginForm.userphone" placeholder="UserPhone" autocomplete="off"></el-input>
             </el-form-item>
             <el-form-item prop="password">
               <el-input type="password" v-model="loginForm.password" placeholder="PassWord" autocomplete="off"></el-input>
@@ -29,8 +29,8 @@
         </div>
         <div class="loginForm" v-show="!isLogin">
           <el-form label-position="left" :model="registerForm" status-icon :rules="regisRule" ref="registerForm" label-width="100px" class="demo-ruleForm">
-            <el-form-item prop="username">
-              <el-input v-model="registerForm.username" placeholder="UserName" autocomplete="off"></el-input>
+            <el-form-item prop="userphone">
+              <el-input v-model="registerForm.userphone" placeholder="UserPhone" autocomplete="off"></el-input>
             </el-form-item>
             <el-form-item prop="password">
               <el-input type="password" v-model="registerForm.password" placeholder="PassWord"  autocomplete="off"></el-input>
@@ -80,20 +80,20 @@ export default {
     return {
       isLogin: true,
       loginForm: {
-        username: '',
+        userphone: '',
         password: ''
       },
       registerForm: {
-        username: '',
+        userphone: '',
         password: '',
         checkpass: ''
       },
       rules: {
-        username: [{ validator: checkUser, trigger: 'change' }],
+        userphone: [{ validator: checkUser, trigger: 'change' }],
         password: [{ validator: validatePass, trigger: 'change' }]
       },
       regisRule: {
-        username: [{ validator: checkUser, trigger: 'change' }],
+        userphone: [{ validator: checkUser, trigger: 'change' }],
         password: [{ validator: validatePass, trigger: 'change' }],
         checkpass: [{ validator: validatePass2, trigger: 'change' }]
       }
@@ -106,7 +106,7 @@ export default {
         if (valid) {
           this.loading = true
           this.$store
-            .dispatch('LoginByUsername', this.loginForm)
+            .dispatch('LoginByUserPhone', this.loginForm)
             .then(() => {
               console.log("登陆成功")
               this.loading = false
@@ -129,7 +129,7 @@ export default {
         if (valid) {
           this.loading = true
           this.$store
-            .dispatch('RegisterByUsername', this.registerForm)
+            .dispatch('RegisterByUserPhone', this.registerForm)
             .then(() => {
               this.$message.success('注册成功!')
               this.loading = false

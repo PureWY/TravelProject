@@ -10,7 +10,7 @@ var User = require('../models/User');
 
 router.post('/',function(req,res,next){
     User.findOne({
-        userName: req.body.username
+        userphone: req.body.userphone
     },(err,user)=>{
         if(err){
             res.json({
@@ -20,14 +20,14 @@ router.post('/',function(req,res,next){
         }else if(!user){
             res.json({
                 code: 202,
-                message: "用户名或密码错误!"
+                message: "手机号或密码错误!"
             });
         }else{
             //与之前加密的密码进行match
-            bcrypt.compare(req.body.password, user.passWord).then(match => {
+            bcrypt.compare(req.body.password, user.password).then(match => {
                 if (match) {
                     //创建token
-                    const payload = { user: user.userName };
+                    const payload = { user: user.userphone };
                     const options = { expiresIn: config.tokenTime};
                     const secret = config.secretOrKey;
                     const token = jwt.sign(payload, secret, options);
@@ -37,14 +37,14 @@ router.post('/',function(req,res,next){
                         _TK: token,
                         loginTime: loginTime,
                         body: {
-                            userAccount: user.userName
+                            userAccount: user.userphone
                         },
                         message: "登录成功!"
                     });
                 } else {
                     res.json({
                         code: 203,
-                        message: "用户名或密码错误!"
+                        message: "手机号或密码错误!"
                     });
                 }
               }).catch(err => {

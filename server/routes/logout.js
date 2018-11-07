@@ -8,7 +8,7 @@ var User = require('../models/User');
 
 router.post('/',function(req,res,next){
     User.findOne({
-        userName: req.body.username
+        userphone: req.body.userphone
     },(err,user)=>{
         if(err){
             res.json({
