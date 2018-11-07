@@ -74,6 +74,7 @@ export default {
   name: 'commonComponent',
   data() {
     return {
+      isLogin: false,
         loop: [0,1,2,3,4],
         loop1: [0,1,2],
       cities: [
@@ -104,7 +105,10 @@ export default {
       ],
       values: ''
     }
-  }
+  },
+  created() {
+    this.isLogin = this.$store.state.user.token ? true : false;
+  },
 }
 </script>
 

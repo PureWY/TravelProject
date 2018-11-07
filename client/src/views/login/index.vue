@@ -15,11 +15,11 @@
         </div>
         <div class="loginForm" v-show="isLogin">
           <el-form label-position="left" :model="loginForm" status-icon :rules="rules" ref="loginForm" label-width="100px" class="demo-ruleForm">
-            <el-form-item label="用户名" prop="username">
-              <el-input v-model="loginForm.username" autocomplete="off"></el-input>
+            <el-form-item prop="username">
+              <el-input v-model="loginForm.username" placeholder="UserName" autocomplete="off"></el-input>
             </el-form-item>
-            <el-form-item label="密码" prop="password">
-              <el-input type="password" v-model="loginForm.password" autocomplete="off"></el-input>
+            <el-form-item prop="password">
+              <el-input type="password" v-model="loginForm.password" placeholder="PassWord" autocomplete="off"></el-input>
             </el-form-item>
             <el-form-item class="btnGroup">
               <el-button type="primary" @click="handleLogin">登录</el-button>
@@ -29,14 +29,14 @@
         </div>
         <div class="loginForm" v-show="!isLogin">
           <el-form label-position="left" :model="registerForm" status-icon :rules="regisRule" ref="registerForm" label-width="100px" class="demo-ruleForm">
-            <el-form-item label="用户名" prop="username">
-              <el-input v-model="registerForm.username" autocomplete="off"></el-input>
+            <el-form-item prop="username">
+              <el-input v-model="registerForm.username" placeholder="UserName" autocomplete="off"></el-input>
             </el-form-item>
-            <el-form-item label="密码" prop="password">
-              <el-input type="password" v-model="registerForm.password" autocomplete="off"></el-input>
+            <el-form-item prop="password">
+              <el-input type="password" v-model="registerForm.password" placeholder="PassWord"  autocomplete="off"></el-input>
             </el-form-item>
-            <el-form-item label="确认密码" prop="checkpass">
-              <el-input type="password" v-model="registerForm.checkpass"></el-input>
+            <el-form-item prop="checkpass">
+              <el-input type="password" v-model="registerForm.checkpass" placeholder="ConfirmPassWord" ></el-input>
             </el-form-item>
             <el-form-item class="btnGroup">
               <el-button type="primary" @click="handleRegister">注册</el-button>
@@ -112,7 +112,7 @@ export default {
               this.loading = false
               this.$message.success('登录成功!')
               this.$router.push({
-                path: '/main'
+                path: '/'
               })
             })
             .catch(e => {
@@ -162,8 +162,7 @@ export default {
     bottom: 0;
     left: 0;
     z-index: 0;
-    opacity: 0.5;
-    background: url(../../assets/img/back.jpg);
+    background: url(../../assets/img/loginBack2.jpg);
     background-color: rgba(0, 0, 0, 0.5);
     overflow: hidden;
     background-position: 50% 50%;
@@ -181,14 +180,12 @@ export default {
     .mainContainer {
       display: block;
       width: 350px;
-      height: 450px;
-      margin: 100px auto 100px;
+      height: 400px;
+      margin: 10% auto 100px;
       padding: 5px;
       cursor: pointer;
       z-index: 3;
-      color: black;
-      background-color: white;
-      /* border: 2px solid goldenrod; */
+      color: #fff;
       border-radius: 15px;
       background-position: 0 -115px;
       .header {
@@ -208,8 +205,29 @@ export default {
       .loginForm {
         margin: 40px 20px;
       }
-      .el-form-item__label{
-          font-size: 1rem;
+      .el-form-item {
+          padding: 0 14px;
+          margin-bottom: 30px;
+      }
+      .el-form-item__content{
+          margin-left: 0px !important;
+          width: 280px;
+          height: 60px;
+      }
+      .el-input__inner{
+          font-size: 1.5rem;
+          height: 55px;
+          font-weight: 500;
+          background-color: #fff;
+          opacity: 0.4;
+          color: #000;
+      }
+      .el-form-item__error{
+        color: #fff;
+        font-size: 13px;
+      }
+      .el-form-item.is-error .el-input__validateIcon {
+          color: #FED;
       }
       .btnGroup{
           .el-form-item__content{
@@ -217,7 +235,8 @@ export default {
               .el-button{
                   width: 100%;
                   margin-left: 0;
-                  margin-bottom: 20px;
+                  height: 46px;
+                  margin-bottom: 30px;
               }
           }
       }

@@ -1,5 +1,5 @@
 <template>
-    <div class="commonRegister">
+    <div v-show="!isLogin" class="commonRegister">
         <div class="noRegister">
             <div class="joinImg"></div>
             <div class="joinText">
@@ -19,8 +19,14 @@ export default {
     name: 'registerComponent',
     data(){
         return{
-
+            isLogin: false
         }
+    },
+    created() {
+        this.isLogin = this.$store.state.user.token ? true : false;
+    },
+    methods: {
+
     }
 }
 </script>

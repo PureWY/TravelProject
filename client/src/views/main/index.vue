@@ -25,8 +25,10 @@ export default {
     commonComponent,footerComponent},
     data(){
         return{ 
-            chooiceTab: 'car'
+            chooiceTab: 'plane'
         }
+    },
+    created() {
     },
     methods: {
         checkTab(tab){

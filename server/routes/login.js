@@ -31,9 +31,11 @@ router.post('/',function(req,res,next){
                     const options = { expiresIn: config.tokenTime};
                     const secret = config.secretOrKey;
                     const token = jwt.sign(payload, secret, options);
+                    const loginTime = new Date().toLocaleString();
                     res.json({
                         code: 200,
                         _TK: token,
+                        loginTime: loginTime,
                         body: {
                             userAccount: user.userName
                         },

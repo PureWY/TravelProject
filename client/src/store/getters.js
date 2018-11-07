@@ -1,7 +1,7 @@
 const getters = {
     token: state => state.user.token,
-    expiredTime: state => state.user.expiredTime,
-    name: state => state.user.name,
+    loginTime: state => state.user.loginTime,
+    username: state => state.user.username,
 }
 
 export default getters
