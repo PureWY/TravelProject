@@ -1,5 +1,5 @@
 import {
-  loginByUsername,
+  loginByUserPhone,
   register,
   logout,
   getUserInfo
@@ -14,7 +14,7 @@ import {
 } from '@/utils/auth'
 const user = {
   state: {
-    username: getAdmin(),
+    userphone: getAdmin(),
     token: getToken(),
     loginTime: null,
   },
@@ -26,17 +26,17 @@ const user = {
       state.loginTime = loginTime
     },
     SET_USER: (state, user) => {
-      state.username = user
+      state.userphone = user
     },
   },
   actions: {
     //用户名登录
-    LoginByUsername({
+    LoginByUserPhone({
       commit
     }, userInfo) {
-      const username = userInfo.username.trim()
+      const userphone = userInfo.userphone.trim()
       return new Promise((resolve, reject) => {
-        loginByUsername(userInfo).then(response => {
+        loginByUserPhone(userInfo).then(response => {
           const data = response.data
           commit('SET_TOKEN', data._TK)
           commit('SET_USER', data.body.userAccount)
@@ -52,12 +52,12 @@ const user = {
       })
     },
     //用户名注册
-    RegisterByUsername({
+    RegisterByUserPhone({
       commit
     }, userInfo) {
       return new Promise((resolve, reject) => {
         register({
-          username: userInfo.username,
+          userphone: userInfo.userphone,
           password: userInfo.password
         }).then(response => {
           const data = response.data

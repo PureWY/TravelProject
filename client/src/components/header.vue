@@ -38,7 +38,7 @@
                 <div class="hoverContent">
                   <el-button @click="handleLogOut" class="logoutButton">退出登录</el-button>
                 </div>
-                  <el-button @click="toUserInfo" class="nameButton" slot="reference">{{username}}</el-button>
+                  <el-button @click="toUserInfo" class="nameButton" slot="reference">{{userphone}}</el-button>
               </el-popover>
               <a v-else class="headerA" @click="toLogin">登录</a>
             </div>
@@ -56,13 +56,13 @@ export default {
   data() {
     return {
       isLogin: false,
-      username: '',
+      userphone: '',
       activeName: 'plane'
     }
   },
   created() {
     this.isLogin = this.$store.state.user.token ? true : false;
-    this.username = this.$store.state.user.token ? this.$store.getters.username : ''
+    this.userphone = this.$store.state.user.token ? this.$store.getters.userphone : ''
   },
   methods: {
     handleClick(tab) {
