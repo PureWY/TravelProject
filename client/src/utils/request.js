@@ -10,8 +10,8 @@ import $vm from '@/main'
 var url = window.localStorage.getItem('url');
 
 const service = axios.create({
-  baseURL: 'http://192.168.31.16:3333/', //api的base_url
-  // baseURL: 'http://192.168.0.105:3333/',
+  // baseURL: 'http://192.168.31.16:3333/', //api的base_url
+  baseURL: 'http://192.168.0.103:3333/',
   timeout: 120000,
   method: 'post',
   headers: {
