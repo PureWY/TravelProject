@@ -23,5 +23,13 @@ export default new Router({
         title: '登录'
       }
     },
+    {
+      path: '/userInfo',
+      name: 'userInfo',
+      component: _import('userInfo/index'),
+      meta: {
+        title: '个人信息'
+      }
+    },
   ]
 })

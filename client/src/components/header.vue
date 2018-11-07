@@ -22,7 +22,7 @@
               <a class="headerA">旅程</a>
             </div>
             <div class="headerLog">
-              <a v-if="isLogin" class="headerImg">
+              <a v-if="isLogin" @click="toUserInfo" class="headerImg">
                 <img src="../assets/img/header.jpg">
               </a>
               <el-popover
@@ -38,7 +38,7 @@
                 <div class="hoverContent">
                   <el-button @click="handleLogOut" class="logoutButton">退出登录</el-button>
                 </div>
-                  <el-button class="nameButton" slot="reference">{{username}}</el-button>
+                  <el-button @click="toUserInfo" class="nameButton" slot="reference">{{username}}</el-button>
               </el-popover>
               <a v-else class="headerA" @click="toLogin">登录</a>
             </div>
@@ -70,6 +70,9 @@ export default {
     },
     toLogin(){
       this.$router.push('login')
+    },
+    toUserInfo(){
+      this.$router.push('userInfo')
     },
     handleLogOut(){
       this.$confirm('确认注销用户？', '提示', {
