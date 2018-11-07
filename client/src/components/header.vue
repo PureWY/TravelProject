@@ -22,9 +22,25 @@
               <a class="headerA">旅程</a>
             </div>
             <div class="headerLog">
-              <a v-if="username" class="headerA">{{username}}</a>
-              <a v-if="username" class="headerA" @click="handleLogOut">注销</a>
-              <a v-else class="headerA">登录</a>
+              <a v-if="isLogin" class="headerImg">
+                <img src="../assets/img/header.jpg">
+              </a>
+              <el-popover
+                class="popover"
+                v-if="isLogin"
+                placement="bottom"
+                width="200"
+                trigger="hover">
+                <div class="hoverContent">信息概览</div>
+                <div class="hoverContent">账户设置</div>
+                <div class="hoverContent">旅程设置</div>
+                <div class="hoverContent">观望列表</div>
+                <div class="hoverContent">
+                  <el-button @click="handleLogOut" class="logoutButton">退出登录</el-button>
+                </div>
+                  <el-button class="nameButton" slot="reference">{{username}}</el-button>
+              </el-popover>
+              <a v-else class="headerA" @click="toLogin">登录</a>
             </div>
           </div>
         </div>
@@ -35,16 +51,25 @@
 
 <script>
 export default {
+  inject: ['reload'],
   name: 'headerComponent',
-  props: ['username'],
   data() {
     return {
+      isLogin: false,
+      username: '',
       activeName: 'plane'
     }
+  },
+  created() {
+    this.isLogin = this.$store.state.user.token ? true : false;
+    this.username = this.$store.state.user.token ? this.$store.getters.username : ''
   },
   methods: {
     handleClick(tab) {
       this.$emit('check-tab',tab.name)
+    },
+    toLogin(){
+      this.$router.push('login')
     },
     handleLogOut(){
       this.$confirm('确认注销用户？', '提示', {
@@ -55,7 +80,7 @@ export default {
           this.$store.dispatch('LogOut').then(() => {
             this.$message.success('注销成功!')
             this.loading = false
-            this.$router.push('/')
+            this.reload()
           }).catch(e => {
               this.loading = false
           })
@@ -146,7 +171,32 @@ export default {
               }
           }
           .headerLog{
+            display: flex;
+            align-items: center;
               margin-left: 15px;
+              .headerImg{
+                display: flex;
+                align-items: center;
+                img{
+                  width: 25px;
+                  height: 25px;
+                  border-radius: 50%;
+                  padding: 5px 0;
+                }
+              }
+              .popover{
+                font-size: 14px;
+                font-weight: 500;
+                margin: 0 10px 0 0;
+                .nameButton{
+                  border: none;
+                  background-color: #fff;
+                  color: #000;
+                }
+                .nameButton:hover{
+                  color: #ea4d1a;
+                }
+              }
               .headerA{
                 font-size: 14px;
                 font-weight: 500;
@@ -156,6 +206,10 @@ export default {
                   cursor: pointer;
                   color: #ea4d1a;
               }
+          }
+          .headerLog:hover{
+              cursor: pointer;
+              color: #ea4d1a;
           }
         }
       }

@@ -112,7 +112,7 @@ export default {
               this.loading = false
               this.$message.success('登录成功!')
               this.$router.push({
-                path: '/main'
+                path: '/'
               })
             })
             .catch(e => {

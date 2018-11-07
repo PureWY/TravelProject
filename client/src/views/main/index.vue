@@ -1,6 +1,6 @@
 <template>
     <div class="mainContainer">
-        <headerComponent :username = 'username' @check-tab="checkTab"></headerComponent>
+        <headerComponent @check-tab="checkTab"></headerComponent>
         <planeComponent v-show="chooiceTab == 'plane'"></planeComponent>
         <hotelComponent v-show="chooiceTab == 'hotel'"></hotelComponent>
         <carComponent v-show="chooiceTab == 'car'"></carComponent>
@@ -25,14 +25,10 @@ export default {
     commonComponent,footerComponent},
     data(){
         return{ 
-            username: '',
             chooiceTab: 'plane'
         }
     },
     created() {
-        if(this.$store.getters.token){
-            this.username = this.$store.getters.username
-        }
     },
     methods: {
         checkTab(tab){
