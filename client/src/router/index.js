@@ -24,7 +24,7 @@ export default new Router({
       }
     },
     {
-      path: '/userInfo',
+      path: '/userInfo:tab',
       name: 'userInfo',
       component: _import('userInfo/index'),
       meta: {

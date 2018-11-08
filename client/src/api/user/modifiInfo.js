@@ -8,3 +8,12 @@ export function changeInfo(data) {
       data: JSON.stringify(data)
     })
   }
+
+  // 获取用户信息
+export function getUserInfo(data) {
+  return request({
+    url: '/user/getUserInfo',
+    method: 'post',
+    data: JSON.stringify(data)
+  })
+}

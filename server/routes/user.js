@@ -47,4 +47,30 @@ router.post('/changeInfo',function(req,res,next){
     })
 })
 
+router.post('/getUserInfo',function(req,res,next){
+    User.findOne({
+        userphone: req.body.userphone
+    },(err,user) => {
+        if(err){
+            res.json({
+                code: 201,
+                message: '数据库异常！'
+            })
+        }else if(user){
+            res.json({
+                code: 200,
+                userphone: user.userphone,
+                body: {
+                    userInfo: {
+                        username: user.username,
+                        usercard: user.usercard,
+                        useraddress: user.useraddress
+                    }
+                },
+                message: '账户信息查询成功！'
+            })
+        }
+    })
+})
+
 module.exports = router;
