@@ -38,7 +38,8 @@
                 <div class="hoverContent">
                   <el-button @click="handleLogOut" class="logoutButton">退出登录</el-button>
                 </div>
-                  <el-button @click="toUserInfo" class="nameButton" slot="reference">{{userphone}}</el-button>
+                  <el-button v-if="username" @click="toUserInfo" class="nameButton" slot="reference">{{username}}</el-button>
+                  <el-button v-else @click="toUserInfo" class="nameButton" slot="reference">{{userphone}}</el-button>
               </el-popover>
               <a v-else class="headerA" @click="toLogin">登录</a>
             </div>
@@ -61,8 +62,13 @@ export default {
     }
   },
   created() {
-    this.isLogin = this.$store.state.user.token ? true : false;
-    this.userphone = this.$store.state.user.token ? this.$store.getters.userphone : ''
+    this.isLogin = this.$store.getters.userphone ? true : false;
+    this.userphone = this.$store.getters.userphone ? this.$store.getters.userphone : '';
+  },
+  computed: {
+    username: function () { 
+      return this.$store.getters.userphone ? this.$store.getters.userInfo.username : '';
+      }
   },
   methods: {
     handleClick(tab) {

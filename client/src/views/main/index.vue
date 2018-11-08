@@ -29,6 +29,7 @@ export default {
         }
     },
     created() {
+        
     },
     methods: {
         checkTab(tab){

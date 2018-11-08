@@ -16,10 +16,10 @@
         <div class="loginForm" v-show="isLogin">
           <el-form label-position="left" :model="loginForm" status-icon :rules="rules" ref="loginForm" label-width="100px" class="demo-ruleForm">
             <el-form-item prop="userphone">
-              <el-input v-model="loginForm.userphone" placeholder="UserPhone" autocomplete="off"></el-input>
+              <el-input v-model="loginForm.userphone" :maxlength="11" placeholder="UserPhone"></el-input>
             </el-form-item>
             <el-form-item prop="password">
-              <el-input type="password" v-model="loginForm.password" placeholder="PassWord" autocomplete="off"></el-input>
+              <el-input type="password" v-model="loginForm.password" placeholder="PassWord"></el-input>
             </el-form-item>
             <el-form-item class="btnGroup">
               <el-button type="primary" @click="handleLogin">登录</el-button>
@@ -30,10 +30,10 @@
         <div class="loginForm" v-show="!isLogin">
           <el-form label-position="left" :model="registerForm" status-icon :rules="regisRule" ref="registerForm" label-width="100px" class="demo-ruleForm">
             <el-form-item prop="userphone">
-              <el-input v-model="registerForm.userphone" placeholder="UserPhone" autocomplete="off"></el-input>
+              <el-input v-model="registerForm.userphone" :maxlength="11" placeholder="UserPhone"></el-input>
             </el-form-item>
             <el-form-item prop="password">
-              <el-input type="password" v-model="registerForm.password" placeholder="PassWord"  autocomplete="off"></el-input>
+              <el-input type="password" v-model="registerForm.password" placeholder="PassWord" ></el-input>
             </el-form-item>
             <el-form-item prop="checkpass">
               <el-input type="password" v-model="registerForm.checkpass" placeholder="ConfirmPassWord" ></el-input>
@@ -55,9 +55,13 @@ export default {
   data() {
     //表单验证规则
     var checkUser = (rule, value, callback) => {
+      let regx = /^[0-9]+$/
       if (!value) {
-        return callback(new Error('用户名不能为空'))
-      } else {
+        return callback(new Error('手机号不能为空'))
+      }
+      if (!regx.test(value)) {
+        callback(new Error('手机号码只能包含数字'))
+      }  else {
         callback()
       }
     }
@@ -80,11 +84,11 @@ export default {
     return {
       isLogin: true,
       loginForm: {
-        userphone: '',
+        userphone: null,
         password: ''
       },
       registerForm: {
-        userphone: '',
+        userphone: null,
         password: '',
         checkpass: ''
       },

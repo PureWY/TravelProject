@@ -5,6 +5,9 @@ import {
   getUserInfo
 } from '@/api/login'
 import {
+  changeInfo
+} from '@/api/user/modifiInfo.js'
+import {
   getToken,
   setToken,
   removeToken,
@@ -17,6 +20,11 @@ const user = {
     userphone: getAdmin(),
     token: getToken(),
     loginTime: null,
+    userInfo: {
+      username: '',
+      usercard: '',
+      useraddress: ''
+    }
   },
   mutations: {
     SET_TOKEN: (state, token) => {
@@ -25,8 +33,13 @@ const user = {
     SET_TIME: (state, loginTime) => {
       state.loginTime = loginTime
     },
-    SET_USER: (state, user) => {
-      state.userphone = user
+    SET_USER: (state, userphone) => {
+      state.userphone = userphone
+    },
+    SET_USERINFO: (state, userInfo) => {
+      state.userInfo = {
+        ...userInfo
+      }
     },
   },
   actions: {
@@ -34,16 +47,33 @@ const user = {
     LoginByUserPhone({
       commit
     }, userInfo) {
-      const userphone = userInfo.userphone.trim()
       return new Promise((resolve, reject) => {
         loginByUserPhone(userInfo).then(response => {
           const data = response.data
+          commit('SET_USER', data.body.userphone)
+          commit('SET_USERINFO', data.body.userInfo)
+          commit('SET_TIME', data.body.loginTime)
           commit('SET_TOKEN', data._TK)
-          commit('SET_USER', data.body.userAccount)
-          commit('SET_TIME', data.loginTime)
           setToken(response.data._TK)
           setAdmin(data.body.userAccount)
           if (data.code == 200) {
+            resolve()
+          }
+        }).catch(error => {
+          reject(error)
+        })
+      })
+    },
+    //用户信息修改
+    ChangeByUserPhone({
+      commit
+    }, userInfo) {
+      return new Promise((resolve, reject) => {
+        changeInfo(userInfo).then(response => {
+          const data = response.data
+          if (data.code == 200) {
+            console.log(data.body.userInfo)
+            commit('SET_USERINFO', data.body.userInfo)
             resolve()
           }
         }).catch(error => {
