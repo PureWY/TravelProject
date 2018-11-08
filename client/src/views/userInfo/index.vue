@@ -182,11 +182,11 @@ export default {
     }
   },
   created() {
-    console.log(this.$store.state.user)
+    this.activeName = this.$route.params.tab;
   },
   methods: {
     handleClick(tab) {
-      console.log(this.$store.state.user)
+      console.log(this.$store.state)
     },
     hanleChange(formName) {
       this.$refs[formName].validate(valid => {

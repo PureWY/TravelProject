@@ -3,7 +3,7 @@
     <div class="headerContainer">
       <div class="headerWrapper">
         <div class="headerLeft">
-          <div class="headerLogo">
+          <div @click="toMain" class="headerLogo">
             <img src="../assets/img/bird.png">
             <span>草鹨旅行网</span>
           </div>
@@ -31,15 +31,15 @@
                 placement="bottom"
                 width="200"
                 trigger="hover">
-                <div class="hoverContent">信息概览</div>
-                <div class="hoverContent">账户设置</div>
-                <div class="hoverContent">旅程设置</div>
-                <div class="hoverContent">观望列表</div>
+                <div @click="toUserInfo('accountInfo')" class="hoverContent">账户信息</div>
+                <div @click="toUserInfo('accountSet')" class="hoverContent">账户设置</div>
+                <div @click="toUserInfo('searchHistory')" class="hoverContent">搜索历史</div>
+                <div @click="toUserInfo('moreInfo')" class="hoverContent">更多信息</div>
                 <div class="hoverContent">
                   <el-button @click="handleLogOut" class="logoutButton">退出登录</el-button>
                 </div>
-                  <el-button v-if="username" @click="toUserInfo" class="nameButton" slot="reference">{{username}}</el-button>
-                  <el-button v-else @click="toUserInfo" class="nameButton" slot="reference">{{userphone}}</el-button>
+                  <el-button v-if="username" @click="toUserInfo('accountInfo')" class="nameButton" slot="reference">{{username}}</el-button>
+                  <el-button v-else @click="toUserInfo('accountInfo')" class="nameButton" slot="reference">{{userphone}}</el-button>
               </el-popover>
               <a v-else class="headerA" @click="toLogin">登录</a>
             </div>
@@ -62,6 +62,7 @@ export default {
     }
   },
   created() {
+    
     this.isLogin = this.$store.getters.userphone ? true : false;
     this.userphone = this.$store.getters.userphone ? this.$store.getters.userphone : '';
   },
@@ -74,11 +75,14 @@ export default {
     handleClick(tab) {
       this.$emit('check-tab',tab.name)
     },
+    toMain(){
+      this.$router.push('/')
+    },
     toLogin(){
       this.$router.push('login')
     },
-    toUserInfo(){
-      this.$router.push('userInfo')
+    toUserInfo(value = 'accountInfo'){
+      this.$router.push({ name: 'userInfo', params: { tab: value }})
     },
     handleLogOut(){
       this.$confirm('确认注销用户？', '提示', {

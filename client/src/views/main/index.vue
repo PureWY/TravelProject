@@ -29,14 +29,24 @@ export default {
         }
     },
     created() {
-        
+        this.getUserInfo()
     },
     methods: {
         checkTab(tab){
             this.chooiceTab = tab;
+        },
+        getUserInfo(){
+            let userphone = {
+                userphone: window.localStorage.getItem('userphone')
+                }
+            this.$store.dispatch('GetUserInfo',userphone)
+            .then(() => {
+                console.log(this.$store.state.user)
+            }).catch(err => {
+                console.log(err)
+            })
         }
     }
-
 }
 </script>
 

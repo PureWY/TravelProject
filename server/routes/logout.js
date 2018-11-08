@@ -7,22 +7,31 @@ const config = require('../config/config.js');
 var User = require('../models/User');
 
 router.post('/',function(req,res,next){
-    User.findOne({
-        userphone: req.body.userphone
-    },(err,user)=>{
-        if(err){
-            res.json({
-                code: 201,
-                message: '数据库异常！'
-            })
-        }else{
-            res.json({
-                code: 200,
-                _TK: '',
-                message: '注销成功！'
-            })
-        }
-    })
+    if(req.body.userphone == 'undefined'){
+        res.json({
+            code: 200,
+            _TK: '',
+            message: '注销成功！'
+        })
+    }else{
+        User.findOne({
+            userphone: req.body.userphone
+        },(err,user)=>{
+            if(err){
+                res.json({
+                    code: 201,
+                    message: '数据库异常！'
+                })
+            }else{
+                res.json({
+                    code: 200,
+                    _TK: '',
+                    message: '注销成功！'
+                })
+            }
+        })
+    }
+    
 })
 
 module.exports = router;

@@ -2,10 +2,11 @@ import {
   loginByUserPhone,
   register,
   logout,
-  getUserInfo
+  
 } from '@/api/login'
 import {
-  changeInfo
+  changeInfo,
+  getUserInfo
 } from '@/api/user/modifiInfo.js'
 import {
   getToken,
@@ -54,6 +55,7 @@ const user = {
           commit('SET_USERINFO', data.body.userInfo)
           commit('SET_TIME', data.body.loginTime)
           commit('SET_TOKEN', data._TK)
+          window.localStorage.setItem('userphone',data.body.userphone)
           setToken(response.data._TK)
           setAdmin(data.body.userAccount)
           if (data.code == 200) {
@@ -61,6 +63,19 @@ const user = {
           }
         }).catch(error => {
           reject(error)
+        })
+      })
+    },
+    GetUserInfo({
+      commit
+    },userphone){
+      return new Promise((resolve,reject) => {
+        getUserInfo(userphone).then(res => {
+          commit('SET_USER', res.data.userphone)
+          commit('SET_USERINFO', res.data.body.userInfo)
+          resolve()
+        }).catch(err => {
+          reject(err)
         })
       })
     },
@@ -110,6 +125,7 @@ const user = {
             commit('SET_TOKEN', '')
             commit('SET_USER', '')
             commit('SET_TIME', '')
+            window.localStorage.setItem('userphone','')
             removeToken()
             removeAdmin()
             resolve()
