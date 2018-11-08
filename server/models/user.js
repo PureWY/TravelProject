@@ -13,23 +13,26 @@ var userSchema = new Schema({
   useraddress: {type: String,trim: true},
 })
 
-// 在保存用户信息之前加密密码
-userSchema.pre('save', function(next) {
-  const user = this;
-  if(!user.isModified || !user.isNew) { //过滤掉旧的已加密的密码
-    next();
-  } else {
-    bcrypt.hash(user.password, stage.saltingRounds, function(err, hash) {
-      if (err) {
-        console.log('未能成功加密密码！', user.password);
-        next(err);
-      } else {
-        user.password = hash;
-        next();
-      }
-    });
+//加密密码
+function encryptPass(next) {
+  let user = this;
+  if(user._update){
+    user = user._update
   }
-});
+  bcrypt.hash(user.password, stage.saltingRounds, function(err, hash) {
+    if (err) {
+      console.log(err)
+      next(err);
+    } else {
+      user.password = hash;
+      next();
+    }
+  }); 
+}
+
+// 在保存用户信息之前加密密码
+userSchema.pre('save', encryptPass);
+userSchema.pre('update', encryptPass);
 
 //创建model
 var User = mongoose.model('User',userSchema);

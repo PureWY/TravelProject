@@ -34,11 +34,16 @@ router.post('/',function(req,res,next){
                     const loginTime = new Date().toLocaleString();
                     res.json({
                         code: 200,
-                        _TK: token,
-                        loginTime: loginTime,
                         body: {
-                            userAccount: user.userphone
+                            userphone: user.userphone,
+                            loginTime: loginTime,
+                            userInfo: {
+                                username: user.username,
+                                usercard: user.usercard,
+                                useraddress: user.useraddress
+                            }
                         },
+                        _TK: token,
                         message: "登录成功!"
                     });
                 } else {

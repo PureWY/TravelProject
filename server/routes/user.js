@@ -7,9 +7,43 @@ const config = require('../config/config.js');
 var User = require('../models/User');
 
 router.post('/changeInfo',function(req,res,next){
-    res.json({
-        code: 200,
-        message: '处理成功了'
+    User.findOne({
+        userphone: req.body.userphone
+    },(err,user) => {
+        if(err){
+            res.json({
+                code: 201,
+                message: '数据库异常！'
+            })
+        }else if(user){
+            User.update({userphone: req.body.userphone},{
+                username: req.body.username,
+                password: req.body.userpass,
+                usercard: req.body.usercard,
+                useraddress: req.body.useraddress
+            },function(err){
+                if(err){
+                    console.log(err)
+                    res.json({
+                        code: 202,
+                        message: err
+                    })
+                }else{
+                    res.json({
+                        code: 200,
+                        userphone: user.userphone,
+                        body: {
+                            userInfo: {
+                                username: req.body.username,
+                                usercard: req.body.usercard,
+                                useraddress: req.body.useraddress
+                            }
+                        },
+                        message: '账户信息设置成功！'
+                    })
+                }
+            })
+        }
     })
 })
 

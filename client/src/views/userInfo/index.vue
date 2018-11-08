@@ -10,12 +10,12 @@
             <div class="infoDetails">
               <div class="detailLeft">
                 <p>账户名称</p>
-                <span>天龙八部</span>
+                <span>{{userInfo.username}}</span>
               </div>
               <div class="detailRight">
                 <p>个性签名</p>
                 <span>他想知道她是谁，为何总沉默寡言</span>&nbsp;&nbsp;
-                <el-button size="mini" round> 修改</el-button>
+                <el-button size="mini" round>修改</el-button>
               </div>
             </div>
           </div>
@@ -37,13 +37,16 @@
             <div class="accountTable">
               <div class="accountLeft">
                 <p>账户名称</p>
-                <span>天龙八部</span>
+                <span v-if="userInfo.username">{{userInfo.username}}</span>
+                <span v-else>还未设置名称，快去设置一个吧</span>
                 <p>手机号码</p>
-                <span>18130609023</span>
+                <span>{{userphone}}</span>
                 <p>身份证号</p>
-                <span>342901199009876543</span>
+                <span v-if="userInfo.usercard">{{userInfo.usercard}}</span>
+                <span v-else>还未填写身份信息，快去填写吧</span>
                 <p>居住地址</p>
-                <span>江苏省南京市浦口区香溢紫郡</span>
+                <span v-if="userInfo.useraddress">{{userInfo.useraddress}}</span>
+                <span v-else>还未填写居住信息，快去填写吧</span>
               </div>
               <div class="accountRight">
 
@@ -56,7 +59,7 @@
               <div class="accountLeft">
                 <el-form :model="infoForm" status-icon :rules="rule" label-position="left" ref="ruleForm" label-width="100px">
                   <el-form-item label="手机号码" prop="userphone">
-                    <el-input type="text" disabled :maxlength="11" v-model="infoForm.userphone"></el-input>
+                    <el-input type="text" disabled :maxlength="11" v-model="userphone"></el-input>
                   </el-form-item>
                   <el-form-item label="账户名称" prop="username">
                     <el-input type="text" v-model="infoForm.username"></el-input>
@@ -101,7 +104,7 @@ export default {
   components: { headerComponent, footerComponent },
   data() {
     var validatePass = (rule, value, callback) => {
-      let regx = /^[a-zA-Z0-9\u4e00\u9fa5]+$/
+      let regx = /^[a-zA-Z0-9\u4e00-\u9fa5]+$/
       if (value === '') {
         callback(new Error('请输入账户密码'))
       } else if(value.length < 3){
@@ -113,7 +116,7 @@ export default {
       }
     }
     var validate1 = (rule, value, callback) => {
-      let regx = /^[a-zA-Z0-9\u4e00\u9fa5]+$/
+      let regx = /^[A-Za-z0-9\u4e00-\u9fa5]+$/
       if (value === '') {
         callback(new Error('请输入账户名称'))
       }
@@ -158,32 +161,40 @@ export default {
       infoForm: {
         username: '',
         userpass: '',
-        userphone: '18130609023',
+        userphone: '',
         usercard: '',
         useraddress: ''
       },
       rule: {
         username: [{ validator: validate1, trigger: 'change' }],
         userpass: [{ validator: validatePass, trigger: 'change' }],
-        userphone: [{ validator: validate2, trigger: 'change' }],
         usercard: [{ validator: validate3, trigger: 'change' }],
         useraddress: [{ validator: validate4, trigger: 'change' }]
       }
     }
   },
+  computed: {
+    userInfo: function(){
+      return this.$store.getters.userInfo;
+    },
+    userphone: function(){
+      return this.$store.getters.userphone;
+    }
+  },
+  created() {
+    console.log(this.$store.state.user)
+  },
   methods: {
-    handleClick(tab, event) {
-      console.log(tab, event)
+    handleClick(tab) {
+      console.log(this.$store.state.user)
     },
     hanleChange(formName) {
       this.$refs[formName].validate(valid => {
         if (valid) {
-          changeInfo(this.infoForm).then(res => {
-            if(res.code == 200){
-              this.$message('修改成功！')
-            }else{
-              this.$message(res.data.message)
-            }
+          this.infoForm.userphone = this.userphone
+          this.$store.dispatch('ChangeByUserPhone',this.infoForm)
+          .then((err) => {
+            this.$message.success('账户信息设置成功!')
           })
         } else {
           console.log('error submit!!')
