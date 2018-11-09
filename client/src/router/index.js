@@ -31,5 +31,13 @@ export default new Router({
         title: '个人信息'
       }
     },
+    {
+      path: '/plane',
+      name: 'plane',
+      component: _import('plane/index'),
+      meta: {
+        title: '航班信息'
+      }
+    },
   ]
 })

@@ -12,7 +12,7 @@
               <el-tab-pane label="机票" name="plane"></el-tab-pane>
               <el-tab-pane label="酒店" name="hotel"></el-tab-pane>
               <el-tab-pane label="租车" name="car"></el-tab-pane>
-              <el-tab-pane label="更多" name="more"></el-tab-pane>
+              <el-tab-pane label="更多信息" name="more"></el-tab-pane>
             </el-tabs>
           </div>
         </div>

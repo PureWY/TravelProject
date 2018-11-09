@@ -20,8 +20,7 @@
                     <el-form :inline="true" :model="formInline" class="queryForm">
                     <el-form-item>
                         <el-select class="placePicker" v-model="formInline.region" placeholder="租车点">
-                        <el-option label="区域一" value="shanghai"></el-option>
-                        <el-option label="区域二" value="beijing"></el-option>
+                        <el-option class="placeSelect" label="区域一" value="shanghai"></el-option>
                         </el-select>
                     </el-form-item>
                     <el-form-item>

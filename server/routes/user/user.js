@@ -1,10 +1,10 @@
 const express = require('express');
 const router = express.Router();
 
-const config = require('../config/config.js');
+const config = require('../../config/config.js');
 
 //引入模型
-var User = require('../models/User');
+var User = require('../../models/User.js');
 
 router.post('/changeInfo',function(req,res,next){
     User.findOne({
