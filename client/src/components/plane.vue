@@ -10,68 +10,37 @@
             <div class="airPlaneContent">
                 <div class="airPlaneTab">
                     <div class="goAndBack">
-                        <el-dropdown trigger="click"> 
-                        <span class="el-dropdown-link">
-                            往返
-                            <i class="el-icon-arrow-down el-icon--right"></i>
-                        </span>
-                        <el-dropdown-menu slot="dropdown">
-                            <el-dropdown-item>往程</el-dropdown-item>
-                            <el-dropdown-item>单程</el-dropdown-item>
-                            <el-dropdown-item>多程</el-dropdown-item>
-                        </el-dropdown-menu>
-                        </el-dropdown>
+                        
                     </div>
                     <div class="ridePeople">
-                        <el-dropdown trigger="click"> 
-                        <span class="el-dropdown-link">
-                            1名成人
-                            <i class="el-icon-arrow-down el-icon--right"></i>
-                        </span>
-                        <el-dropdown-menu slot="dropdown">
-                            <el-dropdown-item>成人</el-dropdown-item>
-                            <el-dropdown-item>青年</el-dropdown-item>
-                            <el-dropdown-item>儿童</el-dropdown-item>
-                        </el-dropdown-menu>
-                        </el-dropdown>
+                       
                     </div>
                     <div class="rideType">
-                        <el-dropdown trigger="click"> 
-                        <span class="el-dropdown-link">
-                            经济舱
-                            <i class="el-icon-arrow-down el-icon--right"></i>
-                        </span>
-                        <el-dropdown-menu slot="dropdown">
-                            <el-dropdown-item>经济舱</el-dropdown-item>
-                            <el-dropdown-item>商务舱</el-dropdown-item>
-                            <el-dropdown-item>头等舱</el-dropdown-item>
-                        </el-dropdown-menu>
-                        </el-dropdown>
+                        
                     </div>
                 </div>
                 <div class="airPlaneSelect">
-                    <el-form :inline="true" :model="formInline" class="queryForm">
+                    <el-form :inline="true" class="queryForm">
                     <el-form-item>
-                        <el-select v-model="formInline.region" placeholder="出发地">
-                        <el-option label="区域一" value="shanghai"></el-option>
-                        <el-option label="区域二" value="beijing"></el-option>
+                        <el-select clearable  filterable v-model="listQuery.startCity" placeholder="出发地">
+                        <el-option class="placeSelect" v-for="city in cityList" :key="city"  :label="city" :value="city"></el-option>
                         </el-select>
                     </el-form-item>
-                    <div class="switchPlace">
+                    <div @click="handleSwitchPlace" class="switchPlace">
                         <img src="../assets/img/switchPlace.png">
                     </div>
                     <el-form-item>
-                        <el-select v-model="formInline.region" placeholder="目的地">
-                        <el-option label="区域一" value="shanghai"></el-option>
-                        <el-option label="区域二" value="beijing"></el-option>
+                        <el-select clearable  v-model="listQuery.endCity" placeholder="目的地">
+                        <el-option class="placeSelect" v-for="city in cityList" :key="city"  :label="city" :value="city"></el-option>
                         </el-select>
                     </el-form-item>
                     <el-form-item>
                         <el-date-picker
                         class="datePicker"
-                        v-model="value7"
+                        v-model="listQuery.searchTime"
                         type="daterange"
                         align="right"
+                        value-format="yyyy-MM-dd"
                         unlink-panels
                         range-separator="|"
                         start-placeholder="出发日期"
@@ -80,7 +49,7 @@
                         </el-date-picker>
                     </el-form-item>
                     <el-form-item>
-                        <el-button class="queryBtn" @click="onSubmit"><img src="../assets/img/query.png"></el-button>
+                        <el-button class="queryBtn" @click="handleSearch"><img src="../assets/img/query.png"></el-button>
                     </el-form-item>
                     </el-form>
                 </div>
@@ -91,14 +60,22 @@
 </template>
 
 <script>
+import {
+    getSiteType,
+    queryFlight
+} from '../api/plane/index.js'
+import {
+    getCityList
+} from '../api/common/index.js'
 export default {
   name: 'planeComponent',
   data() {
     return {
-      formInline: {
-                user: '',
-                region: ''
-            },
+        listQuery: {
+            startCity: '',
+            endCity: '',
+            searchTime: ''
+        },
             pickerOptions: {
                 shortcuts: [{
                     text: '最近一周',
@@ -126,13 +103,55 @@ export default {
                     }
                 }]
             },
-            value7: ''
+            value7: '',
+            cityList: [],
+            siteType: '',
     }
   },
+  created() {
+      this.getCityLists()
+  },
   methods: {
-      onSubmit() {
-            console.log('submit!');
-        }
+      getCityLists(){
+          getCityList().then(res => {
+              this.cityList = res.data.body.cityList;
+          })
+      },
+      handleSearch() {
+          if(!this.listQuery.startCity){
+              this.$message({
+                message: '请选择出发地',
+                type: 'warning'
+                });
+          }else if(!this.listQuery.endCity){
+              this.$message({
+                message: '请选择目的地',
+                type: 'warning'
+                });
+          }else if(!this.listQuery.searchTime){
+              this.$message({
+                message: '请选择查询日期',
+                type: 'warning'
+                });
+          }else{
+              queryFlight(this.listQuery).then(res => {
+                  if(res.data.code == 200){
+                      this.$message({
+                        message: res.data.message,
+                        type: 'success'
+                        });
+                  }
+            }).catch((err) => {
+                this.$message({
+                message: err.data.message,
+                type: 'warning'
+                });
+            })
+          }
+      },
+      handleSwitchPlace(){
+          [this.listQuery.startCity,this.listQuery.endCity] = [this.listQuery.endCity,this.listQuery.startCity]
+      }
   }
 }
 </script>
@@ -167,7 +186,7 @@ export default {
             max-width: 70em;
             height: 195px;
             .airPlaneTab{
-                height: 20%;
+                height: 15%;
                 display: flex;
                 padding: 30px 0 0;
                 .el-dropdown-link{
@@ -265,6 +284,10 @@ export default {
                             background-color: #fff;
                             padding: 0;
                             border-radius: 3px;
+                        }
+                        .el-select-dropdown__item{
+                            height: 50px;
+                            padding: 6px 20px;
                         }
                     }
                 }
