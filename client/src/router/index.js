@@ -1,9 +1,14 @@
 import Vue from 'vue'
 import Router from 'vue-router'
+import store from '../store'
 
 const _import = file => () => import('@/views/' + file + '.vue')
 
 Vue.use(Router)
+
+if (sessionStorage.getItem('token')) {
+  store.commit('set_token', sessionStorage.getItem('token'))
+}
 
 export default new Router({
   routes: [
