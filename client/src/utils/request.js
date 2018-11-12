@@ -5,9 +5,6 @@ import {
   Message
 } from 'element-ui'
 import store from '@/store'
-import $vm from '@/main'
-
-var url = window.localStorage.getItem('url');
 
 const service = axios.create({
   baseURL: 'http://192.168.31.16:3333/', //api的base_url
@@ -34,7 +31,7 @@ service.interceptors.response.use(
     if (response.data.code == 200) {
       return Promise.resolve(response)
     } else if (response.data.code == -9004) {
-      this.$store.dispatch('LogOut').then(() => this.$store.push('./home'))
+      this.$store.dispatch('LogOut').then(() => this.$store.push('./login'))
       console.log('token过期')
       Message({
         message: response.data.message,
@@ -52,6 +49,7 @@ service.interceptors.response.use(
     }
   },
   error => {
+    this.$store.commit('del_token');
     console.log('err' + error) //for  DEBUG
     Message({
       message: error.data.message,

@@ -140,6 +140,7 @@ export default {
                         message: res.data.message,
                         type: 'success'
                         });
+                        this.$router.push('plane')
                   }
             }).catch((err) => {
                 this.$message({

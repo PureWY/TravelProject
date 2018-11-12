@@ -30,18 +30,28 @@ const user = {
   mutations: {
     SET_TOKEN: (state, token) => {
       state.token = token
+      sessionStorage.setItem('token',token)
     },
     SET_TIME: (state, loginTime) => {
       state.loginTime = loginTime
     },
     SET_USER: (state, userphone) => {
       state.userphone = userphone
+      localStorage.setItem('userphone',userphone)
     },
     SET_USERINFO: (state, userInfo) => {
       state.userInfo = {
         ...userInfo
       }
     },
+    REM_TOKEN: (state) => {
+      state.token = ''
+      sessionStorage.removeItem('token')
+    },
+    REM_PHONE: (state) => {
+      state.userphone = ''
+      localStorage.removeItem('userphone')
+    }
   },
   actions: {
     //用户名登录
@@ -55,7 +65,6 @@ const user = {
           commit('SET_USERINFO', data.body.userInfo)
           commit('SET_TIME', data.body.loginTime)
           commit('SET_TOKEN', data._TK)
-          window.localStorage.setItem('userphone',data.body.userphone)
           setToken(response.data._TK)
           setAdmin(data.body.userAccount)
           if (data.code == 200) {
@@ -125,7 +134,8 @@ const user = {
             commit('SET_TOKEN', '')
             commit('SET_USER', '')
             commit('SET_TIME', '')
-            window.localStorage.setItem('userphone','')
+            commit('REM_TOKEN')
+            commit('REM_PHONE')
             removeToken()
             removeAdmin()
             resolve()
