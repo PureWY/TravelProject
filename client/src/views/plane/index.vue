@@ -104,6 +104,9 @@ export default {
             cities: ['经济舱', '商务舱', '头等舱']
         }
     },
+    created () {
+        console.log(this.$route.params.flightInfo)  
+    },
     methods: {
         
     }
