@@ -140,7 +140,7 @@ export default {
                         message: res.data.message,
                         type: 'success'
                         });
-                        this.$router.push('plane')
+                        // this.$router.push({name: 'plane',params: { flightInfo: res.data.body}})
                   }
             }).catch((err) => {
                 this.$message({
