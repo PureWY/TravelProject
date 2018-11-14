@@ -13,7 +13,7 @@
             <div class="resultHeader">
                 <div class="top">
                     <span>已加载全部</span>
-                    <span>共 231 条航班信息</span>
+                    <span>共 {{flightInfo.length}} 条航班信息</span>
                 </div>
                 <div class="bottom">
                     <div class="leftTab">
@@ -27,7 +27,7 @@
                     </div>
                 </div>
             </div>
-            <div class="resultWrapper"  v-for="item in loop" :key="item">
+            <div class="resultWrapper"  v-for="item in flightInfo" :key="item.planeId">
                 <div class="resultInner">
                     <div class="resultInfo">
                         <div class="infoContainer">
@@ -36,46 +36,47 @@
                             </div>
                             <div class="flightTime">
                                 <div class="timeDetail">
-                                    14:50 - 16:25
+                                    {{item.startTime}} - {{item.endTime}}
                                 </div>
                                 <div class="nameDetail">
-                                    中国东方航空
+                                    {{item.flightName}}
                                 </div>
                             </div>
                             <div class="flightType">
-                                直飞
+                                    {{item.startCity}} - {{item.endCity}}
                             </div>
                             <div class="siteType">
                                 <div class="siteInfo">
-                                    经济舱:&nbsp;&nbsp; <span>388</span>
+                                    经济舱:&nbsp;&nbsp; <span>{{item.planeInfo.firstClassPrice}} 元</span>
                                 </div>
                                 <div class="siteInfo">
-                                    商务舱:&nbsp;&nbsp; <span>688</span>
+                                    商务舱:&nbsp;&nbsp; <span>{{item.planeInfo.secondClassPrice}} 元</span>
                                 </div>
                                 <div class="siteInfo">
-                                    头等舱:&nbsp;&nbsp; <span>888</span>
+                                    头等舱:&nbsp;&nbsp; <span>{{item.planeInfo.thirdClassPrice}} 元</span>
                                 </div>
                             </div>
                             <div class="needTime">
-                                <div class="detailTime"><span>1</span> 小时 <span>55</span> 分钟</div>
+                                <div class="detailTime"><span v-show="item.needTime[0]">{{item.needTime[0]}} 天 </span>{{item.needTime[1]}} 小时 {{item.needTime[2]}} 分钟</div>
                             </div>
                         </div>
                     </div>
                     <div class="resultPrice">
                         <div class="priceContainer">
                             <div class="checkSiteType">
-                                <el-checkbox-group 
-                                    v-model="checkedCities1"
-                                    :max="1">
-                                    <el-checkbox v-for="city in cities" :label="city" :key="city">{{city}}</el-checkbox>
+                                <el-checkbox-group
+                                    v-model="item.planeInfo.siteType"
+                                    :max="1"
+                                    @change="(siteType)=>checkSite(siteType,item.planeId)">
+                                    <el-checkbox v-for="site in siteList" :label="site" :key="site">{{site}}</el-checkbox>
                                 </el-checkbox-group>
                             </div>
                             <div class="confirmContent">
                                 <div class="confirmPrice">
-                                    ￥<span>4888</span>
+                                    <span>￥{{item.planeInfo.checkPrice}} 起</span>
                                 </div>
                                 <div class="confirmButton">
-                                    <el-button class="confirmBtn" type="warning">确认购买</el-button>
+                                    <el-button class="confirmBtn" @click="confirmBuy(item.planeId)" type="warning">确认购买</el-button>
                                 </div>
                             </div>
                         </div>
@@ -93,6 +94,13 @@
 <script>
 import headerBarComponent from '../../components/headerbar'
 import footerComponent from '../../components/footer'
+import {
+    queryFlight
+} from '../../api/plane/index.js'
+import {getTime,getDetailTime} from '../../utils/func.js'
+
+const moment = require('moment');
+
 export default {
     name: 'plane',
     components: {headerBarComponent,footerComponent},
@@ -100,15 +108,78 @@ export default {
         return{
             loop: [0,1,2,3,4,5,6,7,8,9,10],
             checkedFlight: false,
-            checkedCities1: ['经济舱'],
-            cities: ['经济舱', '商务舱', '头等舱']
+            siteList: ['经济舱','商务舱','头等舱'],
+            flightInfo: [],
+            payPrice: '0.00'
         }
     },
     created () {
-        console.log(this.$route.params.flightInfo)  
+        this.queryFlightInfo()
     },
     methods: {
-        
+        //查询航班信息
+        queryFlightInfo(){
+            queryFlight(this.$route.params.queryInfo).then(res => {
+                  if(res.data.code == 200){
+                      this.$message({
+                        message: res.data.message,
+                        type: 'success'
+                        });
+                        this.flightInfo = res.data.body
+                        //解决新赋值属性无法动态渲染到页面上的问题
+                        // this.flightInfo = res.data.body.filter(i=>{
+                        //     i.needTime = getDetailTime(i.startTime,i.endTime)
+                        //     i.startTime = getTime(i.startTime)
+                        //     i.endTime = getTime(i.endTime)
+                        //     i.planeInfo = i.planeInfo[0]
+                        //     i.checkedSite = []
+                        //     return i
+                        // })
+                        //第二种解决办法，强制渲染
+                        // this.$set(i,'checkedSite',[])
+
+                        for(let i of this.flightInfo){
+                            i.needTime = getDetailTime(i.startTime,i.endTime)
+                            i.startTime = getTime(i.startTime)
+                            i.endTime = getTime(i.endTime)
+                            i.planeInfo = i.planeInfo[0]
+                            i.planeInfo.checkPrice = i.planeInfo.firstClassPrice
+                        }
+                  }
+            }).catch((err) => {
+                this.$message({
+                message: err.data.message,
+                type: 'warning'
+                });
+            })
+        },
+
+        //选择舱位
+        checkSite(value,planeId){
+            let checkType = value[0]
+            this.flightInfo.map(item => {
+                if(item.planeInfo.planeId == planeId){
+                    switch(checkType){
+                        case "经济舱": 
+                            item.planeInfo.checkPrice = item.planeInfo.firstClassPrice;
+                            break;
+                        case "商务舱":
+                            item.planeInfo.checkPrice = item.planeInfo.secondClassPrice;
+                            break;
+                        case "头等舱":
+                            item.planeInfo.checkPrice = item.planeInfo.thirdClassPrice;
+                            break;
+                        default:
+                            item.planeInfo.checkPrice = item.planeInfo.firstClassPrice;
+                    }
+                }
+            })
+        },
+
+        //确认购买
+        confirmBuy(buyInfo){
+            
+        }
     }
 
 }
@@ -145,7 +216,7 @@ export default {
     }
     .resultContent{
         padding-top: 20px;
-        padding-bottom:275px;
+        padding-bottom:300px;
         background-color: #FAFAFC;
         .result{
             max-width: 70em;
@@ -231,11 +302,12 @@ export default {
                                 }
                             }
                             .flightType{
-                                width: 70px;
-                                height: 50px;
+                                width: 120px;
+                                height: 80px;
                                 font-size: 16px;
-                                line-height: 50px;
+                                font-weight: 500;
                                 margin-left: 40px;
+                                line-height: 80px;
                             }
                             .siteType{
                                 width: 150px;
@@ -278,16 +350,16 @@ export default {
                                 .confirmPrice{
                                     text-align: center;
                                     width: 50%;
-                                    height: 60px;
+                                    height: 50px;
                                     float: left;
-                                    line-height: 60px;
+                                    line-height: 50px;
                                     font-size: 24px;
                                     font-weight: 600;
                                 }
                                 .confirmButton{
                                     width: 50%;
-                                    height: 60px;
-                                    line-height: 60px;
+                                    height: 50px;
+                                    line-height: 50px;
                                     float: right;
                                     text-align: center;
                                     .confirmBtn{

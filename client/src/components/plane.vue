@@ -61,7 +61,6 @@
 
 <script>
 import {
-    getSiteType,
     queryFlight
 } from '../api/plane/index.js'
 import {
@@ -140,7 +139,7 @@ export default {
                         message: res.data.message,
                         type: 'success'
                         });
-                        // this.$router.push({name: 'plane',params: { flightInfo: res.data.body}})
+                        this.$router.push({name: 'plane',params: { queryInfo: this.listQuery}})
                   }
             }).catch((err) => {
                 this.$message({
