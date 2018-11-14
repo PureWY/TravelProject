@@ -36,7 +36,7 @@ router.post('/queryFlight', function(req, res, next) {
       $lookup: {
         from: 'planes',
         localField: 'planeId',
-        foreignField: 'plantId',
+        foreignField: 'planeId',
         as: 'planeInfo'
       },
     },

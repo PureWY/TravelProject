@@ -37,7 +37,7 @@ export default new Router({
       }
     },
     {
-      path: '/plane:flightInfo',
+      path: '/plane:queryInfo',
       name: 'plane',
       component: _import('plane/index'),
       meta: {
