@@ -1,9 +1,9 @@
 const express = require('express');
 const bcrypt = require('bcrypt');      //用于加密密码
-const jwt = require('jsonwebtoken');   //用于生成token
 const router = express.Router();
 
 const config = require('../config/config.js');
+const jwt = require('../config/jwt.js')
 
 //引入模型
 var User = require('../models/User');
@@ -27,10 +27,7 @@ router.post('/',function(req,res,next){
             bcrypt.compare(req.body.password, user.password).then(match => {
                 if (match) {
                     //创建token
-                    const payload = { user: user.userphone };
-                    const options = { expiresIn: config.tokenTime};
-                    const secret = config.secretOrKey;
-                    const token = jwt.sign(payload, secret, options);
+                    let token = jwt.generateToken(req.body.userphone)
                     const loginTime = new Date().toLocaleString();
                     res.json({
                         code: 200,

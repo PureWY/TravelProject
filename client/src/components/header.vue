@@ -52,23 +52,22 @@
 
 <script>
 export default {
-  inject: ['reload'],
   name: 'headerComponent',
   data() {
     return {
-      isLogin: false,
       userphone: '',
       activeName: 'plane'
     }
   },
   created() {
-    
-    this.isLogin = this.$store.getters.userphone ? true : false;
-    this.userphone = this.$store.getters.userphone ? this.$store.getters.userphone : '';
+    this.userphone = this.$store.getters.token ? this.$store.getters.userphone : '';
   },
   computed: {
-    username: function () { 
-      return this.$store.getters.userphone ? this.$store.getters.userInfo.username : '';
+    isLogin(){
+      return this.$store.getters.token ? true : false;
+    },
+    username() { 
+      return this.$store.getters.token ? this.$store.getters.userInfo.username : '';
       }
   },
   methods: {
@@ -92,8 +91,8 @@ export default {
         }).then(() => {
           this.$store.dispatch('LogOut').then(() => {
             this.$message.success('注销成功!')
+            console.log(sessionStorage.getItem('token'))
             this.loading = false
-            this.reload()
           }).catch(e => {
               this.loading = false
           })

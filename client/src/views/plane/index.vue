@@ -114,6 +114,7 @@ export default {
         }
     },
     created () {
+        console.log(this.$route.params.queryInfo)
         this.queryFlightInfo()
     },
     methods: {
@@ -122,8 +123,8 @@ export default {
             queryFlight(this.$route.params.queryInfo).then(res => {
                   if(res.data.code == 200){
                       this.$message({
-                        message: res.data.message,
-                        type: 'success'
+                            message: res.data.message,
+                            type: 'success'
                         });
                         this.flightInfo = res.data.body
                         //解决新赋值属性无法动态渲染到页面上的问题
@@ -147,9 +148,10 @@ export default {
                         }
                   }
             }).catch((err) => {
+                console.log(123)
                 this.$message({
-                message: err.data.message,
-                type: 'warning'
+                    message: err.data.message,
+                    type: 'warning'
                 });
             })
         },
@@ -178,7 +180,18 @@ export default {
 
         //确认购买
         confirmBuy(buyInfo){
-            
+            this.flightInfo.map(item => {
+                if(item.planeId == buyInfo){
+                    if(item.planeInfo.siteType.length == 0){
+                        this.$message({
+                            message: '请选择舱位',
+                            type: 'warning'
+                        });
+                    }else{
+                        
+                    }
+                }
+            })
         }
     }
 
