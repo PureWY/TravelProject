@@ -7,8 +7,8 @@ import {
 import store from '@/store'
 
 const service = axios.create({
-  // baseURL: 'http://192.168.31.16:3333/', //api的base_url
-  baseURL: 'http://192.168.0.100:3333/',
+  baseURL: 'http://192.168.31.16:3333/', //api的base_url
+  // baseURL: 'http://192.168.0.100:3333/',
   timeout: 120000,
   method: 'post',
   headers: {
@@ -30,16 +30,16 @@ service.interceptors.response.use(
   response => {
     if (response.data.code == 200) {
       return Promise.resolve(response)
-    } else if (response.data.code == -9004) {
-      this.$store.dispatch('LogOut').then(() => this.$store.push('./login'))
-      console.log('token过期')
-      Message({
-        message: response.data.message,
-        type: 'error',
-        duration: 3000
-      })
+    } else if (response.data.code == 401 || response.data.code == 402) {
+      // this.$store.dispatch('LogOut').then(() => this.$store.push('./login'))
+      console.log(response.data)
+        Message({
+          message: response.data.message,
+          type: 'error',
+          duration: 3000
+        })
       return Promise.reject(response)
-    } else {
+    } else{
       Message({
         message: response.data.message,
         type: 'error',

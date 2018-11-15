@@ -52,7 +52,6 @@
 
 <script>
 export default {
-  inject: ['reload'],
   name: 'headerBarComponent',
   data() {
     return {
@@ -92,7 +91,6 @@ export default {
           this.$store.dispatch('LogOut').then(() => {
             this.$message.success('注销成功!')
             this.loading = false
-            this.reload()
           }).catch(e => {
               this.loading = false
           })

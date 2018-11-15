@@ -135,17 +135,10 @@ export default {
           }else{
               queryFlight(this.listQuery).then(res => {
                   if(res.data.code == 200){
-                      this.$message({
-                        message: res.data.message,
-                        type: 'success'
-                        });
-                        this.$router.push({name: 'plane',params: { queryInfo: this.listQuery}})
+                      this.$router.push({name: 'plane',params: { queryInfo: this.listQuery}})
                   }
             }).catch((err) => {
-                this.$message({
-                message: err.data.message,
-                type: 'warning'
-                });
+                console.log(err)
             })
           }
       },

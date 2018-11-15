@@ -36,15 +36,18 @@ export default {
             this.chooiceTab = tab;
         },
         getUserInfo(){
-            let userphone = {
-                userphone: window.localStorage.getItem('userphone')
+            let userPhone = window.localStorage.getItem('userphone')
+            if(userPhone){
+                let userphone = {
+                userphone: userPhone
                 }
-            this.$store.dispatch('GetUserInfo',userphone)
-            .then(() => {
-                console.log(this.$store.state.user)
-            }).catch(err => {
-                console.log(err)
-            })
+                this.$store.dispatch('GetUserInfo',userphone)
+                .then(() => {
+                    console.log(this.$store.state.user)
+                }).catch(err => {
+                    console.log(err)
+                })
+            }
         }
     }
 }

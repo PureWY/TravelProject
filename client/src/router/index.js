@@ -10,7 +10,7 @@ if (sessionStorage.getItem('token')) {
   store.commit('set_token', sessionStorage.getItem('token'))
 }
 
-export default new Router({
+const router =  new Router({
   routes: [
     {
       path: '/',
@@ -46,3 +46,19 @@ export default new Router({
     },
   ]
 })
+
+router.beforeEach((to,from,next) => {
+  if(to.path === '/'){
+    next()
+  }else{
+    let token = sessionStorage.getItem('token');
+
+    if(token == 'null' || token == ''){
+      next('/login')
+    } else {
+      next();
+    }
+  }
+})
+
+export default router;

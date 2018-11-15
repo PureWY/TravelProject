@@ -7,7 +7,7 @@
                 <span>现在注册，获取最新旅游新闻。</span>
             </div>
             <div class="joinMethod">
-                <input>
+                <input class="phonePlaceholder" placeholder=" 你的手机号码">
                 <button>注册</button>
             </div>
         </div>
@@ -23,7 +23,7 @@ export default {
         }
     },
     created() {
-        this.isLogin = this.$store.state.user.token ? true : false;
+        this.isLogin = this.$store.getters.userphone ? true : false;
     },
     methods: {
 
@@ -70,6 +70,14 @@ export default {
                 height: 43px;
                 border: 1px solid #D9E1E8;
                 font-size: 1.1rem;
+            }
+            input:-ms-input-placeholder{
+                font-size: 0.8rem;
+                font-weight: 400
+            }
+            input::-webkit-input-placeholder{
+                font-size: 0.8rem;
+                font-weight: 400
             }
             button{
                 width: 168px;
