@@ -26,8 +26,11 @@
                     </el-col>
                     <el-col :span="5">
                         <div class="flightTime">
-                            <div>
-                                {{orderInfo.startDate}} - {{orderInfo.endDate}}
+                            <div v-if="orderInfo.startDate == orderInfo.endDate">
+                                {{orderInfo.startDate}}
+                            </div>
+                            <div v-else>
+                                {{orderInfo.startDate}} - {{orderInfo.startDate}}
                             </div>
                             <div>
                                 {{orderInfo.startHourTime}} - {{orderInfo.endHourTime}}
@@ -36,7 +39,7 @@
                     </el-col>
                     <el-col :span="5">
                         <div class="flightCity">
-                            {{orderInfo.startCity}} －＞ {{orderInfo.endCity}}
+                            {{orderInfo.startCity}} -> {{orderInfo.endCity}}
                         </div>
                     </el-col>
                     <el-col :span="4">
@@ -141,8 +144,8 @@ export default {
   },
   created() {
       this.orderInfo = JSON.parse(localStorage.getItem('orderInfo'))
-    //   this.orderInfo.startDate = getDate(this.orderInfo.startTime)
-    //   this.orderInfo.endDate = getDate(this.orderInfo.endTime)
+      this.orderInfo.startDate = getDate(this.orderInfo.startTime)
+      this.orderInfo.endDate = getDate(this.orderInfo.endTime)
   },
   methods: {
       submitOrder() {
@@ -238,6 +241,7 @@ export default {
                         .flightTime{
                             padding: 15px 0;
                             div{
+                                text-align: center;
                                 font-size: 1rem;
                                 font-size: 500;
                                 height: 30px;
