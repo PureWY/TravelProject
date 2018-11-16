@@ -6,6 +6,7 @@ const config = require('../../config/config.js');
 
 var Flight = require('../../models/plane/flight')
 var Plane = require('../../models/plane/plane')
+var FlightOrder = require('../../models/plane/flightOrder')
 
 //查询座位
 router.post('/siteType', function(req, res, next) {
@@ -76,5 +77,22 @@ router.post('/queryFlight', function(req, res, next) {
   })
 })
 
+//查询航班与飞机信息
+router.post('/subFlightOrder', function(req, res, next) {
+  console.log(req.body)
+  FlightOrder.create(req.body,(err,order) => {
+    if(err){
+      res.json({
+        code: 201,
+        message: '数据库异常'
+      })
+    }else{
+      res.json({
+        code: 200,
+        message: '订单创建成功'
+      })
+    }
+  })
+})
 
 module.exports = router;

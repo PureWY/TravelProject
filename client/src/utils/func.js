@@ -17,3 +17,8 @@ export function getDetailTime(d1,d2) {
     var seconds=Math.round(leave3/1000)
     return [dayDiff,hours,minutes]
 }
+
+export function getDate(date) { 
+    let Date = date.replace(/-/g, "/")
+    return Date.substr(0,10)
+ }
