@@ -139,6 +139,10 @@ export default {
           }else{
               queryFlight(this.listQuery).then(res => {
                   if(res.data.code == 200){
+                      this.$message({
+                            message: res.data.message,
+                            type: 'success'
+                        });
                       this.$store.commit('UPDATE_QUERYINFO',this.listQuery)
                       this.$router.push('flight/flightInfo')
                   }

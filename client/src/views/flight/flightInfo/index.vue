@@ -35,7 +35,7 @@
                             </div>
                             <div class="flightTime">
                                 <div class="timeDetail">
-                                    {{item.startTime}} - {{item.endTime}}
+                                    {{item.startHourTime}} - {{item.endHourTime}}
                                 </div>
                                 <div class="nameDetail">
                                     {{item.flightName}}
@@ -92,7 +92,7 @@ import {
     queryFlight
 } from '../../../api/plane/index.js'
 import {getTime,getDetailTime} from '../../../utils/func.js'
-
+import {GET_ORDERINFO} from '../../../store/modules/plane.js'
 const moment = require('moment');
 
 export default {
@@ -115,10 +115,6 @@ export default {
             this.queryInfo = JSON.parse(localStorage.getItem('queryInfo'))
             queryFlight(this.queryInfo).then(res => {
                   if(res.data.code == 200){
-                      this.$message({
-                            message: res.data.message,
-                            type: 'success'
-                        });
                         this.flightInfo = res.data.body
                         //解决新赋值属性无法动态渲染到页面上的问题
                         // this.flightInfo = res.data.body.filter(i=>{
@@ -134,8 +130,8 @@ export default {
 
                         for(let i of this.flightInfo){
                             i.needTime = getDetailTime(i.startTime,i.endTime)
-                            i.startTime = getTime(i.startTime)
-                            i.endTime = getTime(i.endTime)
+                            i.startHourTime = getTime(i.startTime)
+                            i.endHourTime = getTime(i.endTime)
                             i.planeInfo = i.planeInfo[0]
                             i.planeInfo.checkPrice = i.planeInfo.firstClassPrice
                         }
@@ -180,6 +176,7 @@ export default {
                             type: 'warning'
                         });
                     }else{
+                        this.$store.commit('GET_ORDERINFO',item)
                         this.$router.push('flightPay')
                     }
                 }
