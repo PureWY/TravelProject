@@ -2,7 +2,6 @@ import {
   loginByUserPhone,
   register,
   logout,
-  
 } from '@/api/login'
 import {
   changeInfo,

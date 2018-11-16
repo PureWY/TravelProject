@@ -60,17 +60,32 @@ export default {
     }
   },
   created() {
-    this.userphone = this.$store.getters.token ? this.$store.getters.userphone : '';
+    this.getUserInfo()
+    this.userphone = localStorage.getItem('userphone');
   },
   computed: {
     isLogin(){
       return this.$store.getters.token ? true : false;
     },
-    username() { 
-      return this.$store.getters.token ? this.$store.getters.userInfo.username : '';
+    username() {
+      return this.$store.getters.userphone ? this.$store.getters.userInfo.username : '';
       }
   },
   methods: {
+    //查询用户信息
+    getUserInfo(){
+        let userPhone = localStorage.getItem('userphone')
+        if(userPhone){
+            let userphone = {
+            userphone: userPhone
+            }
+            this.$store.dispatch('GetUserInfo',userphone)
+            .then(() => {
+            }).catch(err => {
+                console.log(err)
+            })
+        }
+    },
     handleClick(tab) {
       this.$emit('check-tab',tab.name)
     },
