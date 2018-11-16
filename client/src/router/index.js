@@ -10,11 +10,27 @@ const router =  new Router({
   routes: [
     {
       path: '/',
-      name: 'main',
       component: _import('main/index'),
       meta: {
         title: '主页面'
-      }
+      },
+      children: [
+        {
+          path: '/',
+          name: 'plane',
+          component: _import('main/plane/index')
+        },
+        {
+          path: 'car',
+          name: 'car',
+          component: _import('main/car/index')
+        },
+        {
+          path: 'hotel',
+          name: 'hotel',
+          component: _import('main/hotel/index')
+        },
+      ]
     },
     {
       path: '/login',
@@ -33,16 +49,30 @@ const router =  new Router({
       }
     },
     {
-      path: '/plane',
-      name: 'plane',
-      component: _import('plane/index'),
+      path: '/flight',
+      name: 'flight',
+      component: _import('flight/index'),
       meta: {
         title: '航班信息'
-      }
+      },
+      children: [
+        {
+          path: 'flightInfo',
+          name: 'flightInfo',
+          component: _import('flight/flightInfo/index')
+        },
+        {
+          path: 'flightPay',
+          name: 'flightPay',
+          component: _import('flight/flightPay/index')
+        },
+      ]
     },
+
   ]
 })
 
+//前端验证是否有token，没有的话返回登录
 router.beforeEach((to,from,next) => {
   if(to.path === '/'){
     next()

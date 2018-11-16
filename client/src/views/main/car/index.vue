@@ -1,55 +1,43 @@
 <template>
-  <div class="planeContainer">
+  <div class="carContainer">
     <div class="photoContent">
       <section class="photoFont">
         <div class="fontStyle">
           <h2 class="title">同时搜索数百家旅游网站</h2>
         </div>
       </section>
-      <section class="airPlaneSearch">
-            <div class="airPlaneContent">
-                <div class="airPlaneTab">
+      <section class="carSearch">
+            <div class="carContent">
+                <div class="carTab">
                     <div class="goAndBack">
-                        
-                    </div>
-                    <div class="ridePeople">
-                       
-                    </div>
-                    <div class="rideType">
-                        
+                        <span class="el-dropdown-link">
+                            相同还车地点
+                            <i class="el-icon-arrow-down el-icon--right"></i>
+                        </span>
                     </div>
                 </div>
-                <div class="airPlaneSelect">
-                    <el-form :inline="true" class="queryForm">
+                <div class="carSelect">
+                    <el-form :inline="true" :model="formInline" class="queryForm">
                     <el-form-item>
-                        <el-select clearable  filterable v-model="listQuery.startCity" placeholder="出发地">
-                        <el-option class="placeSelect" v-for="city in cityList" :key="city"  :label="city" :value="city"></el-option>
-                        </el-select>
-                    </el-form-item>
-                    <div @click="handleSwitchPlace" class="switchPlace">
-                        <img src="../assets/img/switchPlace.png">
-                    </div>
-                    <el-form-item>
-                        <el-select clearable  v-model="listQuery.endCity" placeholder="目的地">
-                        <el-option class="placeSelect" v-for="city in cityList" :key="city"  :label="city" :value="city"></el-option>
+                        <el-select class="placePicker" v-model="formInline.region" placeholder="租车点">
+                        <el-option class="placeSelect" label="区域一" value="shanghai"></el-option>
                         </el-select>
                     </el-form-item>
                     <el-form-item>
                         <el-date-picker
                         class="datePicker"
-                        v-model="listQuery.searchTime"
+                        v-model="value7"
                         type="daterange"
                         align="right"
-                        value-format="yyyy-MM-dd"
                         unlink-panels
                         range-separator="|"
-                        start-placeholder="出发日期"
-                        end-placeholder="返程日期"
+                        start-placeholder="租车日期"
+                        end-placeholder="还车日期"
                         :picker-options="pickerOptions">
                         </el-date-picker>
                     </el-form-item>
                     <el-form-item>
-                        <el-button class="queryBtn" @click="handleSearch"><img src="../assets/img/query.png"></el-button>
+                        <el-button class="queryBtn" @click="onSubmit"><img src="../../../assets/img/query.png"></el-button>
                     </el-form-item>
                     </el-form>
                 </div>
@@ -60,25 +48,14 @@
 </template>
 
 <script>
-import {
-    queryFlight
-} from '../api/plane/index.js'
-import {
-    getCityList
-} from '../api/common/index.js'
-import {
-    UPDATE_QUERYINFO
-}from '../store/modules/plane.js'
-
 export default {
-  name: 'planeComponent',
+  name: 'carComponent',
   data() {
     return {
-        listQuery: {
-            startCity: '',
-            endCity: '',
-            searchTime: ''
-        },
+      formInline: {
+                user: '',
+                region: ''
+            },
             pickerOptions: {
                 shortcuts: [{
                     text: '最近一周',
@@ -106,56 +83,19 @@ export default {
                     }
                 }]
             },
-            value7: '',
-            cityList: [],
-            siteType: '',
+            value7: ''
     }
   },
-  created() {
-      this.getCityLists()
-  },
   methods: {
-      getCityLists(){
-          getCityList().then(res => {
-              this.cityList = res.data.body.cityList;
-          })
-      },
-      handleSearch() {
-          if(!this.listQuery.startCity){
-              this.$message({
-                message: '请选择出发地',
-                type: 'warning'
-                });
-          }else if(!this.listQuery.endCity){
-              this.$message({
-                message: '请选择目的地',
-                type: 'warning'
-                });
-          }else if(!this.listQuery.searchTime){
-              this.$message({
-                message: '请选择查询日期',
-                type: 'warning'
-                });
-          }else{
-              queryFlight(this.listQuery).then(res => {
-                  if(res.data.code == 200){
-                      this.$store.commit('UPDATE_QUERYINFO',this.listQuery)
-                      this.$router.push('plane')
-                  }
-            }).catch((err) => {
-                console.log(err)
-            })
-          }
-      },
-      handleSwitchPlace(){
-          [this.listQuery.startCity,this.listQuery.endCity] = [this.listQuery.endCity,this.listQuery.startCity]
-      }
+      onSubmit() {
+            console.log('submit!');
+        }
   }
 }
 </script>
 
 <style lang="scss">
-.planeContainer {
+.carContainer {
   width: 100%;
   margin-top: -3px;
   background-color: #e9451a;
@@ -167,6 +107,7 @@ export default {
       .fontStyle {
         display: flex;
         align-items: flex-end;
+        padding: 0px;
         .title{
             font-family: "Forza-Black",Helvetica,Arial,sans-serif;
             font-weight: 800;
@@ -176,17 +117,17 @@ export default {
         }
       }
     }
-    .airPlaneSearch{
+    .carSearch{
         width: 100%;
         background-color: #e9451a;
-        .airPlaneContent{
+        .carContent{
             margin: 0 auto;
             max-width: 70em;
             height: 195px;
-            .airPlaneTab{
-                height: 15%;
+            .carTab{
+                height: 20%;
+                padding: 30px 0px 0px;
                 display: flex;
-                padding: 30px 0 0;
                 .el-dropdown-link{
                 display: inline-block;
                 position: relative;
@@ -194,34 +135,22 @@ export default {
                 color: #fff;
                 font-size: 15px;
                 font-weight: 500;
-                } 
-                .ridePeople{
-                    margin-left: 30px;
-                }
-                .rideType{
-                    margin-left: 30px;
                 }
             }
-            .airPlaneSelect{
+            .carSelect{
                 height: 100px;
+                padding: 0px;
                 display: flex;
-                .switchPlace{
-                    width: 55px;
-                    height: 40px;
-                    display: inline-block;
-                    background-color: #EC744F;
-                    border-radius: 1px;
-                    padding-top: 15px;
-                    text-align: center;
-                    cursor: pointer;
-                }
                 .queryForm{
                     .el-form-item {
                         height: 55px;
                         margin-bottom: 0;
                         margin-right: 0;
                         .datePicker{
-                            width: 500px;
+                            width: 495px;
+                        }
+                        .placePicker{
+                            width: 490px;
                         }
                         .el-input__inner{
                             height: 55px;
@@ -283,10 +212,6 @@ export default {
                             padding: 0;
                             border-radius: 3px;
                         }
-                        .el-select-dropdown__item{
-                            height: 50px;
-                            padding: 6px 20px;
-                        }
                     }
                 }
                 
@@ -296,4 +221,6 @@ export default {
   }
 }
 </style>
+
+
 

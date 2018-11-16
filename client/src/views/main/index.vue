@@ -1,9 +1,7 @@
 <template>
     <div class="mainContainer">
         <headerComponent @check-tab="checkTab"></headerComponent>
-        <planeComponent v-show="chooiceTab == 'plane'"></planeComponent>
-        <hotelComponent v-show="chooiceTab == 'hotel'"></hotelComponent>
-        <carComponent v-show="chooiceTab == 'car'"></carComponent>
+        <router-view></router-view>
         <registerComponent></registerComponent>
         <commonComponent></commonComponent>
         <footerComponent></footerComponent>
@@ -12,17 +10,12 @@
 
 <script>
 import headerComponent from '../../components/header'
-import planeComponent from '../../components/plane'
 import registerComponent from '../../components/register'
-import hotelComponent from '../../components/hotel'
-import carComponent from '../../components/car'
 import commonComponent from '../../components/content'
 import footerComponent from '../../components/footer'
 export default {
     name: 'mainPage',
-    components: {headerComponent,planeComponent,
-    registerComponent,hotelComponent,carComponent,
-    commonComponent,footerComponent},
+    components: {headerComponent,registerComponent,commonComponent,footerComponent},
     data(){
         return{ 
             chooiceTab: 'plane'
