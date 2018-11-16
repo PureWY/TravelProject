@@ -1,6 +1,6 @@
 <template>
 <div class="plane">
-    <headerBarComponent></headerBarComponent>
+    <headerComponent></headerComponent>
     <div class="titleContent">
         <div class="listTitle">
         <div class="titleStyle">
@@ -92,7 +92,7 @@
 </template>
 
 <script>
-import headerBarComponent from '../../components/headerbar'
+import headerComponent from '../../components/header'
 import footerComponent from '../../components/footer'
 import {
     queryFlight
@@ -103,24 +103,24 @@ const moment = require('moment');
 
 export default {
     name: 'plane',
-    components: {headerBarComponent,footerComponent},
+    components: {headerComponent,footerComponent},
     data(){
         return{
             loop: [0,1,2,3,4,5,6,7,8,9,10],
             checkedFlight: false,
             siteList: ['经济舱','商务舱','头等舱'],
             flightInfo: [],
-            payPrice: '0.00'
+            queryInfo: {},
         }
     },
     created () {
-        console.log(this.$route.params.queryInfo)
         this.queryFlightInfo()
     },
     methods: {
         //查询航班信息
         queryFlightInfo(){
-            queryFlight(this.$route.params.queryInfo).then(res => {
+            this.queryInfo = JSON.parse(localStorage.getItem('queryInfo'))
+            queryFlight(this.queryInfo).then(res => {
                   if(res.data.code == 200){
                       this.$message({
                             message: res.data.message,
@@ -148,7 +148,6 @@ export default {
                         }
                   }
             }).catch((err) => {
-                console.log(123)
                 this.$message({
                     message: err.data.message,
                     type: 'warning'
@@ -208,6 +207,7 @@ export default {
     color: #17232c;
     -webkit-font-smoothing: antialiased;
     .titleContent{
+        margin-top: -3px;
         background-color: #e9451a;
         .listTitle {
             margin: 0 auto;

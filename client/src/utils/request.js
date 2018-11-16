@@ -32,7 +32,6 @@ service.interceptors.response.use(
       return Promise.resolve(response)
     } else if (response.data.code == 401 || response.data.code == 402) {
       // this.$store.dispatch('LogOut').then(() => this.$store.push('./login'))
-      console.log(response.data)
         Message({
           message: response.data.message,
           type: 'error',
@@ -49,7 +48,7 @@ service.interceptors.response.use(
     }
   },
   error => {
-    this.$store.commit('del_token');
+    this.$store.commit('REM_TOKEN');
     console.log('err' + error) //for  DEBUG
     Message({
       message: error.data.message,

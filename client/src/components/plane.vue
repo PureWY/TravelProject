@@ -66,6 +66,10 @@ import {
 import {
     getCityList
 } from '../api/common/index.js'
+import {
+    UPDATE_QUERYINFO
+}from '../store/modules/plane.js'
+
 export default {
   name: 'planeComponent',
   data() {
@@ -135,7 +139,8 @@ export default {
           }else{
               queryFlight(this.listQuery).then(res => {
                   if(res.data.code == 200){
-                      this.$router.push({name: 'plane',params: { queryInfo: this.listQuery}})
+                      this.$store.commit('UPDATE_QUERYINFO',this.listQuery)
+                      this.$router.push('plane')
                   }
             }).catch((err) => {
                 console.log(err)

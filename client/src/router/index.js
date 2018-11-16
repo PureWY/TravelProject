@@ -6,10 +6,6 @@ const _import = file => () => import('@/views/' + file + '.vue')
 
 Vue.use(Router)
 
-if (sessionStorage.getItem('token')) {
-  store.commit('set_token', sessionStorage.getItem('token'))
-}
-
 const router =  new Router({
   routes: [
     {
@@ -37,7 +33,7 @@ const router =  new Router({
       }
     },
     {
-      path: '/plane:queryInfo',
+      path: '/plane',
       name: 'plane',
       component: _import('plane/index'),
       meta: {
