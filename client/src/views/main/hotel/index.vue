@@ -44,7 +44,7 @@
                         </el-date-picker>
                     </el-form-item>
                     <el-form-item>
-                        <el-button class="queryBtn" @click="onSubmit"><img src="../assets/img/query.png"></el-button>
+                        <el-button class="queryBtn" @click="onSubmit"><img src="../../../assets/img/query.png"></el-button>
                     </el-form-item>
                     </el-form>
                 </div>

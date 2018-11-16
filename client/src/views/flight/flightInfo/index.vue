@@ -1,6 +1,5 @@
 <template>
-<div class="plane">
-    <headerComponent></headerComponent>
+<div class="flightInfo">
     <div class="titleContent">
         <div class="listTitle">
         <div class="titleStyle">
@@ -32,7 +31,7 @@
                     <div class="resultInfo">
                         <div class="infoContainer">
                             <div class="flightIcon">
-                                <img src="../../assets/img/flight.png" >
+                                <img src="../../../assets/img/flight.png" >
                             </div>
                             <div class="flightTime">
                                 <div class="timeDetail">
@@ -85,25 +84,19 @@
             </div>
         </div>
     </div>
-    <div class="footer">
-        <footerComponent></footerComponent>
-    </div>
 </div>
 </template>
 
 <script>
-import headerComponent from '../../components/header'
-import footerComponent from '../../components/footer'
 import {
     queryFlight
-} from '../../api/plane/index.js'
-import {getTime,getDetailTime} from '../../utils/func.js'
+} from '../../../api/plane/index.js'
+import {getTime,getDetailTime} from '../../../utils/func.js'
 
 const moment = require('moment');
 
 export default {
-    name: 'plane',
-    components: {headerComponent,footerComponent},
+    name: 'flightInfo',
     data(){
         return{
             loop: [0,1,2,3,4,5,6,7,8,9,10],
@@ -187,25 +180,17 @@ export default {
                             type: 'warning'
                         });
                     }else{
-                        
+                        this.$router.push('flightPay')
                     }
                 }
             })
         }
     }
-
 }
 </script>
 
 <style lang="scss">
-.plane{
-    min-width: 21.3em;
-    font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;
-    font-weight: 400;
-    font-size: 15px;
-    line-height: 1.231; 
-    color: #17232c;
-    -webkit-font-smoothing: antialiased;
+.flightInfo{
     .titleContent{
         margin-top: -3px;
         background-color: #e9451a;
@@ -390,14 +375,6 @@ export default {
             }
         }
     }
-    .footer{
-        width: 100%;
-        height:275px; 
-        position:absolute;
-        bottom:0;
-        background-color: #ffc0cb;
-    }
-    
 }
 </style>
 
