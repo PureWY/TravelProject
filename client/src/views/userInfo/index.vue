@@ -23,12 +23,19 @@
             <div class="headerImage">
               <img src="../../assets/img/headerDefault.jpg">
               <el-button class="changeImg" type="warning" icon="el-icon-edit" circle></el-button>
+              <!-- <vueCropper
+                ref="cropper"
+                :img="option.img"
+                :outputSize="option.size"
+                :outputType="option.outputType"
+              ></vueCropper> -->
             </div>
           </div>
         </div>
       </div>
     </div>
 
+  <div class="bottomContent">
     <div class="infoTab">
       <div class="tabContent">
         <el-tabs v-model="activeName" @tab-click="handleClick">
@@ -62,7 +69,7 @@
                     <el-input type="text" disabled :maxlength="11" v-model="userphone"></el-input>
                   </el-form-item>
                   <el-form-item label="账户名称" prop="username">
-                    <el-input type="text" v-model="infoForm.username"></el-input>
+                    <el-input type="text" :maxlength="8" v-model="infoForm.username"></el-input>
                   </el-form-item>
                   <el-form-item label="账户密码" prop="userpass">
                     <el-input type="password" :maxlength="8" v-model="infoForm.userpass"></el-input>
@@ -80,15 +87,75 @@
                 </el-form>
               </div>
               <div class="accountRightTwo">
-
               </div>
             </div>
           </el-tab-pane>
-          <el-tab-pane label="搜索历史" name="searchHistory">搜索历史</el-tab-pane>
+          <el-tab-pane label="订单历史" name="searchHistory">
+            <h1>订单历史</h1>
+            <div v-if="isNoOrder" class="noOrderContainer">
+              <p class="p1">没有找到搜索历史</p>
+              <p class="p2">现在就开始搜索！</p>
+              <p>
+                <router-link class="a1" to="/">搜索机票</router-link>
+                <router-link class="a1" to="/hotel">搜索酒店</router-link>
+                <router-link class="a1" to="/car">搜索租车</router-link>
+              </p>
+            </div>
+            <div v-else class="haveOrderContainer">
+              <div class="orderSelect"> 
+                <span>订单类型：</span>
+                  <el-select v-model="value" placeholder="请选择订单类型">
+                    <el-option
+                      v-for="item in options"
+                      :key="item.value"
+                      :label="item.label"
+                      :value="item.value">
+                    </el-option>
+                  </el-select>
+                  <div @click="delAllOrder" class="delOrder">
+                    删除所有历史订单
+                  </div>
+              </div>
+              <div class="orderDetail" v-for="order in allOrderList" :key="order._id">
+                <el-row>
+                  <el-col :span="1">
+                    <div class="icon">
+                      <img src="../../assets/img/planeOrder.png">
+                    </div>
+                  </el-col>
+                  <el-col :span="2">
+                    <div class="place divHeight">
+                      {{order.planeId}}
+                    </div>
+                  </el-col>
+                  <el-col :span="3">
+                    <div class="place divHeight">
+                      {{order.flightName}}
+                    </div>
+                  </el-col>
+                  <el-col :span="3">
+                    <div class="place divHeight">
+                      {{order.startCity}} - {{order.endCity}}
+                      </div>
+                    </el-col>
+                  <el-col :span="8"><div class="divHeight">
+                    {{order.startTime}} &nbsp;-&nbsp; {{order.endTime}}
+                    </div></el-col>
+                  <el-col :span="4"><div class="divHeight">
+                    {{order.siteType}} &nbsp; ￥{{order.checkPrice}}
+                    </div></el-col>
+                  <el-col :span="3"><div class="toIcon divHeight">
+                    <i class="el-icon-arrow-right"></i>
+                    </div></el-col>
+                </el-row>
+              </div>
+            </div>
+          </el-tab-pane>
           <el-tab-pane label="更多信息" name="moreInfo">更多信息</el-tab-pane>
         </el-tabs>
       </div>
     </div>
+  </div>
     <footerComponent></footerComponent>
   </div>
 </template>
@@ -96,12 +163,17 @@
 <script>
 import headerComponent from '../../components/header'
 import footerComponent from '../../components/footer'
+import { VueCropper }  from 'vue-cropper' 
 import {
   changeInfo
 } from '../../api/user/modifiInfo.js'
+import {
+  queryAllOrder,
+  deleteAllOrder
+} from '../../api/order/orderInfo.js'
 export default {
   name: 'userInfo',
-  components: { headerComponent, footerComponent },
+  components: { headerComponent, footerComponent, VueCropper },
   data() {
     var validatePass = (rule, value, callback) => {
       let regx = /^[a-zA-Z0-9\u4e00-\u9fa5]+$/
@@ -158,6 +230,7 @@ export default {
     }
     return {
       activeName: 'accountInfo',
+      isNoOrder: true,   //是否无订单存在
       infoForm: {
         username: '',
         userpass: '',
@@ -165,12 +238,34 @@ export default {
         usercard: '',
         useraddress: ''
       },
+      option: {
+        img: 'https://qn-qn-kibey-static-cdn.app-echo.com/goodboy-weixin.PNG',
+        size: 1,
+        outputType: 'png',
+      },
+      options: [
+        {
+          value: 'all',
+          label: '所有历史订单'
+        },{
+          value: 'plane',
+          label: '机票历史订单'
+        }, {
+          value: 'hotel',
+          label: '酒店历史订单'
+        }, {
+          value: 'car',
+          label: '租车历史订单'
+        }
+        ],
+      value: '所有历史订单',
       rule: {
         username: [{ validator: validate1, trigger: 'change' }],
         userpass: [{ validator: validatePass, trigger: 'change' }],
         usercard: [{ validator: validate3, trigger: 'change' }],
         useraddress: [{ validator: validate4, trigger: 'change' }]
-      }
+      },
+      allOrderList: []
     }
   },
   computed: {
@@ -183,6 +278,7 @@ export default {
   },
   created() {
     this.activeName = this.$route.params.tab;
+    this.getAllOrder()
   },
   methods: {
     handleClick(tab) {
@@ -201,6 +297,45 @@ export default {
           return false
         }
       })
+    },
+    getAllOrder(){
+      let params = {
+        userphone: localStorage.getItem('userphone')
+      }
+      queryAllOrder(params).then((res) => {
+        if(res.data.code == 200){
+          this.allOrderList = res.data.body
+          this.isNoOrder = this.allOrderList.length == 0 ? true : false
+        }else{
+
+        }
+      })
+    },
+    delAllOrder(){
+      this.$confirm('确认删除所有历史订单 ?', '提示', {
+          confirmButtonText: '确定',
+          cancelButtonText: '取消',
+          type: 'warning'
+        }).then(() => {
+          let params = {
+            userphone: localStorage.getItem('userphone')
+          }
+          deleteAllOrder(params).then((res) => {
+            if(res.data.code == 200){
+              this.$message({
+                type: 'success',
+                message: res.data.message
+              });
+              this.getAllOrder()
+            }else{
+              this.$message({
+                type: 'warning',
+                message: res.data.message
+              });
+            }
+          })
+        }).catch(() => {     
+        });
     },
     resetForm(formName) {
       this.$refs[formName].resetFields()
@@ -297,7 +432,8 @@ export default {
       }
     }
   }
-
+.bottomContent{
+  padding-bottom: 275px;
   .infoTab {
     max-width: 70em;
     margin: 0 auto 70px;
@@ -336,8 +472,73 @@ export default {
           background-size: cover;
         }
       }
+      .noOrderContainer{
+        height: 150px;
+        padding: 30px;
+        border: 1px solid #dae0e4;
+        text-align: center;
+        color: #000;
+        .p1{
+          font-size: 20px;
+          font-weight: 600
+        }
+        .p2{
+          color: #6D8494;
+          font-size: 16px;
+          font-weight: 500
+        }
+        .a1{
+          cursor: pointer;
+          color: #1e93f5;
+          text-decoration: none;
+          outline: none;
+          padding-left: 20px
+        }
+        .a1:hover{
+          text-decoration: underline
+        }
+      }
+      .haveOrderContainer{
+        padding-bottom: 60px;
+        .orderSelect{
+          height: 40px;
+          line-height: 40px;
+          margin-bottom: 30px;
+          .delOrder{
+            cursor: pointer;
+            float: right;
+            color: #1E93F5
+          }
+        }
+        .orderDetail{
+          height: 68px;
+          padding: 10px 50px;
+          border: 1px solid #dae0e4;
+          margin-bottom: 20px;
+          .divHeight{
+            text-align: center;
+            height: 68px;
+            line-height: 68px;
+          }
+          .icon{
+            padding: 20px 0;
+          }
+          .place{
+            font-weight: 600;
+            color: #17232C
+          }
+          .toIcon{
+            .el-icon-arrow-right{
+              color: #4494F5;
+              cursor: pointer;
+            }
+          }
+        }
+        
+      }
     }
   }
+}
 }
 </style>
 

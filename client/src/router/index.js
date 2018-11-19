@@ -12,23 +12,27 @@ const router =  new Router({
       path: '/',
       component: _import('main/index'),
       meta: {
-        title: '主页面'
+        title: '主页面',
+        keepAlive: true
       },
       children: [
         {
           path: '/',
           name: 'plane',
-          component: _import('main/plane/index')
+          component: _import('main/plane/index'),
+          meta: { keepAlive: true },
         },
         {
           path: 'car',
           name: 'car',
-          component: _import('main/car/index')
+          component: _import('main/car/index'),
+          meta: { keepAlive: true },
         },
         {
           path: 'hotel',
           name: 'hotel',
-          component: _import('main/hotel/index')
+          component: _import('main/hotel/index'),
+          meta: { keepAlive: true },
         },
       ]
     },
@@ -53,18 +57,21 @@ const router =  new Router({
       name: 'flight',
       component: _import('flight/index'),
       meta: {
-        title: '航班信息'
+        title: '航班信息',
+        keepAlive: true
       },
       children: [
         {
           path: 'flightInfo',
           name: 'flightInfo',
-          component: _import('flight/flightInfo/index')
+          component: _import('flight/flightInfo/index'),
+          meta: { keepAlive: true },
         },
         {
           path: 'flightPay',
           name: 'flightPay',
-          component: _import('flight/flightPay/index')
+          component: _import('flight/flightPay/index'),
+          meta: { keepAlive: true },
         },
       ]
     },

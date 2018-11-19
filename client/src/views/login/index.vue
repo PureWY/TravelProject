@@ -16,10 +16,10 @@
         <div class="loginForm" v-show="isLogin">
           <el-form label-position="left" :model="loginForm" status-icon :rules="rules" ref="loginForm" label-width="100px" class="demo-ruleForm">
             <el-form-item prop="userphone">
-              <el-input v-model="loginForm.userphone" :maxlength="11" placeholder="UserPhone"></el-input>
+              <el-input v-model="loginForm.userphone" :maxlength="11" placeholder="请输入手机号码"></el-input>
             </el-form-item>
             <el-form-item prop="password">
-              <el-input type="password" v-model="loginForm.password" placeholder="PassWord"></el-input>
+              <el-input type="password" v-model="loginForm.password" placeholder="请输入密码"></el-input>
             </el-form-item>
             <el-form-item class="btnGroup">
               <el-button type="primary" @click="handleLogin">登录</el-button>
@@ -30,13 +30,13 @@
         <div class="loginForm" v-show="!isLogin">
           <el-form label-position="left" :model="registerForm" status-icon :rules="regisRule" ref="registerForm" label-width="100px" class="demo-ruleForm">
             <el-form-item prop="userphone">
-              <el-input v-model="registerForm.userphone" :maxlength="11" placeholder="UserPhone"></el-input>
+              <el-input v-model="registerForm.userphone" :maxlength="11" placeholder="请输入手机号码"></el-input>
             </el-form-item>
             <el-form-item prop="password">
-              <el-input type="password" v-model="registerForm.password" placeholder="PassWord" ></el-input>
+              <el-input type="password" v-model="registerForm.password" placeholder="请输入密码" ></el-input>
             </el-form-item>
             <el-form-item prop="checkpass">
-              <el-input type="password" v-model="registerForm.checkpass" placeholder="ConfirmPassWord" ></el-input>
+              <el-input type="password" v-model="registerForm.checkpass" placeholder="请确认密码" ></el-input>
             </el-form-item>
             <el-form-item class="btnGroup">
               <el-button type="primary" @click="handleRegister">注册</el-button>
@@ -56,12 +56,14 @@ export default {
     //表单验证规则
     var checkUser = (rule, value, callback) => {
       let regx = /^[0-9]+$/
-      if (!value) {
-        return callback(new Error('手机号不能为空'))
+      if (value === '') {
+        callback(new Error('请输入手机号码'))
+      } else if (value.length != 11) {
+        callback(new Error('手机号码必须等于11位'))
       }
       if (!regx.test(value)) {
         callback(new Error('手机号码只能包含数字'))
-      }  else {
+      } else {
         callback()
       }
     }
@@ -84,11 +86,11 @@ export default {
     return {
       isLogin: true,
       loginForm: {
-        userphone: null,
+        userphone: '',
         password: ''
       },
       registerForm: {
-        userphone: null,
+        userphone: '',
         password: '',
         checkpass: ''
       },
@@ -101,6 +103,17 @@ export default {
         password: [{ validator: validatePass, trigger: 'change' }],
         checkpass: [{ validator: validatePass2, trigger: 'change' }]
       }
+    }
+  },
+  created () {
+    this.loginForm = {
+      userphone: '',
+      password: ''
+    }
+    this.registerForm = {
+      userphone: '',
+      password: '',
+      checkpass: ''
     }
   },
 
@@ -166,7 +179,8 @@ export default {
     bottom: 0;
     left: 0;
     z-index: 0;
-    background: url(../../assets/img/loginBack2.jpg);
+    background: url(../../assets/img/back.jpg);
+    opacity: 0.5;
     background-color: rgba(0, 0, 0, 0.5);
     overflow: hidden;
     background-position: 50% 50%;
@@ -189,7 +203,8 @@ export default {
       padding: 5px;
       cursor: pointer;
       z-index: 3;
-      color: #fff;
+      color: black;
+      background-color: white;
       border-radius: 15px;
       background-position: 0 -115px;
       .header {
@@ -211,36 +226,35 @@ export default {
       }
       .el-form-item {
           padding: 0 14px;
-          margin-bottom: 30px;
+          margin-bottom: 0px;
       }
       .el-form-item__content{
-          margin-left: 0px !important;
+          margin-left: 20px !important;
           width: 280px;
-          height: 60px;
+          height: 40px;
+          margin-bottom: 25px;
       }
       .el-input__inner{
-          font-size: 1.5rem;
-          height: 55px;
-          font-weight: 500;
+          font-size: 1.2rem;
+          height: 40px;
+          line-height: 40px;
+          font-weight: 400;
           background-color: #fff;
-          opacity: 0.4;
           color: #000;
+          width: 85%;
+          border: 1px solid #DCDFE5;
       }
-      .el-form-item__error{
-        color: #fff;
-        font-size: 13px;
-      }
-      .el-form-item.is-error .el-input__validateIcon {
-          color: #FED;
+      .el-input__inner::-webkit-input-placeholder{
+          font-size: 0.9rem
       }
       .btnGroup{
           .el-form-item__content{
-              margin-left: 0 !important;
+              margin-left: 20 !important;
               .el-button{
-                  width: 100%;
+                  width: 85%;
                   margin-left: 0;
-                  height: 46px;
-                  margin-bottom: 30px;
+                  height: 40px;
+                  margin-bottom: 25px;
               }
           }
       }

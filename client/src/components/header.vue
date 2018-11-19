@@ -12,7 +12,7 @@
               <el-tab-pane label="机票" name="plane"></el-tab-pane>
               <el-tab-pane label="酒店" name="hotel"></el-tab-pane>
               <el-tab-pane label="租车" name="car"></el-tab-pane>
-              <el-tab-pane label="更多信息" name="more"></el-tab-pane>
+              <el-tab-pane label="更多" name="more"></el-tab-pane>
             </el-tabs>
           </div>
         </div>
@@ -33,8 +33,8 @@
                 trigger="hover">
                 <div @click="toUserInfo('accountInfo')" class="hoverContent">账户信息</div>
                 <div @click="toUserInfo('accountSet')" class="hoverContent">账户设置</div>
-                <div @click="toUserInfo('searchHistory')" class="hoverContent">搜索历史</div>
-                <div @click="toUserInfo('moreInfo')" class="hoverContent">更多信息</div>
+                <div @click="toUserInfo('searchHistory')" class="hoverContent">订单历史</div>
+                <div @click="toUserInfo('moreInfo')" class="hoverContent">更多</div>
                 <div class="hoverContent">
                   <el-button @click="handleLogOut" class="logoutButton">退出登录</el-button>
                 </div>
@@ -87,7 +87,12 @@ export default {
         }
     },
     handleClick(tab) {
-      this.$emit('check-tab',tab.name)
+      console.log(tab.name)
+      if(tab.name == 'plane'){
+        this.$router.push('/')
+      }else{
+        this.$router.push(tab.name)
+      }
     },
     toMain(){
       this.$router.push('/')

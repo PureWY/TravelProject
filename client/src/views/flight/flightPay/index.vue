@@ -65,7 +65,7 @@
         <div class="userForm">
           <el-form :inline="true" :rules="rule" ref="orderForm" :model="orderForm" label-width="80px">
             <el-form-item label="姓名:" prop="username">
-              <el-input v-model="orderForm.username" :maxlength="4" placeholder="请输入姓名"></el-input>
+              <el-input v-model="orderForm.username" :maxlength="4" placeholder="请输入乘机人姓名"></el-input>
             </el-form-item>
             <el-form-item label="身份证号:" prop="usercard">
               <el-input v-model="orderForm.usercard" :maxlength="18" placeholder="请输入身份证号"></el-input>
@@ -92,7 +92,7 @@ export default {
     var validate1 = (rule, value, callback) => {
       let regx = /^[\u4e00-\u9fa5]+$/
       if (value === '') {
-        callback(new Error('请输入账户名称'))
+        callback(new Error('请输入乘机人姓名'))
       }
       if (!regx.test(value)) {
         callback(new Error('姓名只能包含中文'))

@@ -49,6 +49,7 @@ export default {
 <style lang="scss">
 .mainContainer{
     min-width: 21.3em;
+    padding-bottom: 275px;
     font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;
     font-weight: 400;
     font-size: 15px;

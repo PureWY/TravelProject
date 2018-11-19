@@ -5,6 +5,7 @@ var logout = require('./logout.js')
 var user = require('./user/user.js')
 var common = require('./common/common.js')
 var plane = require('./plane/plane.js')
+var order = require('./order/order.js')
 
 const jwt = require('../config/jwt.js')
 
@@ -41,6 +42,7 @@ var routers = function (app) {
     app.use('/user', user);
     app.use('/common',common);
     app.use('/plane',plane);
+    app.use('/order',order);
 
     //定制404页面
     app.use(function(req,res){
