@@ -16,4 +16,13 @@ export function getUserInfo(data) {
     method: 'post',
     data: JSON.stringify(data)
   })
+  }
+
+// 上传头像
+export function uploadHeadImg(data) {
+  return request({
+    url: '/user/uploadHeadImg',
+    method: 'post',
+    data: JSON.stringify(data)
+  })
 }

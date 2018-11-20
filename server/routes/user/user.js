@@ -1,6 +1,9 @@
 const express = require('express');
 const router = express.Router();
 
+const uploads = require('../../config/multer');
+// var upload = multer({ dest: 'public/upload/' });
+
 //引入模型
 var User = require('../../models/User.js');
 
@@ -70,5 +73,13 @@ router.post('/getUserInfo',function(req,res,next){
         }
     })
 })
+
+router.post('/uploadHeadImg',uploads.single('uploadFile'),function(req,res,next){
+    res.json({
+        code: 200,
+        message: '头像上传成功'
+    })
+})
+
 
 module.exports = router;
