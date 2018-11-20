@@ -19,11 +19,14 @@ export default {
     name: 'registerComponent',
     data(){
         return{
-            isLogin: false
+        }
+    },
+    computed: {
+        isLogin(){
+            return this.$store.getters.userphone ? true : false;
         }
     },
     created() {
-        this.isLogin = this.$store.getters.userphone ? true : false;
     },
     methods: {
 
