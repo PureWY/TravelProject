@@ -14,8 +14,10 @@
               </div>
               <div class="detailRight">
                 <p>个性签名</p>
-                <span>他想知道她是谁，为何总沉默寡言</span>&nbsp;&nbsp;
-                <el-button size="mini" round>修改</el-button>
+                <span v-show="!changeSign">{{userInfo.usersign}}</span>&nbsp;&nbsp;
+                <el-button @click="handleUserSign" v-show="!changeSign" size="mini" round>修改</el-button>
+                <el-input :maxlength="20" v-show="changeSign" v-model="userInfo.usersign" :placeholder="userInfo.usersign"></el-input>
+                <el-button @click="handleSaveSign" v-show="changeSign" size="mini" type="primary" round>保存</el-button>
               </div>
             </div>
           </div>
@@ -173,7 +175,7 @@
 import headerComponent from '../../components/header'
 import footerComponent from '../../components/footer'
 import { VueCropper } from 'vue-cropper'
-import { changeInfo,uploadHeadImg } from '../../api/user/modifiInfo.js'
+import { changeInfo,uploadHeadImg,changeSign } from '../../api/user/modifiInfo.js'
 import { queryAllOrder, deleteAllOrder } from '../../api/order/orderInfo.js'
 export default {
   name: 'userInfo',
@@ -234,6 +236,7 @@ export default {
       }
     }
     return {
+      changeSign: false,
       activeName: 'accountInfo',
       isNoOrder: true, //是否无订单存在
       infoForm: {
@@ -387,6 +390,26 @@ export default {
         this.$message.error('上传头像图片大小不能超过 2MB!')
       }
       return isJPG && isLt2M
+    },
+    handleUserSign(){
+      this.changeSign = true;
+    },
+    handleSaveSign(){
+      let parmas = {
+        userphone: localStorage.getItem('userphone'),
+        usersign: this.userInfo.usersign
+      }
+      changeSign(parmas).then((res) => {
+        if(res.data.code == 200){
+          this.$message({
+            type: 'success',
+            message: res.data.message
+          })
+        }else{
+          this.$message.error(res.data.message)
+        }
+      })
+      this.changeSign = false;
     }
   }
 }
@@ -451,6 +474,13 @@ export default {
               span {
                 font-weight: 600;
                 font-size: 1rem;
+              }
+              .el-input{
+                width: 57%;
+                margin: 0 10px 0 -10px;
+              }
+              .el-input__inner{
+                padding: 0 5px;
               }
             }
           }

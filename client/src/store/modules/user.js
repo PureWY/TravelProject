@@ -23,7 +23,8 @@ const user = {
     userInfo: {
       username: '',
       usercard: '',
-      useraddress: ''
+      useraddress: '',
+      usersign: ''
     }
   },
   mutations: {

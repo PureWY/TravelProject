@@ -68,6 +68,26 @@ router.post('/changeInfo',function(req,res,next){
     })
 })
 
+//修改个性签名
+router.post('/changeSign',function(req,res,next){
+    User.updateOne({userphone: req.body.userphone},{
+        usersign: req.body.usersign
+    },function(err,user){
+        if(err){
+            console.log(err)
+            res.json({
+                code: 201,
+                message: err
+            })
+        }else{
+            res.json({
+                code: 200,
+                message: '个性签名设置成功！'
+            })
+        }
+    })
+})
+
 //获取个人信息接口
 router.post('/getUserInfo',function(req,res,next){
     User.findOne({
@@ -86,7 +106,8 @@ router.post('/getUserInfo',function(req,res,next){
                     userInfo: {
                         username: user.username,
                         usercard: user.usercard,
-                        useraddress: user.useraddress
+                        useraddress: user.useraddress,
+                        usersign: user.usersign
                     }
                 },
                 message: '账户信息查询成功！'
