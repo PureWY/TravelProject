@@ -12,7 +12,7 @@ const jwt = require('../config/jwt.js')
 var routers = function (app) {
     app.use(function (req, res, next) {
         // 请求都需要进行token校验 
-        if (req.url != '/login' && req.url != '/register' && req.url != '/' && req.url != '/common/cityList' && req.url != '/user/uploadHeadImg') {
+        if (req.url != '/login' && req.url != '/register' && req.url != '/' && req.url != '/common/cityList') {
             let token = req.headers._tk;
             if(!token){
                 res.json({

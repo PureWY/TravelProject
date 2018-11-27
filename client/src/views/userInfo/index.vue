@@ -26,7 +26,7 @@
               list-type="picture-card"
               action="http://192.168.31.16:3333/user/uploadHeadImg"
               name="uploadFile"
-              :show-file-list="false" 
+              :show-file-list="false"
               :headers="header"
               :on-success="handleSuccess"
               :before-upload="beforeUpload">
@@ -363,7 +363,18 @@ export default {
 
     },
     handleSuccess(res, file) {
-      this.imageUrl = URL.createObjectURL(file.raw)
+      if(res.code == 200){
+            this.$message({
+              message: '图片上传成功',
+              type: 'success'
+            });
+            this.imageUrl = 'http://192.168.31.16:3333/' + res.body
+        }else{
+            this.$message({
+              message: res.message,
+              type: 'warning'
+            });
+      }
     },
     beforeUpload(file) {
       const isJPG = file.type === 'image/jpeg'

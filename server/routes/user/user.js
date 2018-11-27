@@ -1,12 +1,32 @@
 const express = require('express');
 const router = express.Router();
 
-const uploads = require('../../config/multer');
-// var upload = multer({ dest: 'public/upload/' });
+const fs = require('fs');
+
+const multer = require('multer')
+const jwt = require('../../config/jwt')
+
 
 //引入模型
 var User = require('../../models/User.js');
 
+//图片上传部分的处理
+let path = 'public/uploadImg/'
+
+const storage = multer.diskStorage({
+  //上传图片的路径
+  destination: 'public/uploadImg',
+  //给上传文件重命名，获取添加后缀名
+  filename: function(req, file, callback) {
+    let userphone = jwt.verifyToken(req.headers._tk).payload.userphone
+    //把图片命名为当前登陆的用户名
+    let date = Date.now()
+    path = path + userphone + `${date}.jpg`
+    callback(null, userphone + `${date}.jpg`);
+  }
+})
+
+//修改个人信息接口
 router.post('/changeInfo',function(req,res,next){
     User.findOne({
         userphone: req.body.userphone
@@ -48,6 +68,7 @@ router.post('/changeInfo',function(req,res,next){
     })
 })
 
+//获取个人信息接口
 router.post('/getUserInfo',function(req,res,next){
     User.findOne({
         userphone: req.body.userphone
@@ -74,11 +95,17 @@ router.post('/getUserInfo',function(req,res,next){
     })
 })
 
-router.post('/uploadHeadImg',uploads.single('uploadFile'),function(req,res,next){
+//上传头像接口
+router.post('/uploadHeadImg',multer({
+    storage
+  }).single('uploadFile'),function(req,res,next){
+    console.log(path)
     res.json({
         code: 200,
-        message: '头像上传成功'
+        message: '获取图片成功',
+        body: path
     })
+    path = 'public/uploadImg/'
 })
 
 
