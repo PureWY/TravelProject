@@ -12,6 +12,7 @@ var userSchema = new Schema({
   usercard: {type: String,trim: true},
   useraddress: {type: String,trim: true},
   usersign: {type: String,trim: true},
+  userimg: {type: String,trim: true}
 })
 
 //加密密码

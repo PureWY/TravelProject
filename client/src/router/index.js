@@ -20,7 +20,7 @@ const router =  new Router({
           path: '/',
           name: 'plane',
           component: _import('main/plane/index'),
-          meta: { keepAlive: true },
+          // meta: { keepAlive: true },
         },
         {
           path: 'car',

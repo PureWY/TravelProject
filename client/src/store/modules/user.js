@@ -24,7 +24,8 @@ const user = {
       username: '',
       usercard: '',
       useraddress: '',
-      usersign: ''
+      usersign: '',
+      userimg: ''
     }
   },
   mutations: {
@@ -51,7 +52,19 @@ const user = {
     REM_PHONE: (state) => {
       state.userphone = ''
       localStorage.removeItem('userphone')
-    }
+    },
+    REM_USERINFO: (state) => {
+      state.userInfo = {
+        username: '',
+        usercard: '',
+        useraddress: '',
+        usersign: '',
+        userimg: ''
+      }
+    },
+    CHANGE_IMG: (state, userImg) => {
+      state.userInfo.userimg = userImg
+    },
   },
   actions: {
     //用户名登录
@@ -136,6 +149,7 @@ const user = {
             commit('SET_TIME', '')
             commit('REM_TOKEN')
             commit('REM_PHONE')
+            commit('REM_USERINFO')
             removeToken()
             removeAdmin()
             resolve()
