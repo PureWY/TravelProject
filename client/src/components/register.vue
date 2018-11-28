@@ -7,8 +7,8 @@
                 <span>现在注册，获取最新旅游新闻。</span>
             </div>
             <div class="joinMethod">
-                <input class="phonePlaceholder" placeholder=" 你的手机号码">
-                <button>注册</button>
+                <input v-model="registerPhone" class="phonePlaceholder" placeholder=" 你的手机号码">
+                <button @click="toRegister">注册</button>
             </div>
         </div>
     </div>
@@ -19,17 +19,21 @@ export default {
     name: 'registerComponent',
     data(){
         return{
+            registerPhone: ''
         }
     },
     computed: {
         isLogin(){
             return this.$store.getters.userphone ? true : false;
-        }
+        },
     },
     created() {
+        this.registerPhone = ''
     },
     methods: {
-
+        toRegister(){
+            this.$router.push({name: 'login',params: {phone: this.registerPhone}})
+        }
     }
 }
 </script>

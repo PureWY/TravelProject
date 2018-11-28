@@ -37,7 +37,7 @@ const router =  new Router({
       ]
     },
     {
-      path: '/login',
+      path: '/login:phone',
       name: 'login',
       component: _import('login/index'),
       meta: {
