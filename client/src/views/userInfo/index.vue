@@ -10,14 +10,18 @@
             <div class="infoDetails">
               <div class="detailLeft">
                 <p>账户名称</p>
-                <span>{{userInfo.username}}</span>
+                <span v-if="userInfo.username">{{userInfo.username}}</span>
+                <span v-else>归人已归</span>
               </div>
               <div class="detailRight">
                 <p>个性签名</p>
-                <span v-show="!changeSign">{{userInfo.usersign}}</span>&nbsp;&nbsp;
-                <el-button @click="handleUserSign" v-show="!changeSign" size="mini" round>修改</el-button>
-                <el-input :maxlength="20" v-show="changeSign" v-model="userInfo.usersign" :placeholder="userInfo.usersign"></el-input>
-                <el-button @click="handleSaveSign" v-show="changeSign" size="mini" type="primary" round>保存</el-button>
+                <span class="middle" v-if="userInfo.usersign">
+                  <span v-show="!changeSign">{{userInfo.usersign}}</span>&nbsp;&nbsp;
+                  <el-button @click="handleUserSign" v-show="!changeSign" size="mini" round>修改</el-button>
+                  <el-input :maxlength="20" v-show="changeSign" v-model="userInfo.usersign" :placeholder="userInfo.usersign"></el-input>
+                  <el-button @click="handleSaveSign" v-show="changeSign" size="mini" type="primary" round>保存</el-button>
+                </span>
+                <span class="middle" v-else>你曾是少年</span>
               </div>
             </div>
           </div>
@@ -56,7 +60,8 @@
                   <span v-if="userInfo.username">{{userInfo.username}}</span>
                   <span v-else>还未设置名称，快去设置一个吧</span>
                   <p>手机号码</p>
-                  <span>{{userphone}}</span>
+                  <span v-if="userphone">{{userphone}}</span>
+                  <span v-else>还未注册，快去注册吧</span>
                   <p>身份证号</p>
                   <span v-if="userInfo.usercard">{{userInfo.usercard}}</span>
                   <span v-else>还未填写身份信息，快去填写吧</span>
@@ -177,6 +182,7 @@ import footerComponent from '../../components/footer'
 import { VueCropper } from 'vue-cropper'
 import { changeInfo,uploadHeadImg,changeSign } from '../../api/user/modifiInfo.js'
 import { queryAllOrder, deleteAllOrder } from '../../api/order/orderInfo.js'
+import { CHANGE_IMG } from '../../store/modules/user.js'
 export default {
   name: 'userInfo',
   components: { headerComponent, footerComponent, VueCropper },
@@ -246,7 +252,7 @@ export default {
         usercard: '',
         useraddress: ''
       },
-      imageUrl: '',
+      baseUrl: 'http://192.168.31.16:3333/',
       userHeadImg: '',
       options: [
         {
@@ -277,10 +283,17 @@ export default {
     }
   },
   computed: {
-    userInfo: function() {
+    userInfo(){
       return this.$store.getters.userInfo
     },
-    userphone: function() {
+    imageUrl() {
+      if(this.$store.getters.userInfo.userimg){
+        return this.baseUrl + this.$store.getters.userInfo.userimg
+      }else{
+        return ''
+      }
+     },
+    userphone(){
       return this.$store.getters.userphone
     },
     header(){
@@ -367,11 +380,11 @@ export default {
     },
     handleSuccess(res, file) {
       if(res.code == 200){
-            this.$message({
-              message: '图片上传成功',
-              type: 'success'
-            });
-            this.imageUrl = 'http://192.168.31.16:3333/' + res.body
+          this.$message({
+            message: '图片上传成功',
+            type: 'success'
+          });
+          this.$store.commit('CHANGE_IMG',res.body)
         }else{
             this.$message({
               message: res.message,
@@ -471,7 +484,13 @@ export default {
                 margin: 0;
                 font-size: 0.8rem;
               }
-              span {
+              .middle{
+                line-height: 32px;
+                display: flex;
+                  height: 32px;
+                span {
+                  display: flex;
+                  height: 32px;
                 font-weight: 600;
                 font-size: 1rem;
               }
@@ -481,6 +500,7 @@ export default {
               }
               .el-input__inner{
                 padding: 0 5px;
+              }
               }
             }
           }

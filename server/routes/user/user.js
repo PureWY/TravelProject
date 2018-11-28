@@ -11,7 +11,7 @@ const jwt = require('../../config/jwt')
 var User = require('../../models/User.js');
 
 //图片上传部分的处理
-let path = 'public/uploadImg/'
+let path = ''
 
 const storage = multer.diskStorage({
   //上传图片的路径
@@ -21,7 +21,7 @@ const storage = multer.diskStorage({
     let userphone = jwt.verifyToken(req.headers._tk).payload.userphone
     //把图片命名为当前登陆的用户名
     let date = Date.now()
-    path = path + userphone + `${date}.jpg`
+    path = userphone + `${date}.jpg`
     callback(null, userphone + `${date}.jpg`);
   }
 })
@@ -107,7 +107,8 @@ router.post('/getUserInfo',function(req,res,next){
                         username: user.username,
                         usercard: user.usercard,
                         useraddress: user.useraddress,
-                        usersign: user.usersign
+                        usersign: user.usersign,
+                        userimg: user.userimg
                     }
                 },
                 message: '账户信息查询成功！'
@@ -120,13 +121,24 @@ router.post('/getUserInfo',function(req,res,next){
 router.post('/uploadHeadImg',multer({
     storage
   }).single('uploadFile'),function(req,res,next){
+    let userphone = path.substring(0,11)
+    path = 'public/uploadImg/' + path
     console.log(path)
-    res.json({
-        code: 200,
-        message: '获取图片成功',
-        body: path
+    User.updateOne({userphone: userphone},{userimg: path},(err,user) => {
+        if(err){
+            console.log(err)
+            res.json({
+                code: 202,
+                message: '头像上传失败'
+            })
+        }else{
+            res.json({
+                code: 200,
+                message: '头像上传成功',
+                body: path
+            })
+        }
     })
-    path = 'public/uploadImg/'
 })
 
 

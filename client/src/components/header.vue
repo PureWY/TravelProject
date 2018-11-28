@@ -58,6 +58,7 @@ export default {
     return {
       userphone: '',
       activeName: 'plane',
+      baseUrl: 'http://192.168.31.16:3333/',
     }
   },
   created() {
@@ -74,7 +75,14 @@ export default {
     },
     username() {
       return this.$store.getters.userphone ? this.$store.getters.userInfo.username : '';
+      },
+    imageUrl() {
+      if(this.$store.getters.userInfo.userimg){
+        return this.baseUrl + this.$store.getters.userInfo.userimg
+      }else{
+        return
       }
+    },
   },
   methods: {
     //查询用户信息
