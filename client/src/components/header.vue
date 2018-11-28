@@ -53,15 +53,20 @@
 <script>
 export default {
   name: 'headerComponent',
+  props: ['checkTab'],
   data() {
     return {
       userphone: '',
-      activeName: 'plane'
+      activeName: 'plane',
     }
   },
   created() {
+    // if(!this.checkTab){
+    //   this.activeName = 'plane'
+    // }
     this.getUserInfo()
     this.userphone = localStorage.getItem('userphone');
+    this.activeName = this.checkTab
   },
   computed: {
     isLogin(){
@@ -87,7 +92,6 @@ export default {
         }
     },
     handleClick(tab) {
-      console.log(tab.name)
       if(tab.name == 'plane'){
         this.$router.push('/')
       }else{
