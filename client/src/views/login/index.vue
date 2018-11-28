@@ -115,8 +115,11 @@ export default {
       password: '',
       checkpass: ''
     }
+    if(this.$route.params.phone){
+      this.isLogin = false;
+      this.registerForm.userphone = this.$route.params.phone
+    }
   },
-
   methods: {
     handleLogin() {
       this.$refs.loginForm.validate(valid => {

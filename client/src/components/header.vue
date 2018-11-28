@@ -98,7 +98,7 @@ export default {
       this.$router.push('/')
     },
     toLogin(){
-      this.$router.push('login')
+      this.$router.push({name: 'login',params: {phone: ''}})
     },
     toUserInfo(value = 'accountInfo'){
       this.$router.push({ name: 'userInfo', params: { tab: value }})
