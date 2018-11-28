@@ -8,7 +8,7 @@
     </div>
     </div>
     <div class="resultContent">
-        <div class="result">
+        <div v-loading="loading" element-loading-text="正在生成订单" class="result">
             <div class="resultHeader">
                 <div class="top">
                     <span>已加载全部</span>
@@ -104,6 +104,7 @@ export default {
             siteList: ['经济舱','商务舱','头等舱'],
             flightInfo: [],
             queryInfo: {},
+            loading: false
         }
     },
     created () {
@@ -176,8 +177,30 @@ export default {
                             type: 'warning'
                         });
                     }else{
-                        this.$store.commit('GET_ORDERINFO',item)
-                        this.$router.push('flightPay')
+                        let haveSite = true;
+                        if(item.planeInfo.siteType[0] == '经济舱' && !item.planeInfo.firstClassSite){
+                            haveSite = false
+                        }
+                        if(item.planeInfo.siteType[0] == '商务舱' && !item.planeInfo.secondClassSite){
+                            haveSite = false
+                        }
+                        if(item.planeInfo.siteType[0] == '头等舱' && !item.planeInfo.thirdClassSite){
+                            haveSite = false
+                        }
+                        this.loading = true
+                        setTimeout(()=>{
+                            this.loading = false;
+                            if(!haveSite){
+                                this.$message({
+                                    type: 'warning',
+                                    message: '订单生成失败，暂无剩余座位'
+                                })
+                            }else{
+                                console.log(item)
+                                this.$store.commit('GET_ORDERINFO',item)
+                                this.$router.push('flightPay')
+                            }
+                        },2000)
                     }
                 }
             })
@@ -301,7 +324,7 @@ export default {
                                 height: 80px;
                                 font-size: 16px;
                                 font-weight: 500;
-                                margin-left: 40px;
+                                margin-left: 20px;
                                 line-height: 80px;
                             }
                             .siteType{

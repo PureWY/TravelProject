@@ -1,6 +1,6 @@
 <template>
-<div class="plane">
-    <headerComponent check-tab="plane"></headerComponent>
+<div class="house">
+    <headerComponent check-tab="hotel"></headerComponent>
     <router-view></router-view>
     <div class="footer">
         <footerComponent></footerComponent>
@@ -12,7 +12,7 @@
 import headerComponent from '../../components/header'
 import footerComponent from '../../components/footer'
 export default {
-    name: 'plane',
+    name: 'house',
     components: {headerComponent,footerComponent},
     data(){
         return{

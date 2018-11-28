@@ -65,13 +65,30 @@ const router =  new Router({
           path: 'flightInfo',
           name: 'flightInfo',
           component: _import('flight/flightInfo/index'),
-          meta: { keepAlive: true },
+          // meta: { keepAlive: true },
         },
         {
           path: 'flightPay',
           name: 'flightPay',
           component: _import('flight/flightPay/index'),
           meta: { keepAlive: true },
+        },
+      ]
+    },
+    {
+      path: '/house',
+      name: 'house',
+      component: _import('house/index'),
+      meta: {
+        title: '航班信息',
+        keepAlive: true
+      },
+      children: [
+        {
+          path: 'houseInfo',
+          name: 'houseInfo',
+          component: _import('house/houseInfo/index'),
+          // meta: { keepAlive: true },
         },
       ]
     },

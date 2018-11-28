@@ -30,7 +30,7 @@
                         <img src="../../../assets/img/switchPlace.png">
                     </div>
                     <el-form-item>
-                        <el-select clearable  v-model="listQuery.endCity" placeholder="目的地">
+                        <el-select clearable filterable v-model="listQuery.endCity" placeholder="目的地">
                         <el-option class="placeSelect" v-for="city in cityList" :key="city"  :label="city" :value="city"></el-option>
                         </el-select>
                     </el-form-item>

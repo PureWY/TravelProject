@@ -26,17 +26,18 @@
                 <div class="hotelSelect">
                     <el-form :inline="true" :model="formInline" class="queryForm">
                     <el-form-item>
-                        <el-select class="placePicker" v-model="formInline.region" placeholder="住宿地">
-                        <el-option class="placeSelect" label="区域一" value="shanghai"></el-option>
+                        <el-select class="placePicker" clearable  filterable v-model="listQuery.sleepCity" placeholder="住宿地">
+                        <el-option class="placeSelect" v-for="city in cityList" :key="city"  :label="city" :value="city"></el-option>
                         </el-select>
                     </el-form-item>
                     <el-form-item>
                         <el-date-picker
                         class="datePicker"
-                        v-model="value7"
+                        v-model="listQuery.sleepDate"
                         type="daterange"
                         align="right"
                         unlink-panels
+                        value-format="yyyy-MM-dd"
                         range-separator="|"
                         start-placeholder="住店日期"
                         end-placeholder="离店日期"
@@ -44,7 +45,7 @@
                         </el-date-picker>
                     </el-form-item>
                     <el-form-item>
-                        <el-button class="queryBtn" @click="onSubmit"><img src="../../../assets/img/query.png"></el-button>
+                        <el-button class="queryBtn" @click="handleSearch"><img src="../../../assets/img/query.png"></el-button>
                     </el-form-item>
                     </el-form>
                 </div>
@@ -55,6 +56,12 @@
 </template>
 
 <script>
+import {
+    getCityList
+} from '../../../api/common/index.js'
+import {
+    queryHotel
+} from '../../../api/hotel/index.js'
 export default {
   name: 'hotelComponent',
   data() {
@@ -90,13 +97,49 @@ export default {
                     }
                 }]
             },
-            value7: ''
+            cityList: [],
+            listQuery: {
+                sleepCity: '',
+                sleepDate: null
+            }
     }
   },
+    created() {
+      this.getCityLists()
+  },
   methods: {
-      onSubmit() {
-            console.log('submit!');
-        }
+      getCityLists(){
+          getCityList().then(res => {
+              this.cityList = res.data.body.cityList;
+          })
+      },
+      handleSearch() {
+          if(!this.listQuery.sleepCity){
+              this.$message({
+                message: '请选择住宿地',
+                type: 'warning'
+                });
+          }else if(!this.listQuery.sleepDate){
+              this.$message({
+                message: '请选择住宿日期',
+                type: 'warning'
+                });
+          }else{
+              queryHotel(this.listQuery).then(res => {
+                  if(res.data.code == 200){
+                      this.$message({
+                            message: res.data.message,
+                            type: 'success'
+                        });
+                      this.$store.commit('UPDATE_QUERYHOTEL',this.listQuery)
+                      this.$router.push('house/houseInfo')
+                  }
+            }).catch((err) => {
+                console.log(err)
+            })
+          }
+      },
+
   }
 }
 </script>

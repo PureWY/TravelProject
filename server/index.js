@@ -9,6 +9,9 @@ var routes = require('./routes');
 
 var app = express();
 
+//开启静态文件托管，牛逼
+app.use('/public',express.static('public'))
+
 //解决跨域
 app.use(cors());
 
