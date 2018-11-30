@@ -53,21 +53,16 @@
 <script>
 export default {
   name: 'headerComponent',
-  props: ['checkTab'],
   data() {
     return {
       userphone: '',
-      activeName: 'plane',
+      activeName: '',
       baseUrl: 'http://192.168.31.16:3333/',
     }
   },
   created() {
-    // if(!this.checkTab){
-    //   this.activeName = 'plane'
-    // }
     this.getUserInfo()
     this.userphone = localStorage.getItem('userphone');
-    this.activeName = this.checkTab
   },
   computed: {
     isLogin(){
@@ -100,6 +95,9 @@ export default {
         }
     },
     handleClick(tab) {
+      console.log(tab.name)
+      // this.activeName = tab.name
+      
       if(tab.name == 'plane'){
         this.$router.push('/')
       }else{
@@ -183,6 +181,7 @@ export default {
             color: #ea4d1a;
           }
           .el-tabs__active-bar {
+            display: none;
             content: ' ';
             position: absolute;
             height: 0px;

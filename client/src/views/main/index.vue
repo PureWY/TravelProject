@@ -1,6 +1,6 @@
 <template>
     <div class="mainContainer">
-        <headerComponent @check-tab="checkTab"></headerComponent>
+        <headerComponent></headerComponent>
         <router-view></router-view>
         <registerComponent></registerComponent>
         <commonComponent></commonComponent>
@@ -18,16 +18,12 @@ export default {
     components: {headerComponent,registerComponent,commonComponent,footerComponent},
     data(){
         return{ 
-            chooiceTab: 'plane'
         }
     },
     created() {
         this.getUserInfo()
     },
     methods: {
-        checkTab(tab){
-            this.chooiceTab = tab;
-        },
         getUserInfo(){
             let userPhone = window.localStorage.getItem('userphone')
             if(userPhone){
@@ -36,7 +32,6 @@ export default {
                 }
                 this.$store.dispatch('GetUserInfo',userphone)
                 .then(() => {
-                    console.log(this.$store.state.user)
                 }).catch(err => {
                     console.log(err)
                 })
