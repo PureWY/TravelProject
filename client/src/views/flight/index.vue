@@ -1,6 +1,6 @@
 <template>
 <div class="plane">
-    <headerComponent check-tab="plane"></headerComponent>
+    <headerComponent></headerComponent>
     <router-view></router-view>
     <div class="footer">
         <footerComponent></footerComponent>
