@@ -13,7 +13,7 @@
             <div class="resultHeader">
                 <div class="top">
                     <span>已加载全部</span>
-                    <span>共 1333 条酒店信息</span>
+                    <span>共 {{houseInfo.length}} 条酒店信息</span>
                 </div>
             </div>
             <div class="resultContent">
@@ -165,7 +165,7 @@
                         </div>
                     </el-col>
                     <el-col :span="13">
-                        <div class="commonStyle middleContent" v-for="val in loop" :key="val">
+                        <div class="commonStyle middleContent" v-for="house in houseInfo" :key="house._id">
                             <el-row>
                                 <el-col :span="6">
                                     <div class="hotelImg common">
@@ -175,7 +175,7 @@
                                 <el-col :span="13">
                                     <div class="hotelInfo common">
                                         <div class="infoName">
-                                            <h3>首都酒店</h3>
+                                            <h3>{{house.houseName}}</h3>
                                             <span>
                                                 <i class="el-icon-star-on"></i>
                                                 <i class="el-icon-star-on"></i>
@@ -184,29 +184,33 @@
                                                 <i class="el-icon-star-on"></i>
                                             </span>
                                             <span class="hotelTag">
-                                                城市热门酒店
+                                                {{house.houseTag}}
                                             </span>
                                         </div>
                                         <div class="infoStar">
-                                            <span class="star">9.1</span>
-                                            <span class="common"> &nbsp;评价：</span><span>极好</span>
-                                            <span class="common"> &nbsp;位置：</span><span>浦口区</span>
+                                            <span class="star">{{house.houseGrade}}</span>
+                                            <span class="common"> &nbsp;评价：</span>
+                                            <span v-if="house.houseGrade > 4.5">极好</span>
+                                            <span v-else-if="house.houseGrade > 4">好</span>
+                                            <span v-else-if="house.houseGrade > 3">一般</span>
+                                            <span v-else>差</span>
+                                            <span class="common"> &nbsp;位置：</span><span>{{house.houseAreaPlace}}</span>
                                         </div>
                                         <div class="infoType">
-                                            <span class="roomType">单人间:</span><span class="roomPrice">￥108</span>
-                                            <span class="roomType">标准间:</span><span class="roomPrice">￥308</span>
-                                            <span class="roomType">商务间:</span><span class="roomPrice">￥608</span>
+                                            <span class="roomType">单人间:</span><span class="roomPrice">￥{{house.roomInfo.singlePrice}}</span>
+                                            <span class="roomType">标准间:</span><span class="roomPrice">￥{{house.roomInfo.standardPrice}}</span>
+                                            <span class="roomType">商务间:</span><span class="roomPrice">￥{{house.roomInfo.businessPrice}}</span>
                                         </div>
                                     </div>
                                 </el-col>
                                 <el-col :span="5">
                                     <div class="hotelPrice common">
                                         <div class="price">
-                                            <h3>￥599 起</h3>
+                                            <h3>￥{{house.roomInfo.singlePrice}} 起</h3>
                                         </div>
                                         <div class="info">
                                             <p class="header">数据来源:</p>
-                                            <p class="content">草鹨旅行网</p>
+                                            <p class="content">{{house.houseDataFrom}}</p>
                                         </div>
                                         <div class="btn">
                                             <el-button>提交订单</el-button>
@@ -229,6 +233,9 @@
 </template>
 
 <script>
+import {
+    queryHotel
+} from '../../../api/hotel/index.js'
 export default {
   name: "houseInfo",
   data() {
@@ -242,15 +249,33 @@ export default {
         value5: '',
         value6: '',
         value7List: [true,false,true,false,false],
-        loop: [1,2,3,4,5,6,7,8,9,10]
+        loop: [1,2,3,4,5,6,7,8,9,10],
+        houseInfo: []
     };
   },
   created() {
-    console.log(this.$store.getters.queryHotel);
+    this.getHouse()
   },
   methods: {
       handleChange(val) {
         console.log(val);
+      },
+      getHouse(){
+          let place = this.$store.getters.queryHotel.sleepCity
+          let parmas = {
+              houseCityPlace: place
+          }
+          queryHotel(parmas).then(res => {
+              if(res.data.code == 200){
+                  this.houseInfo = res.data.body
+                  for(let i of this.houseInfo){
+                      i.roomInfo = i.roomInfo[0]
+                  }
+                  console.log(this.houseInfo)
+              }
+          }).catch(() => {
+
+          })
       }
   }
 };
