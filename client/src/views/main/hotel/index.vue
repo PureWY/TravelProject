@@ -125,7 +125,10 @@ export default {
                 type: 'warning'
                 });
           }else{
-              queryHotel(this.listQuery).then(res => {
+              let parmas = {
+                  houseCityPlace: this.listQuery.sleepCity
+              }
+              queryHotel(parmas).then(res => {
                   if(res.data.code == 200){
                       this.$message({
                             message: res.data.message,
@@ -133,6 +136,11 @@ export default {
                         });
                       this.$store.commit('UPDATE_QUERYHOTEL',this.listQuery)
                       this.$router.push('house/houseInfo')
+                  }else{
+                      this.$message({
+                            message: res.data.message,
+                            type: 'warning'
+                        });
                   }
             }).catch((err) => {
                 console.log(err)
