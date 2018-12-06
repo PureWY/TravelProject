@@ -1,18 +1,18 @@
 const hotel = {
     state: {
-        queryHotel: {},
+        queryHotel: '',
         orderHotel: {}
     },
     mutations: {
         UPDATE_QUERYHOTEL: (state,queryHotel) => {
             state.queryHotel = queryHotel
             queryHotel = JSON.stringify(queryHotel)
-            window.localStorage.setItem('queryHotel',queryHotel)
+            window.sessionStorage.setItem('queryHotel',queryHotel)
         },
         GET_ORDERHOTEL: (state,orderHotel) => {
             state.queryInfo = orderHotel
             orderHotel = JSON.stringify(orderHotel)
-            window.localStorage.setItem('orderHotel',orderHotel)
+            window.sessionStorage.setItem('orderHotel',orderHotel)
         }
     }
 }

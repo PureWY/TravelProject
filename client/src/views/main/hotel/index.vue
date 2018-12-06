@@ -134,7 +134,7 @@ export default {
                             message: res.data.message,
                             type: 'success'
                         });
-                      this.$store.commit('UPDATE_QUERYHOTEL',this.listQuery)
+                      this.$store.commit('UPDATE_QUERYHOTEL',this.listQuery.sleepCity)
                       this.$router.push('house/houseInfo')
                   }else{
                       this.$message({

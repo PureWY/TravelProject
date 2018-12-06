@@ -20,20 +20,20 @@
                 <el-row :gutter="20">
                     <el-col :span="5">
                         <div class="commonStyle leftSelect">
-                            <el-collapse v-model="activeNames" @change="handleChange">
+                            <el-collapse v-model="activeNames"  @change="handleChange">
                             <el-collapse-item class="commonStyle" title="星级" name="1">
                                 <div class="starSelect">
                                     <el-rate
                                         :texts="starClass"
                                         show-text
-                                        v-model="value1">
+                                        v-model="listQuery.starNums">
                                     </el-rate>
                                 </div>
                             </el-collapse-item>
                             <el-collapse-item class="commonStyle" title="点评分数" name="2">
                                 <div class="numberSelect">
                                     <el-rate
-                                        v-model="value2"
+                                        v-model="listQuery.gradeClass"
                                         show-score
                                         text-color="#3E4B59"
                                         score-template="{value}分">
@@ -43,125 +43,51 @@
                             <el-collapse-item class="commonStyle" title="免费提供" name="3">
                                 <div class="eatSelect">
                                     <ul class="eatUl">
-                                        <li>
-                                            <span>免费早餐</span>
+                                        <li v-for="(value,index) in serviceName" :key="value">
+                                            <span>{{value}}</span>
                                             <span class="middleNum">233家</span>
                                             <span class="rightCheck">
                                                 <el-switch
-                                                v-model="value3List[0]"
+                                                v-model="listQuery.freeService[index]"
                                                 active-color="#E9451A">
                                                 </el-switch>
                                             </span></li>
-                                        <li>
-                                            <span>免费网络</span>
-                                            <span class="middleNum">233家</span>
-                                            <span class="rightCheck">
-                                                <el-switch
-                                                v-model="value3List[1]"
-                                                active-color="#E9451A">
-                                                </el-switch>
-                                            </span>
-                                        </li>
-                                        <li>
-                                            <span>免费停车</span>
-                                            <span class="middleNum">233家</span>
-                                            <span class="rightCheck">
-                                                <el-switch
-                                                v-model="value3List[2]"
-                                                active-color="#E9451A">
-                                                </el-switch>
-                                            </span>
-                                        </li>
-                                        <li>
-                                            <span>免费取消</span>
-                                            <span class="middleNum">233家</span>
-                                            <span class="rightCheck">
-                                                <el-switch
-                                                v-model="value3List[3]"
-                                                active-color="#E9451A">
-                                                </el-switch>
-                                            </span>
-                                        </li>
                                     </ul>
                                 </div>
                             </el-collapse-item>
-                            <el-collapse-item class="commonStyle" title="价格" name="4">
-                                <div class="priceSelect">
-                                    <el-input-number controls-position="right" :min="0" :max="1000" size="mini" v-model="value4List[0]"></el-input-number>
-                                    <span>&nbsp;－&nbsp;</span>
-                                    <el-input-number controls-position="right" :min="100" :max="1000" size="mini" v-model="value4List[1]"></el-input-number>
-                                </div>
-                            </el-collapse-item>
-                            <el-collapse-item class="commonStyle" title="酒店名称" name="5">
+                            <el-collapse-item class="commonStyle" title="酒店名称" name="4">
                                 <div class="nameSelect">
-                                    <el-input placeholder="请输入酒店名称" v-model="value5" class="input-with-select">
+                                    <el-input placeholder="请输入酒店名称" v-model="houseName" class="input-with-select">
                                         <el-button slot="append" icon="el-icon-search"></el-button>
                                     </el-input>
                                 </div>
                             </el-collapse-item>
-                            <el-collapse-item class="commonStyle" title="地点" name="6">
+                            <el-collapse-item class="commonStyle" title="地点" name="5">
                                 <div class="placesSelect">
-                                    <el-input placeholder="请输入酒店位置" v-model="value6" class="input-with-select">
+                                    <el-input placeholder="请输入酒店位置" v-model="houseCity" class="input-with-select">
                                         <el-button slot="append" icon="el-icon-search"></el-button>
                                     </el-input>
                                 </div>
                             </el-collapse-item>
-                            <el-collapse-item class="commonStyle" title="住宿类型" name="7">
+                            <el-collapse-item class="commonStyle" title="住宿类型" name="6">
                                 <div class="typeSelect">
                                     <ul class="typeUl">
-                                        <li>
-                                            <span>酒店</span>
+                                        <li v-for="(value,index) in typeName" :key="value">
+                                            <span>{{value}}</span>
                                             <span class="middleNum">233家</span>
                                             <span class="rightCheck">
                                                 <el-switch
-                                                v-model="value7List[0]"
+                                                v-model="listQuery.houseType[index]"
                                                 active-color="#E9451A">
                                                 </el-switch>
                                             </span></li>
-                                        <li>
-                                            <span>公寓式酒店</span>
-                                            <span class="middleNum">233家</span>
-                                            <span class="rightCheck">
-                                                <el-switch
-                                                v-model="value7List[1]"
-                                                active-color="#E9451A">
-                                                </el-switch>
-                                            </span>
-                                        </li>
-                                        <li>
-                                            <span>客栈</span>
-                                            <span class="middleNum">233家</span>
-                                            <span class="rightCheck">
-                                                <el-switch
-                                                v-model="value7List[2]"
-                                                active-color="#E9451A">
-                                                </el-switch>
-                                            </span>
-                                        </li>
-                                        <li>
-                                            <span>青年旅舍</span>
-                                            <span class="middleNum">233家</span>
-                                            <span class="rightCheck">
-                                                <el-switch
-                                                v-model="value7List[3]"
-                                                active-color="#E9451A">
-                                                </el-switch>
-                                            </span>
-                                        </li>
-                                        <li>
-                                            <span>度假屋</span>
-                                            <span class="middleNum">233家</span>
-                                            <span class="rightCheck">
-                                                <el-switch
-                                                v-model="value7List[4]"
-                                                active-color="#E9451A">
-                                                </el-switch>
-                                            </span>
-                                        </li>
                                     </ul>
                                 </div>
                             </el-collapse-item>
                             </el-collapse>
+                            <div class="screenQuery">
+                                <el-button @click="handleQuery" class="btn">筛选查询</el-button>
+                            </div>
                         </div>
                     </el-col>
                     <el-col :span="13">
@@ -213,7 +139,7 @@
                                             <p class="content">{{house.houseDataFrom}}</p>
                                         </div>
                                         <div class="btn">
-                                            <el-button>提交订单</el-button>
+                                            <el-button @click="handleSearch">查看详情</el-button>
                                         </div>
                                     </div>
                                 </el-col>
@@ -234,47 +160,63 @@
 
 <script>
 import {
-    queryHotel
+    queryHotel,
+    screenQueryHotel
 } from '../../../api/hotel/index.js'
 export default {
   name: "houseInfo",
   data() {
     return {
-        activeNames: ['1','2','3','4','5','6','7'],
-        value1: null,
+        queryCity:'',
+        // activeNames: ['1','2','3','4','5','6'],
+        activeNames: [],
+        listQuery: {
+            starNums: null,
+            gradeClass: null,
+            freeService: [true,true,true,false],
+            houseType: [true,true,true],
+        },
+        houseName: '',
+        houseCity: '',
+        serviceName: ["免费早餐","免费网络","免费停车","免费取消"],
+        typeName: ["经济型酒店","舒适型酒店","豪华型酒店"],
         starClass: ["一星级","二星级","三星级","四星级","五星级"],
-        value2: null,
-        value3List: [true,false,true,false],
-        value4List: [0,1000],
-        value5: '',
-        value6: '',
-        value7List: [true,false,true,false,false],
         loop: [1,2,3,4,5,6,7,8,9,10],
         houseInfo: []
     };
   },
   created() {
+      this.queryCity = JSON.parse(sessionStorage.getItem('queryHotel'))
     this.getHouse()
   },
   methods: {
       handleChange(val) {
-        console.log(val);
       },
       getHouse(){
-          let place = this.$store.getters.queryHotel.sleepCity
-          let parmas = {
-              houseCityPlace: place
-          }
-          queryHotel(parmas).then(res => {
+          queryHotel({houseCityPlace: this.queryCity}).then(res => {
               if(res.data.code == 200){
                   this.houseInfo = res.data.body
                   for(let i of this.houseInfo){
                       i.roomInfo = i.roomInfo[0]
                   }
-                  console.log(this.houseInfo)
               }
           }).catch(() => {
 
+          })
+      },
+      handleSearch(){
+      },
+      handleQuery(){
+          this.listQuery.houseCityPlace = this.queryCity
+          console.log(this.listQuery)
+          screenQueryHotel(this.listQuery).then(res => {
+              if(res.data.code == 200){
+                  this.houseInfo = res.data.body
+                  for(let i of this.houseInfo){
+                      i.roomInfo = i.roomInfo[0]
+                  }
+              }
+          }).catch(() => {
           })
       }
   }
@@ -374,15 +316,6 @@ export default {
                         }
                     }
                 }
-                .priceSelect{
-                    .el-input-number--mini{
-                        width: 85px;
-                    }
-                    .el-input__inner{
-                        padding-left: 5px;
-                        padding-right: 30px;
-                    }
-                }
                 .nameSelect{
                     padding-right: 15px;
                 }
@@ -407,6 +340,26 @@ export default {
 
                             }
                         }
+                    }
+                }
+                .screenQuery{
+                    margin-top: 30px;
+                    height: 50px;
+                    text-align: center;
+                    .btn{
+                        width: 100%;
+                    }
+                    .el-button:hover{
+                        color: #EC6A16;
+                        border-color: #EC6A16;
+                    }
+                    .el-button:active{
+                        color: #EC6A16;
+                        border-color: #EC6A16;
+                    }
+                    .el-button:focus{
+                        color: #EC6A16;
+                        border-color: #EC6A16;
                     }
                 }
             }
