@@ -6,7 +6,7 @@ var houseSchema = new Schema({
     roomId: {type: String,trim: true,required: true},       //房间表Id
     commentId: {type: String,trim: true,required: true},    //评论表Id
     houseName: {type: String,trim: true},                   //酒店名称
-    houseStar: {type: String,trim: true},                   //酒店星级
+    houseStar: {type: Number,trim: true},                   //酒店星级
     housePhone: {type: Number,trim: true},                  //酒店电话
     houseTag: {type: String,trim: true},                    //酒店标签类型
     houseGrade: {type: Number,trim: true},                  //酒店评分
