@@ -62,11 +62,11 @@ router.post('/screenQueryHotel', function(req, res, next) {
     },
     {
       $match: {
-        // houseCityPlace: req.body.houseCityPlace,
-        // houseStar: { $gt: req.body.gradeClass },
-        // houseGrade: { $gt: req.body.starNums },
-        // houseFreeSer: req.body.freeService,
-        // houseType: req.body.houseType
+        houseCityPlace: req.body.houseCityPlace,
+        houseStar: { $gte: req.body.starNums },
+        houseGrade: { $gte: req.body.gradeClass },
+        houseFreeSer: req.body.freeService,
+        houseType: { $in: req.body.houseType}
       }
     }
   ], (err, house) => {
