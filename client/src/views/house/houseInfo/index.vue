@@ -90,7 +90,7 @@
                             </div>
                         </div>
                     </el-col>
-                    <el-col :span="13">
+                    <el-col v-loading="loading" :span="13">
                         <div class="commonStyle middleContent" v-for="house in houseInfo" :key="house._id">
                             <el-row>
                                 <el-col :span="6">
@@ -102,12 +102,8 @@
                                     <div class="hotelInfo common">
                                         <div class="infoName">
                                             <h3>{{house.houseName}}</h3>
-                                            <span>
-                                                <i class="el-icon-star-on"></i>
-                                                <i class="el-icon-star-on"></i>
-                                                <i class="el-icon-star-on"></i>
-                                                <i class="el-icon-star-on"></i>
-                                                <i class="el-icon-star-on"></i>
+                                            <span style="width:80px;display: inline-block;">
+                                                <i class="el-icon-star-on" v-for="(i,index) in house.houseStar" :key="index"></i>
                                             </span>
                                             <span class="hotelTag">
                                                 {{house.houseTag}}
@@ -170,6 +166,7 @@ export default {
         queryCity:'',
         // activeNames: ['1','2','3','4','5','6'],
         activeNames: [],
+        loading: false,
         listQuery: {
             starNums: null,
             gradeClass: null,
@@ -198,7 +195,9 @@ export default {
                   this.houseInfo = res.data.body
                   for(let i of this.houseInfo){
                       i.roomInfo = i.roomInfo[0]
+                      i.houseStar = new Array(i.houseStar).fill(i.houseStar)
                   }
+                  console.log(this.houseInfo)
               }
           }).catch(() => {
 
@@ -207,16 +206,22 @@ export default {
       handleSearch(){
       },
       handleQuery(){
+          this.loading = true
           this.listQuery.houseCityPlace = this.queryCity
-          console.log(this.listQuery)
           screenQueryHotel(this.listQuery).then(res => {
               if(res.data.code == 200){
-                  this.houseInfo = res.data.body
-                  for(let i of this.houseInfo){
-                      i.roomInfo = i.roomInfo[0]
-                  }
+                  setTimeout(() => {
+                      this.houseInfo = res.data.body
+                      for(let i of this.houseInfo){
+                        i.roomInfo = i.roomInfo[0]
+                      }
+                      this.loading = false
+                  },2000)
               }
           }).catch(() => {
+              setTimeout(() => {
+                this.loading = false
+              },1000)
           })
       }
   }
