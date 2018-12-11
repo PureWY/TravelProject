@@ -90,7 +90,7 @@
                             </div>
                         </div>
                     </el-col>
-                    <el-col v-loading="loading" :span="13">
+                    <el-col v-loading="loading" element-loading-text="正在查询酒店信息" :span="13">
                         <div class="commonStyle middleContent" v-for="house in houseInfo" :key="house._id">
                             <el-row>
                                 <el-col :span="6">
