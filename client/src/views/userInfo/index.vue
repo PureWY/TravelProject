@@ -30,7 +30,7 @@
               <el-upload
               ref="upload"
               list-type="picture-card"
-              action="http://192.168.1.105/user/uploadHeadImg"
+              action="http://192.168.1.105:3333/user/uploadHeadImg"
               name="uploadFile"
               :show-file-list="false"
               :headers="header"
@@ -252,7 +252,7 @@ export default {
         usercard: '',
         useraddress: ''
       },
-      baseUrl: 'http://192.168.1.105/',
+      baseUrl: 'http://192.168.1.105:3333/',
       userHeadImg: '',
       options: [
         {
