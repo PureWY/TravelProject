@@ -206,6 +206,7 @@ export default {
           })
       },
       handleSearch(){
+          this.$router.push('houseDetail')
       },
       handleQuery(){
           this.loading = true
