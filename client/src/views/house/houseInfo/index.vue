@@ -58,14 +58,14 @@
                             <el-collapse-item class="commonStyle" title="酒店名称" name="4">
                                 <div class="nameSelect">
                                     <el-input placeholder="请输入酒店名称" v-model="houseName" class="input-with-select">
-                                        <el-button slot="append" icon="el-icon-search"></el-button>
+                                        <el-button slot="append" @click="handleQuery" icon="el-icon-search"></el-button>
                                     </el-input>
                                 </div>
                             </el-collapse-item>
                             <el-collapse-item class="commonStyle" title="地点" name="5">
                                 <div class="placesSelect">
                                     <el-input placeholder="请输入酒店位置" v-model="houseCity" class="input-with-select">
-                                        <el-button slot="append" icon="el-icon-search"></el-button>
+                                        <el-button slot="append" @click="handleQuery" icon="el-icon-search"></el-button>
                                     </el-input>
                                 </div>
                             </el-collapse-item>
@@ -172,6 +172,8 @@ export default {
             gradeClass: null,
             freeService: [true,true,true,false],
             houseType: [true,true,true],
+            houseName: '',
+            houseDetailPlace: ''
         },
         houseName: '',
         houseCity: '',
@@ -204,10 +206,14 @@ export default {
           })
       },
       handleSearch(){
+          this.$router.push('houseDetail')
       },
       handleQuery(){
           this.loading = true
           this.listQuery.houseCityPlace = this.queryCity
+          this.listQuery.houseName = this.houseName == '' ? '' : this.houseName
+          this.listQuery.houseDetailPlace = this.houseCity == '' ? '' : this.houseCity
+          console.log(this.listQuery)
           screenQueryHotel(this.listQuery).then(res => {
               if(res.data.code == 200){
                   setTimeout(() => {

@@ -80,7 +80,7 @@ const router =  new Router({
       name: 'house',
       component: _import('house/index'),
       meta: {
-        title: '航班信息',
+        title: '酒店信息',
         keepAlive: true
       },
       children: [
@@ -88,6 +88,12 @@ const router =  new Router({
           path: 'houseInfo',
           name: 'houseInfo',
           component: _import('house/houseInfo/index'),
+          // meta: { keepAlive: true },
+        },
+        {
+          path: 'houseDetail',
+          name: 'houseDetail',
+          component: _import('house/houseDetail/index'),
           // meta: { keepAlive: true },
         },
       ]
