@@ -94,4 +94,43 @@ router.post('/screenQueryHotel', function(req, res, next) {
   })
 })
 
+//根据房间Id查询酒店与房间信息
+router.post('/queryHotelByRoomId', function(req, res, next) {
+  House.aggregate([{
+      $lookup: {
+        from: 'houserooms',
+        localField: 'roomId',
+        foreignField: 'roomId',
+        as: 'roomInfo'
+      }
+    },
+    {
+      $match: {
+        roomId: req.body.roomId
+      }
+    }
+  ], (err, house) => {
+    if (err) {
+      console.log(err)
+      res.json({
+        code: 201,
+        message: '数据库异常'
+      })
+    } else {
+      if (!house.length) {
+        res.json({
+          code: 202,
+          message: '该地区暂无酒店信息'
+        })
+      } else {
+        res.json({
+          code: 200,
+          body: house,
+          message: '酒店信息查询成功'
+        })
+      }
+    }
+  })
+})
+
 module.exports = router;
