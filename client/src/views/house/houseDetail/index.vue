@@ -193,7 +193,7 @@
                 </div>
                 <div class="houseComponent">
                     <div class="lastComponent">最新评论 ({{houseComment.length}}+)</div>
-                    <div class="componentContent" v-for="comment in houseComment" :key="comment._id">
+                    <div class="componentContent" v-show="houseComment.length" v-for="comment in houseComment" :key="comment._id">
                         <div class="componentUser">
                             <h4>{{comment.commentName}}</h4>
                             <p class="grade">{{comment.commentGrade}}分</p>
@@ -202,6 +202,9 @@
                         <div class="componentText">
                             {{comment.commentContent}}
                         </div>
+                    </div>
+                    <div v-show="!houseComment.length">
+                        <p class="noComment">暂时还没有用户评论</p>
                     </div>
                 </div>
             </div>
@@ -583,6 +586,9 @@ export default {
                     flex: 1;
                     padding: 30px 0 30px;
                 }
+            }
+            .noComment{
+                margin: 30px 0 50px;
             }
         }
       }
