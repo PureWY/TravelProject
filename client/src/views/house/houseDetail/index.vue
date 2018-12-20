@@ -67,33 +67,31 @@
                 </div>
                 <div class="detailInfo">
                     <el-table
-                        :data="tableData"
+                        :data="roomData"
                         border
                         style="width: 100%;">
                     <el-table-column
-                        prop="roomType"
                         label="房型"
                         align="center"
                         width="250">
                         <template slot-scope="scope">
                             <div class="roomInfo">
                                 <div class="roomImg">
-                                    <img :src= scope.row.roomType.img>
+                                    <img :src= scope.row.img>
                                 </div>
                                 <div class="roomType">
-                                    <span>{{ scope.row.roomType.name }}</span>
+                                    <span>{{ scope.row.name }}</span>
                                 </div>
                             </div>
                         </template>
                     </el-table-column>
                     <el-table-column
-                        prop="bedType"
                         label="床型"
                         align="center"
                         min-width="100">
                         <template slot-scope="scope">
                             <p>{{scope.row.window}}</p>
-                            <span>{{scope.row.bedType}}</span>
+                            <span>{{scope.row.bed}}</span>
                         </template>
                     </el-table-column>
                     <el-table-column
@@ -119,13 +117,12 @@
                         </template>
                     </el-table-column>
                     <el-table-column
-                        prop="address"
                         align="center"
                         min-width="120"
                         label="预订">
                         <template slot-scope="scope">
                             <div class="btn">
-                               <p>剩余空房： {{scope.row.residue}} 间</p>
+                               <p>剩余空房： {{scope.row.surPlus}} 间</p>
                                <el-button
                                 @click="handleBuy">确认预订</el-button> 
                             </div>
@@ -239,52 +236,24 @@ export default {
     name: 'houseDetail',
     data(){
         return{
+            url: "http://192.168.1.109:3333/",
             roomId: '',
             detailInfo: {},
             map: null,
-            tableData: [{
-                roomType: { 
-                    name: '单人间',
-                    img: require('../../../assets/img/single.png')
-                },
-                bedType: '单人床',
-                service: ['免费早餐','免费网络'],
-                price: 129,
-                window: '无窗',
-                residue: 110
-            }, {
-                roomType: {
-                    name: '标准间',
-                    img: require('../../../assets/img/two.png')
-                },
-                bedType: '双人床',
-                service: ['免费早餐','免费网络','免费退房'],
-                price: 169,
-                window: '有窗',
-                residue: 120
-            }, {
-                roomType: {
-                    name: '商务间',
-                    img: require('../../../assets/img/big.png')
-                },
-                bedType: '超大床',
-                service: ['免费早餐','免费停车','免费网络','免费退房'],
-                price: 199,
-                window: '有窗',
-                residue: 20
-            }]
+            roomData: [],
+            transit: [121.481429,31.235115]
         }
     },
     methods: {
         init(){
             this.map = new AMap.Map('mapContainer', {
-                center: [121.481429,31.235115],
+                center: this.transit,
                 resizeEnable: true,
                 zoom: 16
             })
 
             var marker = new AMap.Marker({
-                position: new AMap.LngLat(121.481429,31.235115),   // 经纬度对象，也可以是经纬度构成的一维数组[116.39, 39.9]
+                position: new AMap.LngLat(this.transit[0],this.transit[1]),   // 经纬度对象，也可以是经纬度构成的一维数组[116.39, 39.9]
                 title: '上海大酒店'
             });
 
@@ -296,8 +265,15 @@ export default {
             queryHotelByRoomId({ roomId: this.roomId }).then((res) => {
                 if(res.data.code == 200){
                   this.detailInfo = res.data.body[0]
-                  this.detailInfo.roomInfo = this.detailInfo.roomInfo[0]
+                  this.roomData.push(this.detailInfo.roomInfo[0].singleRoom[0])
+                  this.roomData.push(this.detailInfo.roomInfo[0].standardRoom[0])
+                  this.roomData.push(this.detailInfo.roomInfo[0].businessRoom[0])
+                  this.transit = this.detailInfo.transit
+                  for(let i of this.roomData){
+                      i.img = this.url + i.img
+                  }
                   console.log(this.detailInfo)
+                  console.log(this.roomData)
               }
             })
         },
