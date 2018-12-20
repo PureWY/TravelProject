@@ -25,8 +25,7 @@ var houseSchema = new Schema({
     houseCreateTime: {type: String,trim: true},
     houseRooms: {type: Number,trim: true},
     houseInfo: {type: String,trim: true},
-    houseLon: {type: String,trim: true},
-    houseLat: {type: String,trim: true},
+    transit: {type: Array,default: []}
   })
 
 //创建model

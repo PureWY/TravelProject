@@ -119,16 +119,16 @@
                                             <span class="common"> &nbsp;位置：</span><span>{{house.houseAreaPlace}}</span>
                                         </div>
                                         <div class="infoType">
-                                            <span class="roomType">单人间:</span><span class="roomPrice">￥{{house.roomInfo.singlePrice}}</span>
-                                            <span class="roomType">标准间:</span><span class="roomPrice">￥{{house.roomInfo.standardPrice}}</span>
-                                            <span class="roomType">商务间:</span><span class="roomPrice">￥{{house.roomInfo.businessPrice}}</span>
+                                            <span class="roomType">单人间:</span><span class="roomPrice">￥{{house.roomInfo.singleRoom[0].price}}</span>
+                                            <span class="roomType">标准间:</span><span class="roomPrice">￥{{house.roomInfo.standardRoom[0].price}}</span>
+                                            <span class="roomType">商务间:</span><span class="roomPrice">￥{{house.roomInfo.businessRoom[0].price}}</span>
                                         </div>
                                     </div>
                                 </el-col>
                                 <el-col :span="5">
                                     <div class="hotelPrice common">
                                         <div class="price">
-                                            <h3>￥{{house.roomInfo.singlePrice}} 起</h3>
+                                            <h3>￥{{house.roomInfo.singleRoom[0].price}} 起</h3>
                                         </div>
                                         <div class="info">
                                             <p class="header">数据来源:</p>
