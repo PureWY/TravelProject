@@ -122,9 +122,11 @@
                         label="预订">
                         <template slot-scope="scope">
                             <div class="btn">
-                               <p>剩余空房： {{scope.row.surPlus}} 间</p>
+                               <p>剩余空房： 
+                                   <span :class="{roomQuan: true,lessRoom: scope.row.surPlus < 10}">{{scope.row.surPlus}} </span>
+                                   间</p>
                                <el-button
-                                @click="handleBuy">确认预订</el-button> 
+                                @click="handleBuy(scope.row)">确认预订</el-button> 
                             </div>
                         </template>
                     </el-table-column>
@@ -270,8 +272,15 @@ export default {
               }
             })
         },
-        handleBuy(){
-            
+        handleBuy(room){
+            if(!room.surPlus){
+                this.$message({
+                    message: "该房型已经没有剩余空房",
+                    type: 'error'
+                });
+            }else{
+                this.$router.push('housePay')
+            }
         },
         getWeather(){
             // let url = 'http://v.juhe.cn/weather/geo'
@@ -447,6 +456,15 @@ export default {
                 }
                 .el-button:hover{
                     background-color: #E9451A;
+                }
+                p{
+                    .lessRoom{
+                        color: #e9451a;
+                    }
+                    .roomQuan{
+                        font-size: 1.2rem;
+
+                    }
                 }
             }
             .roomInfo{

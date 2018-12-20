@@ -96,6 +96,12 @@ const router =  new Router({
           component: _import('house/houseDetail/index'),
           // meta: { keepAlive: true },
         },
+        {
+          path: 'housePay',
+          name: 'housePay',
+          component: _import('house/housePay/index'),
+          // meta: { keepAlive: true },
+        },
       ]
     },
 
