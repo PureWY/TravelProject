@@ -24,22 +24,22 @@
                     <div class="hotelTitle">
                         <div>
                             <h1 class="title">
-                                沪明大酒店
+                                {{detailInfo.houseName}}
                             </h1>
                             <div class="engTitle">
-                                Grand Central Hotel Shanghai
+                                {{detailInfo.houseEngName}}
                             </div>
                             <div class="detailPlace">
-                                地址：上海市黄浦区九江路505号
+                                {{detailInfo.houseDetailPlace}}
                             </div>
                         </div>
                         <div class="rightGrade">
                             <div class="grade">
-                                <span>8.7</span> 分
+                                <span>{{detailInfo.houseGrade}}</span> 分
                             </div>
                             <div class="from">
                                 <p class="gradeFrom">评分来自：</p>
-                                <span>草鹨旅行网</span>
+                                <span>{{detailInfo.houseDataFrom}}</span>
                             </div>
                         </div>
                     </div>
@@ -140,27 +140,27 @@
                             <dd>
                                 <div class="cell">
                                     <span>执行 OTA: </span>
-                                    <span>Expedia Affiliate Network</span>
+                                    <span>{{detailInfo.houseStandard}}</span>
                                 </div>
                                 <div class="cell">
                                     <span>经营资质: </span>
-                                    <span>个人经营</span>
+                                    <span>{{detailInfo.houseIntelligence}}</span>
                                 </div>
                                 <div class="cell">
                                     <span>入住时间: </span>
-                                    <span><strong>14:00</strong>之后</span>
+                                    <span><strong>{{detailInfo.inHouseTime}}</strong>之后</span>
                                 </div>
                                 <div class="cell">
                                     <span>离店时间: </span>
-                                    <span><strong>12:00</strong>之前</span>
+                                    <span><strong>{{detailInfo.outHouseTime}}</strong>之前</span>
                                 </div>
                                 <div class="cell">
                                     <span>建成于: </span>
-                                    <span><strong>2011</strong>年</span>
+                                    <span><strong>{{detailInfo.houseCreateTime}}</strong>年</span>
                                 </div>
                                 <div class="cell">
                                     <span>酒店规模: </span>
-                                    <span><strong>388</strong>间客房</span>
+                                    <span><strong>{{detailInfo.houseRooms}}</strong>间客房</span>
                                 </div>
                             </dd>
                         </dl>
@@ -190,10 +190,7 @@
                             酒店信息
                         </div>
                         <p>
-                            上海大酒店位于上海最繁华的外滩-南京东路商务休闲圈内，毗邻中华第一街——南京东路步行街，与世纪广场仅一步之隔。
-                            上海大酒店拥有豪华客/套房。超大的空间，典雅的设计，周到的服务，令您畅享舒适、豪华、温馨的独特氛围。一楼咖啡厅
-                            可享受上海都市的浪漫情调，二楼法国餐厅提供经典纯正的法式菜肴，除了无柱式、7米超高空间的设计概念外，酒店还配备
-                            领先的高科技会议设施，加上宽敞的序厅和另两个可分割式多功能厅。
+                            {{detailInfo.houseInfo}}
                         </p>
                     </div>
                 </div>
@@ -233,16 +230,20 @@
     </div>
 </template>
 
-
 <script>
-
+import axios from 'axios'
+import {
+    queryHotelByRoomId
+} from '../../../api/hotel/index.js'
 export default {
     name: 'houseDetail',
     data(){
         return{
+            roomId: '',
+            detailInfo: {},
             map: null,
             tableData: [{
-                roomType: {
+                roomType: { 
                     name: '单人间',
                     img: require('../../../assets/img/single.png')
                 },
@@ -291,12 +292,43 @@ export default {
             this.map.addControl(new AMap.Geolocation());
             this.map.add(marker);
         },
+        getHouseDetail(){
+            queryHotelByRoomId({ roomId: this.roomId }).then((res) => {
+                if(res.data.code == 200){
+                  this.detailInfo = res.data.body[0]
+                  this.detailInfo.roomInfo = this.detailInfo.roomInfo[0]
+                  console.log(this.detailInfo)
+              }
+            })
+        },
         handleBuy(){
             
+        },
+        getWeather(){
+            // let url = 'http://v.juhe.cn/weather/geo'
+            // let data = {
+            //     lon : '119.951093',
+            //     lat : '31.774503',
+            //     format: 1,
+            //     dtype: 'json',
+            //     key : 'efacbc899a55cd71058ed4a24e983051'
+            // }
+            // axios({
+            //     method: 'get',
+            //     url: url,
+            //     params: data
+            // }).then((res) => {
+            //     console.log(res.result)
+            // })
         }
+    },
+    created () {
+        this.roomId = sessionStorage.getItem('roomId')
+        this.getHouseDetail()
     },
     mounted () {
         this.init()
+        
     }
 }
 </script>

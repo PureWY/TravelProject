@@ -135,7 +135,7 @@
                                             <p class="content">{{house.houseDataFrom}}</p>
                                         </div>
                                         <div class="btn">
-                                            <el-button @click="handleSearch">查看详情</el-button>
+                                            <el-button @click="handleSearch(house.roomId)">查看详情</el-button>
                                         </div>
                                     </div>
                                 </el-col>
@@ -186,7 +186,7 @@ export default {
   },
   created() {
       this.queryCity = JSON.parse(sessionStorage.getItem('queryHotel'))
-    this.getHouse()
+      this.getHouse()
   },
   methods: {
       handleChange(val) {
@@ -205,7 +205,8 @@ export default {
 
           })
       },
-      handleSearch(){
+      handleSearch(roomId){
+          sessionStorage.setItem('roomId',roomId)
           this.$router.push('houseDetail')
       },
       handleQuery(){
@@ -213,7 +214,6 @@ export default {
           this.listQuery.houseCityPlace = this.queryCity
           this.listQuery.houseName = this.houseName == '' ? '' : this.houseName
           this.listQuery.houseDetailPlace = this.houseCity == '' ? '' : this.houseCity
-          console.log(this.listQuery)
           screenQueryHotel(this.listQuery).then(res => {
               if(res.data.code == 200){
                   setTimeout(() => {

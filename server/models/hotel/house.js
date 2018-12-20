@@ -19,6 +19,14 @@ var houseSchema = new Schema({
     houseDataFrom: {type: String,trim: true},               //酒店数据来源
     inHouseTime: {type: String,trim: true},                 //入店时间
     outHouseTime: {type: String,trim: true},                //离店时间
+    houseEngName: {type: String,trim: true},
+    houseStandard: {type: String,trim: true},
+    houseIntelligence: {type: String,trim: true},
+    houseCreateTime: {type: String,trim: true},
+    houseRooms: {type: Number,trim: true},
+    houseInfo: {type: String,trim: true},
+    houseLon: {type: String,trim: true},
+    houseLat: {type: String,trim: true},
   })
 
 //创建model
