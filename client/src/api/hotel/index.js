@@ -26,3 +26,12 @@ export function queryHotelByRoomId(data) {
         data: JSON.stringify(data)
       })
  }
+
+   //模糊查询酒店
+export function queryHotelComments(data) { 
+    return request({
+        url: '/hotel/queryHotelComments',
+        method: 'post',
+        data: JSON.stringify(data)
+      })
+ }
