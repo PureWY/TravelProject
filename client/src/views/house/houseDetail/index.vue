@@ -192,33 +192,15 @@
                     </div>
                 </div>
                 <div class="houseComponent">
-                    <div class="lastComponent">最新评论 (2300+)</div>
-                    <div class="componentContent">
+                    <div class="lastComponent">最新评论 ({{houseComment.length}}+)</div>
+                    <div class="componentContent" v-for="comment in houseComment" :key="comment._id">
                         <div class="componentUser">
-                            <h4>我的世界如此美好</h4>
-                            <span>发表自：2018-12-14 11:12</span>
+                            <h4>{{comment.commentName}}</h4>
+                            <p class="grade">{{comment.commentGrade}}分</p>
+                            <span>{{comment.commentTime}}</span>
                         </div>
                         <div class="componentText">
-                            选择上海大酒店考虑到地势的优越性，入住后各方面都很满意。不过没有在酒店用餐因为之前工作生活在那一区，对周围非常熟悉，所以没有订含早餐。习惯出去走走，周边地道的早餐很多，更经济实惠和美味。不过每天路过大堂食客们都蛮享受的。
-                            13号从大阪回上海又订了一晚。之后去上海，还是会优先考虑这家酒店。
-                        </div>
-                    </div>
-                    <div class="componentContent">
-                        <div class="componentUser">
-                            <h4>bingtanglyn</h4>
-                            <span>发表自：2018-12-12 13:22</span>
-                        </div>
-                        <div class="componentText">
-                            预定时比较发现草鹨价格是最便宜的，于是毫不犹豫放弃之前老公推荐的另一家酒店。入住当晚一进入大堂，就觉得眼前一亮，豪华大气上档次。办理入住手续很快很顺利，酒店人员很专业态度不错。到了房间，简直是惊喜！儿子和妹妹都超级超级满意，房间宽敞舒适设施完善，儿子在房间里到处看觉得很新奇。妹妹觉得浴室够大，不仅仅是干湿分离，除了澡盆还有独立淋浴房，空间也很大。总之性价比超高，物超所值。
-                        </div>
-                    </div>
-                    <div class="componentContent">
-                        <div class="componentUser">
-                            <h4>Aip</h4>
-                            <span>发表自：2018-11-12 22:42</span>
-                        </div>
-                        <div class="componentText">
-                            上海大酒店的地理位置非常好，楼下隔壁街就是南京步行街，步行2分钟到达2号线地铁站，10分钟到达外滩，如果是带小朋友出行的话，自然博物馆、上海科技馆、东方明珠、海洋水族馆都是2号线到达的哟！酒店环境安静，舒适，卫生条件很好，酒店的游泳池水温也不错，小朋友一点儿都不冷。早餐品种还算丰富，行政楼层的下午茶完全可以解决晚饭，品种多样。非常值得推荐！
+                            {{comment.commentContent}}
                         </div>
                     </div>
                 </div>
@@ -230,7 +212,8 @@
 <script>
 import axios from 'axios'
 import {
-    queryHotelByRoomId
+    queryHotelByRoomId,
+    queryHotelComments
 } from '../../../api/hotel/index.js'
 export default {
     name: 'houseDetail',
@@ -241,7 +224,8 @@ export default {
             detailInfo: {},
             map: null,
             roomData: [],
-            transit: [121.481429,31.235115]
+            transit: [121.481429,31.235115],
+            houseComment: []
         }
     },
     methods: {
@@ -272,8 +256,14 @@ export default {
                   for(let i of this.roomData){
                       i.img = this.url + i.img
                   }
-                  console.log(this.detailInfo)
-                  console.log(this.roomData)
+              }
+            })
+        },
+        getHouseComment(){
+            queryHotelComments({ roomId: this.roomId }).then((res) => {
+                if(res.data.code == 200){
+                  this.houseComment = res.data.body[0].roomComments
+                  console.log(this.houseComment)
               }
             })
         },
@@ -301,6 +291,7 @@ export default {
     created () {
         this.roomId = sessionStorage.getItem('roomId')
         this.getHouseDetail()
+        this.getHouseComment()
     },
     mounted () {
         this.init()
@@ -580,6 +571,12 @@ export default {
                     }
                     span{
                         font-size: 0.9rem
+                    }
+                    .grade{
+                        font-size: 1.2rem;
+                        font-weight: 500;
+                        color: #e9451a;
+                        margin: 8px 0;
                     }
                 }
                 .componentText{

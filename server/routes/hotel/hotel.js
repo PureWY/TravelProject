@@ -120,13 +120,52 @@ router.post('/queryHotelByRoomId', function(req, res, next) {
       if (!house.length) {
         res.json({
           code: 202,
-          message: '该地区暂无酒店信息'
+          message: '暂无该酒店详情信息'
         })
       } else {
         res.json({
           code: 200,
           body: house,
-          message: '酒店信息查询成功'
+          message: '酒店详情信息查询成功'
+        })
+      }
+    }
+  })
+})
+
+//根据房间Id查询酒店评论
+router.post('/queryHotelComments', function(req, res, next) {
+  House.aggregate([{
+      $lookup: {
+        from: 'housecomments',
+        localField: 'commentId',
+        foreignField: 'commentId',
+        as: 'roomComments'
+      }
+    },
+    {
+      $match: {
+        roomId: req.body.roomId
+      }
+    }
+  ], (err, house) => {
+    if (err) {
+      console.log(err)
+      res.json({
+        code: 201,
+        message: '数据库异常'
+      })
+    } else {
+      if (!house.length) {
+        res.json({
+          code: 202,
+          message: '该酒店暂无相关评论'
+        })
+      } else {
+        res.json({
+          code: 200,
+          body: house,
+          message: '酒店评论查询成功'
         })
       }
     }
