@@ -158,7 +158,7 @@ export default {
             input: '',
             orderForm: {
                 roomId: '',
-                engName: '',
+                name: '',
                 time: [],
                 allAmount: 1,
                 username: '',
@@ -205,13 +205,14 @@ export default {
                   this.roomInfo = this.orderInfo.roomInfo[this.roomName][0]
                   this.roomInfo.img = this.url + this.roomInfo.img
                   this.orderForm.roomId = this.roomId
-                  this.orderForm.engName = this.roomInfo.engName
+                  this.orderForm.name = this.roomInfo.name
               }
             })  
         },
         confirmOrder(){
             this.$refs.orderForm.validate(valid => {
                 if (valid) {
+                    this.orderForm.houseName = this.orderInfo.houseName
                     this.orderForm.allTime = this.allTime
                     this.orderForm.allPrice = this.allPrice
                     subHouseOrder(this.orderForm).then(res => {

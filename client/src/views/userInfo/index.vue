@@ -145,14 +145,14 @@
                     <el-col :span="3">
                       <div class="place divHeight">
                         <span v-if="choiceOrder == 'plane'">{{order.flightName}}</span>
-                        <span v-else-if="choiceOrder == 'hotel'">{{order.engName}}</span>
+                        <span v-else-if="choiceOrder == 'hotel'">{{order.houseName}}</span>
                         <span v-else>{{order.planeId}}</span>
                       </div>
                     </el-col>
                     <el-col :span="3">
                       <div class="place divHeight">
                         <span v-if="choiceOrder == 'plane'">{{order.startCity}} - {{order.endCity}}</span>
-                        <span v-else-if="choiceOrder == 'hotel'">{{order.engName}}</span>
+                        <span v-else-if="choiceOrder == 'hotel'">{{order.name}}</span>
                         <span v-else>{{order.planeId}}</span>
                       </div>
                     </el-col>
