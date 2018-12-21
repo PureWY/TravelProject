@@ -224,7 +224,7 @@ export default {
     name: 'houseDetail',
     data(){
         return{
-            url: "http://192.168.1.109:3333/",
+            url: "http://192.168.1.103:3333/",
             roomId: '',
             detailInfo: {},
             map: null,
@@ -279,25 +279,23 @@ export default {
                     type: 'error'
                 });
             }else{
+                sessionStorage.setItem('roomName',room.engName)
                 this.$router.push('housePay')
             }
         },
         getWeather(){
-            // let url = 'http://v.juhe.cn/weather/geo'
-            // let data = {
-            //     lon : '119.951093',
-            //     lat : '31.774503',
-            //     format: 1,
-            //     dtype: 'json',
-            //     key : 'efacbc899a55cd71058ed4a24e983051'
-            // }
-            // axios({
-            //     method: 'get',
-            //     url: url,
-            //     params: data
-            // }).then((res) => {
-            //     console.log(res.result)
-            // })
+            let url = 'http://apicloud.mob.com/v1/weather/query'
+            let data = {
+                city: '常州',
+                key : '29649541ce654'
+            }
+            axios({
+                method: 'get',
+                url: url,
+                params: data
+            }).then((res) => {
+                console.log(res.result)
+            })
         }
     },
     created () {

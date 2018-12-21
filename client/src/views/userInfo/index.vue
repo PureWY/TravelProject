@@ -181,7 +181,7 @@ import headerComponent from '../../components/header'
 import footerComponent from '../../components/footer'
 import { VueCropper } from 'vue-cropper'
 import { changeInfo,uploadHeadImg,changeSign } from '../../api/user/modifiInfo.js'
-import { queryAllOrder, deleteAllOrder } from '../../api/order/orderInfo.js'
+import { queryFlightOrder, deleteAllOrder } from '../../api/order/orderInfo.js'
 import { CHANGE_IMG } from '../../store/modules/user.js'
 export default {
   name: 'userInfo',
@@ -211,7 +211,7 @@ export default {
       }
     }
     var validate2 = (rule, value, callback) => {
-      let regx = /^[0-9]+$/
+      let regx = /^[0-9]{11}/
       if (value === '') {
         callback(new Error('请输入手机号码'))
       }
@@ -252,8 +252,8 @@ export default {
         usercard: '',
         useraddress: ''
       },
-      imgServer: 'http://192.168.1.109:3333/user/uploadHeadImg',
-      baseUrl: 'http://192.168.1.109:3333/',
+      imgServer: 'http://192.168.1.103:3333/user/uploadHeadImg',
+      baseUrl: 'http://192.168.1.103:3333/',
       userHeadImg: '',
       options: [
         {
@@ -327,7 +327,7 @@ export default {
       let params = {
         userphone: localStorage.getItem('userphone')
       }
-      queryAllOrder(params).then(res => {
+      queryFlightOrder(params).then(res => {
         if (res.data.code == 200) {
           this.allOrderList = res.data.body
           this.isNoOrder = this.allOrderList.length == 0 ? true : false

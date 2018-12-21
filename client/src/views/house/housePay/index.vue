@@ -15,32 +15,26 @@
                 <div class="payConfirm">
                     <div class="orderDetail">
                         <div class="orderImg">
-                            <img src="../../../assets/img/single.png" />
+                            <img :src= roomInfo.img />
                         </div>
                         <div class="hotelInfo">
-                            <p>上海大酒店</p>
-                            <span>江苏省南京市玄武区雨花门地铁站路口23号</span>
-                            <p class="grade">4.7分</p>
+                            <p>{{orderInfo.houseName}}</p>
+                            <span>{{orderInfo.houseDetailPlace}}</span>
+                            <p class="grade">{{orderInfo.houseGrade}}</p>
                         </div>
                         <div class="roomDetail">
                             <ul>
                                 <li>
-                                    <span>房型:</span> 单人间
+                                    <span>房型:</span> {{roomInfo.name}}
                                 </li>
                                 <li>
-                                    <span>床型:</span> 单人床
+                                    <span>床型:</span> {{roomInfo.bed}}
+                                </li>
+                                <li v-for="ser in roomInfo.service" :key="ser">
+                                    <span>{{ser}}:</span> {{ser}}
                                 </li>
                                 <li>
-                                    <span>网络:</span> 无线网络
-                                </li>
-                                <li>
-                                    <span>早餐:</span> 有早
-                                </li>
-                                <li>
-                                    <span>可住:</span> 1人
-                                </li>
-                                <li>
-                                    <span>客服电话:</span> 0556-1234567
+                                    <span>客服电话:</span> {{orderInfo.housePhone}}
                                 </li>
                             </ul>
                         </div>
@@ -56,21 +50,23 @@
                                     <dt>入离店日期：</dt>
                                     <dd class="date"><el-date-picker
                                         size="mini"
-                                        v-model="value6"
+                                        v-model="orderForm.time"
                                         type="daterange"
+                                        :clearable="false"
+                                        value-format="yyyy-MM-dd"
                                         range-separator="至"
                                         start-placeholder="开始日期"
                                         end-placeholder="结束日期">
                                         </el-date-picker>
                                     </dd>
-                                    <dd>共 1 晚</dd>
+                                    <dd>共 {{allTime}} 晚</dd>
                                 </dl>
                             </div>
                             <div class="dlStyle">
                                 <dl>
                                     <dt>房间数量：</dt>
                                     <dd class="date">
-                                        <el-input-number :min="1" size="mini" v-model="num7"></el-input-number>
+                                        <el-input-number :min="1" size="mini" v-model="orderForm.allAmount"></el-input-number>
                                     </dd>
                                 </dl>
                             </div>
@@ -78,49 +74,28 @@
                                 <dl>
                                     <dt>房费总计：</dt>
                                     <dd class="date">
-                                        <span class="allPrice">￥188</span>
+                                        <span class="allPrice">￥{{allPrice}}</span>
                                     </dd>
                                 </dl>
                             </div>
                         </div>
                         <p>入住信息</p>
                         <div class="userDetailInfo">
-                            <div class="dlStyle">
-                                <dl>
-                                    <dt>姓名：</dt>
-                                    <dd class="date">
-                                        <el-input size="mini" v-model="input" placeholder="请输入姓名"></el-input>
-                                    </dd>
-                                </dl>
-                            </div>
-                            <div class="dlStyle">
-                                <dl>
-                                    <dt>联系电话：</dt>
-                                    <dd class="date">
-                                        <el-input size="mini" v-model="input" placeholder="请输入手机号码"></el-input>
-                                    </dd>
-                                </dl>
-                            </div>
-                            <div class="dlStyle">
-                                <dl>
-                                    <dt>身份证号：</dt>
-                                    <dd class="date">
-                                        <el-input size="mini" v-model="input" placeholder="请输入身份证号"></el-input>
-                                    </dd>
-                                </dl>
-                            </div>
-                            <div class="dlStyle">
-                                <dl>
-                                    <dt>安全验证：</dt>
-                                    <dd class="date">
-                                        <el-input size="mini" v-model="input" placeholder="请输入验证码"></el-input>
-                                    </dd>
-                                </dl>
-                            </div>
+                            <el-form label-position="left" :model="orderForm" status-icon :rules="orderFormRule" ref="orderForm" label-width="100px">
+                            <el-form-item label="姓名" prop="username">
+                                <el-input size="mini" :maxlength="4" v-model="orderForm.username"></el-input>
+                            </el-form-item>
+                            <el-form-item label="联系方式" prop="userphone">
+                                <el-input size="mini" :maxlength="11" v-model="orderForm.userphone"></el-input>
+                            </el-form-item>
+                            <el-form-item label="身份证号" prop="usercard">
+                                <el-input size="mini" :maxlength="18" v-model="orderForm.usercard"></el-input>
+                            </el-form-item>
+                            </el-form>
                         </div>
                         <p class="fapiao">如需发票，请从酒店前台索取</p>
                         <div class="confirmBtn">
-                            <el-button >提交订单</el-button>
+                            <el-button @click="confirmOrder" >提交订单</el-button>
                         </div>
                     </div>
                 </div>
@@ -131,18 +106,121 @@
 </template>
 
 <script>
+var moment = require('moment');
+import {
+    queryHotelByRoomId
+} from '../../../api/hotel/index.js'
+
 export default {
     name: 'housePay',
     data(){
+        var validate1 = (rule, value, callback) => {
+      let regx = /^[\u4e00-\u9fa5]+$/
+      if (value === '') {
+        callback(new Error('请输入预订人姓名'))
+      }
+      if (!regx.test(value)) {
+        callback(new Error('姓名只能包含中文'))
+      } else {
+        callback()
+      }
+    }
+        var validate2 = (rule, value, callback) => {
+        let regx = /^[0-9]{11}/
+        if (value === '') {
+            callback(new Error('请输入联系方式'))
+        }
+        if (!regx.test(value)) {
+            callback(new Error('请输入正确的联系方式'))
+        } else {
+            callback()
+        }
+        }
+        var validate3 = (rule, value, callback) => {
+        let regx = /^([0-9]{18})|([0-9]{17}[X]{1})/
+        if (value === '') {
+            callback(new Error('请输入身份证号'))
+        }
+        if (value.length < 18) {
+            callback(new Error('身份证号必须等于18位'))
+        } else if (!regx.test(value)) {
+            callback(new Error('身份证号只允许最后一位为X'))
+        } else {
+            callback()
+        }
+        }
         return {
-            value6: '',
-            num7: '',
-            input: ''
+            url: "http://192.168.1.103:3333/",
+            roomId: '',
+            roomInfo: {},
+            orderInfo: {},
+            input: '',
+            orderForm: {
+                roomId: '',
+                engName: '',
+                time: [],
+                allAmount: 1,
+                username: '',
+                userphone: '',
+                usercard: ''
+            },
+            orderFormRule: {
+                username: [
+                    { validator: validate1, trigger: 'change' }
+                ],
+                userphone: [
+                    { validator: validate2, trigger: 'change' }
+                ],
+                usercard: [
+                    { validator: validate3, trigger: 'change' }
+                ]
+            }
         }
     },
     created() {
-        console.log(sessionStorage.getItem('roomId'))
+        this.roomId = sessionStorage.getItem('roomId')
+        this.roomName = sessionStorage.getItem('roomName')
+        this.setInitTime()
+        this.getOrderInfo()
     },
+    computed: {
+      allTime(){
+          return moment(this.orderForm.time[1]).diff(moment(this.orderForm.time[0]),'days')
+      },
+      allPrice(){
+          return this.allTime * this.orderForm.allAmount * this.roomInfo.price
+      }  
+    },
+    methods: {
+        setInitTime() {
+            this.orderForm.time[1] = moment().format('YYYY-MM-DD')
+            this.orderForm.time[0] = moment().subtract(1,'days').format('YYYY-MM-DD')
+        },
+        getOrderInfo(){
+            queryHotelByRoomId({ roomId: this.roomId }).then((res) => {
+                if(res.data.code == 200){
+                  this.orderInfo = res.data.body[0]
+                  this.orderInfo.roomInfo = this.orderInfo.roomInfo[0]
+                  this.roomInfo = this.orderInfo.roomInfo[this.roomName][0]
+                  this.roomInfo.img = this.url + this.roomInfo.img
+                  this.orderForm.roomId = this.roomId
+                  this.orderForm.engName = this.roomInfo.engName
+              }
+            })  
+        },
+        confirmOrder(){
+            this.$refs.orderForm.validate(valid => {
+                if (valid) {
+                    this.orderForm.allTime = this.allTime
+                    this.orderForm.allPrice = this.allPrice
+                    console.log(this.orderForm)
+                } else {
+                    console.log('error submit!!')
+                    return false
+                }
+            })
+        }
+    }
 
 }
 </script>
@@ -241,6 +319,9 @@ background-color: #f5f5f5;
                       padding: 0px 30px 20px;
                       height: 170px;
                       border-bottom: 1px dashed #ccc; 
+                      .el-input{
+                          width: 30%;
+                      }
                   }
                   .fapiao{
                       margin: 10px 0;

@@ -77,7 +77,7 @@ router.post('/queryFlight', function(req, res, next) {
   })
 })
 
-//查询航班与飞机信息
+//创建航班订单
 router.post('/subFlightOrder', function(req, res, next) {
   console.log(req.body)
   FlightOrder.create(req.body,(err,order) => {
