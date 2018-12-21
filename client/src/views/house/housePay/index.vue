@@ -159,6 +159,7 @@ export default {
             orderForm: {
                 roomId: '',
                 name: '',
+                engName: '',
                 time: [],
                 allAmount: 1,
                 username: '',
@@ -206,6 +207,7 @@ export default {
                   this.roomInfo.img = this.url + this.roomInfo.img
                   this.orderForm.roomId = this.roomId
                   this.orderForm.name = this.roomInfo.name
+                  this.orderForm.engName = this.roomInfo.engName
               }
             })  
         },

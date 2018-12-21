@@ -6,6 +6,7 @@ var houseOrderSchema = new Schema({
     houseName: {type: String,trim: true},
     roomId: {type: String,trim: true},
     name: {type: String,trim: true},
+    engName: {type: String,trim: true},
     username: {type: String,trim: true},
     usercard: {type: String,trim: true},
     userphone: {type: Number,trim: true},
