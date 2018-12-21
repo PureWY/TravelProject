@@ -108,6 +108,7 @@
 <script>
 var moment = require('moment');
 import {
+    subHouseOrder,
     queryHotelByRoomId
 } from '../../../api/hotel/index.js'
 
@@ -213,7 +214,16 @@ export default {
                 if (valid) {
                     this.orderForm.allTime = this.allTime
                     this.orderForm.allPrice = this.allPrice
-                    console.log(this.orderForm)
+                    subHouseOrder(this.orderForm).then(res => {
+                        if (res.data.code == 200) {
+                        this.$confirm('预订成功', '提示', {
+                            confirmButtonText: '确定',
+                            type: 'success'
+                        })
+                    } else {
+                    this.$message.error(res.data.message)
+                    }
+                })
                 } else {
                     console.log('error submit!!')
                     return false

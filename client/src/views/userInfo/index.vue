@@ -118,7 +118,7 @@
               <div v-else class="haveOrderContainer">
                 <div class="orderSelect">
                   <span>订单类型：</span>
-                  <el-select v-model="value" placeholder="请选择订单类型">
+                  <el-select @change="queryOrder" v-model="value" placeholder="请选择订单类型">
                     <el-option v-for="item in options" :key="item.value" :label="item.label" :value="item.value">
                     </el-option>
                   </el-select>
@@ -126,36 +126,48 @@
                     删除所有历史订单
                   </div>
                 </div>
-                <div class="orderDetail" v-for="order in allOrderList" :key="order._id">
+                <div  class="orderDetail" v-for="order in allOrderList" :key="order._id">
                   <el-row>
                     <el-col :span="1">
-                      <div class="icon">
-                        <img src="../../assets/img/planeOrder.png">
+                      <div class="icon" >
+                        <img v-if="choiceOrder == 'plane'" src="../../assets/img/planeOrder.png">
+                        <img v-else-if="choiceOrder == 'hotel'" src="../../assets/img/hotelOrder.png">
+                        <img v-else src="../../assets/img/hotelOrder.png">
                       </div>
                     </el-col>
                     <el-col :span="2">
                       <div class="place divHeight">
-                        {{order.planeId}}
+                        <span v-if="choiceOrder == 'plane'">{{order.planeId}}</span>
+                        <span v-else-if="choiceOrder == 'hotel'">{{order.roomId}}</span>
+                        <span v-else>{{order.planeId}}</span>
                       </div>
                     </el-col>
                     <el-col :span="3">
                       <div class="place divHeight">
-                        {{order.flightName}}
+                        <span v-if="choiceOrder == 'plane'">{{order.flightName}}</span>
+                        <span v-else-if="choiceOrder == 'hotel'">{{order.engName}}</span>
+                        <span v-else>{{order.planeId}}</span>
                       </div>
                     </el-col>
                     <el-col :span="3">
                       <div class="place divHeight">
-                        {{order.startCity}} - {{order.endCity}}
+                        <span v-if="choiceOrder == 'plane'">{{order.startCity}} - {{order.endCity}}</span>
+                        <span v-else-if="choiceOrder == 'hotel'">{{order.engName}}</span>
+                        <span v-else>{{order.planeId}}</span>
                       </div>
                     </el-col>
                     <el-col :span="8">
                       <div class="divHeight">
-                        {{order.startTime}} &nbsp;-&nbsp; {{order.endTime}}
+                        <span v-if="choiceOrder == 'plane'">{{order.startTime}} &nbsp;-&nbsp; {{order.endTime}}</span>
+                        <span v-else-if="choiceOrder == 'hotel'">{{order.startTime}} &nbsp;-&nbsp; {{order.endTime}}</span>
+                        <span v-else>{{order.planeId}}</span>
                       </div>
                     </el-col>
                     <el-col :span="4">
                       <div class="divHeight">
-                        {{order.siteType}} &nbsp; ￥{{order.checkPrice}}
+                        <span v-if="choiceOrder == 'plane'">{{order.siteType}} &nbsp; ￥{{order.checkPrice}}</span>
+                        <span v-else-if="choiceOrder == 'hotel'">{{order.allAmount}} 间 &nbsp;{{order.allTime}} 晚 &nbsp; ￥{{order.allPrice}}</span>
+                        <span v-else>{{order.planeId}}</span>
                       </div>
                     </el-col>
                     <el-col :span="3">
@@ -181,7 +193,7 @@ import headerComponent from '../../components/header'
 import footerComponent from '../../components/footer'
 import { VueCropper } from 'vue-cropper'
 import { changeInfo,uploadHeadImg,changeSign } from '../../api/user/modifiInfo.js'
-import { queryFlightOrder, deleteAllOrder } from '../../api/order/orderInfo.js'
+import { queryFlightOrder, deleteAllOrder, queryHouseOrder } from '../../api/order/orderInfo.js'
 import { CHANGE_IMG } from '../../store/modules/user.js'
 export default {
   name: 'userInfo',
@@ -242,6 +254,7 @@ export default {
       }
     }
     return {
+      choiceOrder: 'plane',
       changeSign: false,
       activeName: 'accountInfo',
       isNoOrder: true, //是否无订单存在
@@ -257,10 +270,6 @@ export default {
       userHeadImg: '',
       options: [
         {
-          value: 'all',
-          label: '所有历史订单'
-        },
-        {
           value: 'plane',
           label: '机票历史订单'
         },
@@ -273,7 +282,7 @@ export default {
           label: '租车历史订单'
         }
       ],
-      value: '所有历史订单',
+      value: 'plane',
       rule: {
         username: [{ validator: validate1, trigger: 'change' }],
         userpass: [{ validator: validatePass, trigger: 'change' }],
@@ -424,6 +433,36 @@ export default {
         }
       })
       this.changeSign = false;
+    },
+    queryOrder(value){
+      this.choiceOrder = value
+      if(value == 'plane'){
+        let params = {
+          userphone: localStorage.getItem('userphone')
+        }
+        queryFlightOrder(params).then(res => {
+          if (res.data.code == 200) {
+            this.allOrderList = res.data.body
+            this.isNoOrder = this.allOrderList.length == 0 ? true : false
+          } else {
+          }
+        })
+      }else if(value == 'hotel'){
+        let params = {
+          userphone: localStorage.getItem('userphone')
+        }
+        queryHouseOrder(params).then(res => {
+          if (res.data.code == 200) {
+            this.allOrderList = res.data.body
+            for(let i of this.allOrderList){
+              i.startTime = i.time[0]
+              i.endTime = i.time[1]
+            }
+            this.isNoOrder = this.allOrderList.length == 0 ? true : false
+          } else {
+          }
+        })
+      }
     }
   }
 }

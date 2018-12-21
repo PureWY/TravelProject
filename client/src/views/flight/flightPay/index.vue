@@ -163,9 +163,8 @@ export default {
           }
           subFlightOrder(this.orderListQuery).then(res => {
             if (res.data.code == 200) {
-              this.$confirm('购票成功，是否继续购票?', '提示', {
+              this.$confirm('购票成功', '提示', {
                 confirmButtonText: '确定',
-                cancelButtonText: '返回',
                 type: 'success'
               })
                 .then(() => {
@@ -174,7 +173,6 @@ export default {
                   })
                 })
                 .catch(() => {
-                  this.$router.push('/')
                 })
             } else {
               this.$message.error(res.data.message)
