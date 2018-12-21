@@ -164,8 +164,8 @@ export default {
   data() {
     return {
         queryCity:'',
-        // activeNames: ['1','2','3','4','5','6'],
-        activeNames: [],
+        activeNames: ['1','2','3','4','5','6'],
+        // activeNames: [],
         loading: false,
         listQuery: {
             starNums: null,
