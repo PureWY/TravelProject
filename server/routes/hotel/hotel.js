@@ -3,6 +3,7 @@ const router = express.Router();
 
 //引入模型
 const House = require('../../models/hotel/house')
+const HouseOrder = require('../../models/hotel/houseOrder');
 
 //整体查询酒店信息
 router.post('/queryHotel', function(req, res, next) {
@@ -168,6 +169,24 @@ router.post('/queryHotelComments', function(req, res, next) {
           message: '酒店评论查询成功'
         })
       }
+    }
+  })
+})
+
+//创建酒店订单
+router.post('/subHouseOrder', function(req, res, next) {
+  console.log(req.body)
+  HouseOrder.create(req.body,(err,order) => {
+    if(err){
+      res.json({
+        code: 201,
+        message: '数据库异常'
+      })
+    }else{
+      res.json({
+        code: 200,
+        message: '订单创建成功'
+      })
     }
   })
 })

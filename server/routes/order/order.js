@@ -3,8 +3,9 @@ const router = express.Router();
 
 //引入模型
 var FlightOrder = require('../../models/plane/flightOrder');
+var HouseOrder = require('../../models/hotel/houseOrder');
 
-router.post('/queryAllOrder',function(req,res,next){
+router.post('/queryFlightOrder',function(req,res,next){
     FlightOrder.find(req.body,(err,allOrder) => {
         if(err){
             res.json({

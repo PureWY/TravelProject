@@ -1,9 +1,9 @@
 import request from '@/utils/request'
 
 // 获取所有订单信息
-export function queryAllOrder(data) {
+export function queryFlightOrder(data) {
     return request({
-      url: '/order/queryAllOrder',
+      url: '/order/queryFlightOrder',
       method: 'post',
       data: JSON.stringify(data)
     })
