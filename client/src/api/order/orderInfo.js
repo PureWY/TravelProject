@@ -1,6 +1,6 @@
 import request from '@/utils/request'
 
-// 获取所有订单信息
+// 获取飞机订单信息
 export function queryFlightOrder(data) {
     return request({
       url: '/order/queryFlightOrder',
@@ -8,6 +8,15 @@ export function queryFlightOrder(data) {
       data: JSON.stringify(data)
     })
   }
+
+// 获取酒店订单信息
+export function queryHouseOrder(data) {
+  return request({
+    url: '/order/queryHouseOrder',
+    method: 'post',
+    data: JSON.stringify(data)
+  })
+}
 
   // 删除所有订单信息
 export function deleteAllOrder(data) {
@@ -17,3 +26,4 @@ export function deleteAllOrder(data) {
     data: JSON.stringify(data)
   })
 }
+

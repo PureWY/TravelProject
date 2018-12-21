@@ -18,7 +18,7 @@ export function screenQueryHotel(data) {
       })
  }
 
-  //模糊查询酒店
+  //根据房间Id查询酒店
 export function queryHotelByRoomId(data) { 
     return request({
         url: '/hotel/QueryHotelByRoomId',
@@ -27,10 +27,19 @@ export function queryHotelByRoomId(data) {
       })
  }
 
-   //模糊查询酒店
+   //查询酒店评论
 export function queryHotelComments(data) { 
     return request({
         url: '/hotel/queryHotelComments',
+        method: 'post',
+        data: JSON.stringify(data)
+      })
+ }
+
+    //提交酒店订单
+export function subHouseOrder(data) { 
+    return request({
+        url: '/hotel/subHouseOrder',
         method: 'post',
         data: JSON.stringify(data)
       })
