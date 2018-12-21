@@ -132,7 +132,7 @@
                       <div class="icon" >
                         <img v-if="choiceOrder == 'plane'" src="../../assets/img/planeOrder.png">
                         <img v-else-if="choiceOrder == 'hotel'" src="../../assets/img/hotelOrder.png">
-                        <img v-else src="../../assets/img/hotelOrder.png">
+                        <img v-else src="../../assets/img/carOrder.png">
                       </div>
                     </el-col>
                     <el-col :span="2">
@@ -171,8 +171,10 @@
                       </div>
                     </el-col>
                     <el-col :span="3">
-                      <div class="toIcon divHeight">
-                        <i class="el-icon-arrow-right"></i>
+                      <div class="divHeight">
+                        <span class="planeIcon" v-if="choiceOrder == 'plane'">已完成</span>
+                        <span class="hotelIcon" v-else-if="choiceOrder == 'hotel'">去评论</span>
+                        <span class="carIcon" v-else>{{order.planeId}}</span>
                       </div>
                     </el-col>
                   </el-row>
@@ -680,11 +682,18 @@ export default {
               font-weight: 600;
               color: #17232c;
             }
-            .toIcon {
-              .el-icon-arrow-right {
+            .planeIcon {
+                // text-decoration: 
+                color: #4CAB47;
+                cursor: pointer;
+            }
+            .hotelIcon {
                 color: #4494f5;
                 cursor: pointer;
-              }
+            }
+            .carIcon {
+                color: #4CAB47;
+                cursor: pointer;
             }
           }
         }
