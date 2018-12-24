@@ -28,7 +28,7 @@ AMap.initAMapApiLoader({
   // 申请的高德key
   key: '5a88d5949c8d8241c88d89f5791474c1',
   // 插件集合
-  plugin: ['AMap.OverView','AMap.Geolocation']
+  plugin: ['AMap.OverView','AMap.Geolocation','AMap.CitySearch']
 });
 
 
