@@ -14,11 +14,11 @@
                         <div>
                             <span>您在这里：</span>
                             <span><i class="el-icon-location-outline"/></span>
-                            <span>中国 - 上海</span>
+                            <span>中国 - {{currentCity}}</span>
                         </div>
                         <div class="weather">
                             <img src="../../../assets/img/sunday.png"/>
-                            <span>&nbsp;晴 5°C ~ 15°C</span>
+                            <span>&nbsp; {{weatherInfo.weather}}&nbsp; 温度：{{weatherInfo.temperature}}&nbsp; {{weatherInfo.humidity}}</span>
                         </div>
                     </div>
                     <div class="hotelTitle">
@@ -224,17 +224,20 @@ export default {
     name: 'houseDetail',
     data(){
         return{
-            url: "http://192.168.1.103:3333/",
+            url: "http://192.168.1.110:3333/",
             roomId: '',
             detailInfo: {},
             map: null,
             roomData: [],
             transit: [121.481429,31.235115],
-            houseComment: []
+            houseComment: [],
+            weatherInfo: {},
+            currentCity: ''
         }
     },
     methods: {
         init(){
+            let _this = this
             this.map = new AMap.Map('mapContainer', {
                 center: this.transit,
                 resizeEnable: true,
@@ -245,6 +248,22 @@ export default {
                 position: new AMap.LngLat(this.transit[0],this.transit[1]),   // 经纬度对象，也可以是经纬度构成的一维数组[116.39, 39.9]
                 title: '上海大酒店'
             });
+
+             //获取用户所在城市信息
+            function showCityInfo() {
+                //实例化城市查询类
+                var citysearch = new AMap.CitySearch();	
+                //自动获取用户IP，返回当前城市
+                citysearch.getLocalCity(function(status, result) {
+                    if (status === 'complete' && result.info === 'OK') {
+                        _this.currentCity = result.city
+                        _this.getWeather()
+                    }else{
+                        console.log('获取地理信息失败')
+                    }
+                });
+            }
+            showCityInfo();
 
             this.map.addControl(new AMap.OverView({isOpen:true}));
             this.map.addControl(new AMap.Geolocation());
@@ -268,7 +287,6 @@ export default {
             queryHotelComments({ roomId: this.roomId }).then((res) => {
                 if(res.data.code == 200){
                   this.houseComment = res.data.body[0].roomComments
-                  console.log(this.houseComment)
               }
             })
         },
@@ -284,9 +302,9 @@ export default {
             }
         },
         getWeather(){
-            let url = 'http://apicloud.mob.com/v1/weather/query'
+            let url = '/weather'
             let data = {
-                city: '常州',
+                city: this.currentCity.substring(0,2),
                 key : '29649541ce654'
             }
             axios({
@@ -294,14 +312,18 @@ export default {
                 url: url,
                 params: data
             }).then((res) => {
-                console.log(res.result)
+                if(res.data.retCode =='200'){
+                    this.weatherInfo = res.data.result[0]
+                    console.log(this.weatherInfo)
+                }
             })
-        }
+        },
     },
-    created () {
+    created () {        
         this.roomId = sessionStorage.getItem('roomId')
         this.getHouseDetail()
         this.getHouseComment()
+        
     },
     mounted () {
         this.init()

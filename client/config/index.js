@@ -11,6 +11,13 @@ module.exports = {
     assetsSubDirectory: 'static',
     assetsPublicPath: '/',
     proxyTable: {
+      '/weather': {
+          target: 'http://apicloud.mob.com/v1/weather/query',
+          changeOrigin: true,
+          pathRewrite: {
+              '^/weather': ''
+          }
+      },
     },
 
     // Various Dev Server settings
