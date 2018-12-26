@@ -106,7 +106,7 @@
             </el-tab-pane>
             <el-tab-pane label="订单历史" name="searchHistory">
               <h1>订单历史</h1>
-              <div v-if="isNoOrder" class="noOrderContainer">
+              <div v-if="isNoOrder || !userphone" class="noOrderContainer">
                 <p class="p1">没有找到搜索历史</p>
                 <p class="p2">现在就开始搜索！</p>
                 <p>
