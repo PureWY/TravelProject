@@ -229,13 +229,14 @@ export default {
             detailInfo: {},
             map: null,
             roomData: [],
-            transit: [121.481429,31.235115],
+            transit: [],
             houseComment: [],
             weatherInfo: {},
             currentCity: ''
         }
     },
     methods: {
+        //地图初始化
         init(){
             let _this = this
             this.map = new AMap.Map('mapContainer', {
@@ -263,13 +264,15 @@ export default {
                     }
                 });
             }
+
             showCityInfo();
 
             this.map.addControl(new AMap.OverView({isOpen:true}));
             this.map.addControl(new AMap.Geolocation());
             this.map.add(marker);
         },
-        getHouseDetail(){
+        //获取酒店详情信息
+        getHouseDetail(){ 
             queryHotelByRoomId({ roomId: this.roomId }).then((res) => {
                 if(res.data.code == 200){
                   this.detailInfo = res.data.body[0]
@@ -277,12 +280,14 @@ export default {
                   this.roomData.push(this.detailInfo.roomInfo[0].standardRoom[0])
                   this.roomData.push(this.detailInfo.roomInfo[0].businessRoom[0])
                   this.transit = this.detailInfo.transit
+                  this.init()
                   for(let i of this.roomData){
                       i.img = this.url + i.img
                   }
               }
             })
         },
+        //获取酒店评论
         getHouseComment(){
             queryHotelComments({ roomId: this.roomId }).then((res) => {
                 if(res.data.code == 200){
@@ -290,6 +295,7 @@ export default {
               }
             })
         },
+        //提交预订订单
         handleBuy(room){
             if(!room.surPlus){
                 this.$message({
@@ -301,10 +307,11 @@ export default {
                 this.$router.push('housePay')
             }
         },
+        //初始化天气信息
         getWeather(){
             let url = '/weather'
             let data = {
-                city: this.currentCity.substring(0,2),
+                city: this.currentCity.substring(0,this.currentCity.length-1),
                 key : '29649541ce654'
             }
             axios({
@@ -314,20 +321,16 @@ export default {
             }).then((res) => {
                 if(res.data.retCode =='200'){
                     this.weatherInfo = res.data.result[0]
-                    console.log(this.weatherInfo)
                 }
             })
         },
     },
-    created () {        
+    created () {
         this.roomId = sessionStorage.getItem('roomId')
-        this.getHouseDetail()
         this.getHouseComment()
-        
     },
     mounted () {
-        this.init()
-        
+        this.getHouseDetail()
     }
 }
 </script>
