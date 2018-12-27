@@ -17,19 +17,20 @@
                     </div>
                 </div>
                 <div class="carSelect">
-                    <el-form :inline="true" :model="formInline" class="queryForm">
+                    <el-form :inline="true" :model="listQuery" class="queryForm">
                     <el-form-item>
-                        <el-select class="placePicker" v-model="formInline.region" placeholder="租车点">
-                        <el-option class="placeSelect" label="区域一" value="shanghai"></el-option>
+                        <el-select clearable class="placePicker"  filterable v-model="listQuery.hireCity" placeholder="租车点">
+                            <el-option class="placeSelect" v-for="city in cityList" :key="city"  :label="city" :value="city"></el-option>
                         </el-select>
                     </el-form-item>
                     <el-form-item>
                         <el-date-picker
                         class="datePicker"
-                        v-model="value7"
+                        v-model="listQuery.hireTime"
                         type="daterange"
                         align="right"
                         unlink-panels
+                        value-format="yyyy-MM-dd"
                         range-separator="|"
                         start-placeholder="租车日期"
                         end-placeholder="还车日期"
@@ -48,47 +49,58 @@
 </template>
 
 <script>
+import {
+    getCityList
+} from '../../../api/common/index.js'
 export default {
   name: 'carComponent',
   data() {
     return {
-      formInline: {
-                user: '',
-                region: ''
-            },
-            pickerOptions: {
-                shortcuts: [{
-                    text: '最近一周',
-                    onClick(picker) {
-                    const end = new Date();
-                    const start = new Date();
-                    start.setTime(start.getTime() - 3600 * 1000 * 24 * 7);
-                    picker.$emit('pick', [start, end]);
-                    }
-                }, {
-                    text: '最近一个月',
-                    onClick(picker) {
-                    const end = new Date();
-                    const start = new Date();
-                    start.setTime(start.getTime() - 3600 * 1000 * 24 * 30);
-                    picker.$emit('pick', [start, end]);
-                    }
-                }, {
-                    text: '最近三个月',
-                    onClick(picker) {
-                    const end = new Date();
-                    const start = new Date();
-                    start.setTime(start.getTime() - 3600 * 1000 * 24 * 90);
-                    picker.$emit('pick', [start, end]);
-                    }
-                }]
-            },
-            value7: ''
+        pickerOptions: {
+            shortcuts: [{
+                text: '最近一周',
+                onClick(picker) {
+                const end = new Date();
+                const start = new Date();
+                start.setTime(start.getTime() - 3600 * 1000 * 24 * 7);
+                picker.$emit('pick', [start, end]);
+                }
+            }, {
+                text: '最近一个月',
+                onClick(picker) {
+                const end = new Date();
+                const start = new Date();
+                start.setTime(start.getTime() - 3600 * 1000 * 24 * 30);
+                picker.$emit('pick', [start, end]);
+                }
+            }, {
+                text: '最近三个月',
+                onClick(picker) {
+                const end = new Date();
+                const start = new Date();
+                start.setTime(start.getTime() - 3600 * 1000 * 24 * 90);
+                picker.$emit('pick', [start, end]);
+                }
+            }]
+        },
+        listQuery: {
+            hireCity: '',
+            hireTime: []
+        },
+        cityList: [],
     }
   },
+  created () {
+    this.getCityLists()  
+  },
   methods: {
+      getCityLists(){
+          getCityList().then(res => {
+              this.cityList = res.data.body.cityList;
+          })
+      },
       onSubmit() {
-            console.log('submit!');
+            console.log(this.listQuery);
         }
   }
 }

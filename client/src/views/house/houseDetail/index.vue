@@ -224,7 +224,7 @@ export default {
     name: 'houseDetail',
     data(){
         return{
-            url: "http://192.168.1.110:3333/",
+            url: "http://192.168.1.105:3333/",
             roomId: '',
             detailInfo: {},
             map: null,
@@ -450,7 +450,6 @@ export default {
                         overflow: hidden;
                         cursor: pointer;
                         padding: 0;
-                        background-color: green;
                         img{
                             width: 100%;
                             height: 100%;

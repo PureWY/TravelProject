@@ -23,7 +23,7 @@
                     <el-form :inline="true" class="queryForm">
                     <el-form-item>
                         <el-select clearable  filterable v-model="listQuery.startCity" placeholder="出发地">
-                        <el-option class="placeSelect" v-for="city in cityList" :key="city"  :label="city" :value="city"></el-option>
+                            <el-option class="placeSelect" v-for="city in cityList" :key="city"  :label="city" :value="city"></el-option>
                         </el-select>
                     </el-form-item>
                     <div @click="handleSwitchPlace" class="switchPlace">
@@ -79,36 +79,36 @@ export default {
             endCity: '',
             searchTime: ''
         },
-            pickerOptions: {
-                shortcuts: [{
-                    text: '最近一周',
-                    onClick(picker) {
-                    const end = new Date();
-                    const start = new Date();
-                    start.setTime(start.getTime() - 3600 * 1000 * 24 * 7);
-                    picker.$emit('pick', [start, end]);
-                    }
-                }, {
-                    text: '最近一个月',
-                    onClick(picker) {
-                    const end = new Date();
-                    const start = new Date();
-                    start.setTime(start.getTime() - 3600 * 1000 * 24 * 30);
-                    picker.$emit('pick', [start, end]);
-                    }
-                }, {
-                    text: '最近三个月',
-                    onClick(picker) {
-                    const end = new Date();
-                    const start = new Date();
-                    start.setTime(start.getTime() - 3600 * 1000 * 24 * 90);
-                    picker.$emit('pick', [start, end]);
-                    }
-                }]
-            },
-            value7: '',
-            cityList: [],
-            siteType: '',
+        pickerOptions: {
+            shortcuts: [{
+                text: '最近一周',
+                onClick(picker) {
+                const end = new Date();
+                const start = new Date();
+                start.setTime(start.getTime() - 3600 * 1000 * 24 * 7);
+                picker.$emit('pick', [start, end]);
+                }
+            }, {
+                text: '最近一个月',
+                onClick(picker) {
+                const end = new Date();
+                const start = new Date();
+                start.setTime(start.getTime() - 3600 * 1000 * 24 * 30);
+                picker.$emit('pick', [start, end]);
+                }
+            }, {
+                text: '最近三个月',
+                onClick(picker) {
+                const end = new Date();
+                const start = new Date();
+                start.setTime(start.getTime() - 3600 * 1000 * 24 * 90);
+                picker.$emit('pick', [start, end]);
+                }
+            }]
+        },
+        value7: '',
+        cityList: [],
+        siteType: '',
     }
   },
   created() {
