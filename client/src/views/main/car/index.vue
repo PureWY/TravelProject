@@ -38,7 +38,7 @@
                         </el-date-picker>
                     </el-form-item>
                     <el-form-item>
-                        <el-button class="queryBtn" @click="onSubmit"><img src="../../../assets/img/query.png"></el-button>
+                        <el-button class="queryBtn" @click="handleSearch"><img src="../../../assets/img/query.png"></el-button>
                     </el-form-item>
                     </el-form>
                 </div>
@@ -52,6 +52,9 @@
 import {
     getCityList
 } from '../../../api/common/index.js'
+import {
+    queryTaxi
+} from '../../../api/taxi/index.js'
 export default {
   name: 'carComponent',
   data() {
@@ -99,8 +102,39 @@ export default {
               this.cityList = res.data.body.cityList;
           })
       },
-      onSubmit() {
-            console.log(this.listQuery);
+      handleSearch() {
+            if(!this.listQuery.hireCity){
+              this.$message({
+                message: '请选择租车点',
+                type: 'warning'
+                });
+          }else if(!this.listQuery.hireTime){
+              this.$message({
+                message: '请选择租车日期',
+                type: 'warning'
+                });
+          }else{
+              let parmas = {
+                  taxiCity: this.listQuery.hireCity
+              }
+              queryTaxi(parmas).then(res => {
+                  if(res.data.code == 200){
+                      this.$message({
+                            message: res.data.message,
+                            type: 'success'
+                        });
+                      sessionStorage.setItem('taxiCity',this.hireCity)
+                      this.$router.push('taxi/taxiInfo')
+                  }else{
+                      this.$message({
+                            message: res.data.message,
+                            type: 'warning'
+                        });
+                  }
+            }).catch((err) => {
+                console.log(err)
+            })
+          }
         }
   }
 }

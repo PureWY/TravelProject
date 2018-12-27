@@ -19,13 +19,13 @@ var houseSchema = new Schema({
     houseDataFrom: {type: String,trim: true},               //酒店数据来源
     inHouseTime: {type: String,trim: true},                 //入店时间
     outHouseTime: {type: String,trim: true},                //离店时间
-    houseEngName: {type: String,trim: true},
-    houseStandard: {type: String,trim: true},
-    houseIntelligence: {type: String,trim: true},
-    houseCreateTime: {type: String,trim: true},
-    houseRooms: {type: Number,trim: true},
-    houseInfo: {type: String,trim: true},
-    transit: {type: Array,default: []}
+    houseEngName: {type: String,trim: true},                //酒店英文名
+    houseStandard: {type: String,trim: true},               //酒店标准
+    houseIntelligence: {type: String,trim: true},           //酒店执照
+    houseCreateTime: {type: String,trim: true},             //酒店创建时间
+    houseRooms: {type: Number,trim: true},                  //酒店房间数
+    houseInfo: {type: String,trim: true},                   //酒店信息
+    transit: {type: Array,default: []}                      //酒店经纬度
   })
 
 //创建model

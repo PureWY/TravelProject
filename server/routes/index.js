@@ -1,16 +1,17 @@
-var express = require('express');
-var login = require('./login.js')
-var register = require('./register.js')
-var logout = require('./logout.js')
-var user = require('./user/user.js')
-var common = require('./common/common.js')
-var plane = require('./plane/plane.js')
-var order = require('./order/order.js')
-var hotel = require('./hotel/hotel.js')
+const express = require('express');
+const login = require('./login.js')
+const register = require('./register.js')
+const logout = require('./logout.js')
+const user = require('./user/user.js')
+const common = require('./common/common.js')
+const plane = require('./plane/plane.js')
+const order = require('./order/order.js')
+const hotel = require('./hotel/hotel.js')
+const car = require('./car/car.js')
 
 const jwt = require('../config/jwt.js')
 
-var routers = function (app) {
+const routers = function (app) {
     app.use(function (req, res, next) {
         // 请求都需要进行token校验 
         if (req.url != '/login' && req.url != '/register' && req.url != '/' && req.url != '/common/cityList') {
@@ -45,6 +46,7 @@ var routers = function (app) {
     app.use('/plane',plane);
     app.use('/order',order);
     app.use('/hotel',hotel);
+    app.use('/car',car);
 
     //定制404页面
     app.use(function(req,res){
