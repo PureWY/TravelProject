@@ -104,6 +104,35 @@ const router =  new Router({
         },
       ]
     },
+    {
+      path: '/taxi',
+      name: 'taxi',
+      component: _import('taxi/index'),
+      meta: {
+        title: '租车信息',
+        keepAlive: true
+      },
+      children: [
+        {
+          path: 'taxiInfo',
+          name: 'taxiInfo',
+          component: _import('taxi/taxiInfo/index'),
+          // meta: { keepAlive: true },
+        },
+        {
+          path: 'taxiDetail',
+          name: 'taxiDetail',
+          component: _import('taxi/taxiDetail/index'),
+          // meta: { keepAlive: true },
+        },
+        {
+          path: 'taxiPay',
+          name: 'taxiPay',
+          component: _import('taxi/taxiPay/index'),
+          // meta: { keepAlive: true },
+        },
+      ]
+    },
 
   ]
 })
