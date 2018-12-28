@@ -79,7 +79,6 @@ router.post('/queryFlight', function(req, res, next) {
 
 //创建航班订单
 router.post('/subFlightOrder', function(req, res, next) {
-  console.log(req.body)
   FlightOrder.create(req.body,(err,order) => {
     if(err){
       res.json({
@@ -92,6 +91,14 @@ router.post('/subFlightOrder', function(req, res, next) {
         message: '订单创建成功'
       })
     }
+  })
+
+  Plane.findOneAndUpdate({
+    planeId: req.body.planeId
+  },{
+    $inc: { [`${req.body.siteEngType}`]: -1 }
+  },(err,plane) => {
+    console.log(plane)
   })
 })
 
