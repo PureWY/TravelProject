@@ -189,24 +189,13 @@ router.post('/subHouseOrder', function(req, res, next) {
       })
     }
   })
-  // HouseRoom.updateOne({
-  //   roomId: req.body.roomId
-  // },(err,room) => {
-  //   if(err){
-  //     res.json({
-  //       code: 201,
-  //       message: '数据库异常'
-  //     })
-  //   }else{
-  //     let engName = req.body.engName
-  //     room[engName][0].surPlus = 100
-  //     console.log(room[engName][0].surPlus)
-  //     room.markModified('surPlus');
-  //     room.save()
-      // room[req.body.engName][0].surPlus -= 1
-      // room.markModified('surPlus');
-  //   }
-  // })
+  HouseRoom.findOneAndUpdate({
+    roomId: req.body.roomId
+  },{
+    $inc: { [`${req.body.engName}.0.surPlus`]: -1 }
+  },(err,room) => {
+    console.log(room)
+  })
 })
 
 module.exports = router;

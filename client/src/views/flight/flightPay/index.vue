@@ -143,6 +143,7 @@ export default {
   },
   created() {
     this.orderInfo = JSON.parse(localStorage.getItem('orderInfo'))
+    console.log(this.orderInfo)
     this.orderInfo.startDate = getDate(this.orderInfo.startTime)
     this.orderInfo.endDate = getDate(this.orderInfo.endTime)
   },
@@ -150,6 +151,19 @@ export default {
     submitOrder() {
       this.$refs['orderForm'].validate(valid => {
         if (valid) {
+          let siteEngType = ''
+          switch(this.orderInfo.planeInfo.siteType[0]){
+            case '经济舱':
+              siteEngType = 'firstClassSite'
+              break;
+            case '商务舱':
+              siteEngType = 'secondClassSite'
+              break;
+            case '头等舱':
+              siteEngType = 'thirdClassSite'
+              break;
+          }
+          console.log(siteEngType)
           this.orderListQuery = {
             ...this.orderForm,
             startCity: this.orderInfo.startCity,
@@ -159,6 +173,7 @@ export default {
             flightName: this.orderInfo.flightName,
             planeId: this.orderInfo.planeId,
             siteType: this.orderInfo.planeInfo.siteType[0],
+            siteEngType: siteEngType,
             checkPrice: this.orderInfo.planeInfo.checkPrice
           }
           subFlightOrder(this.orderListQuery).then(res => {
