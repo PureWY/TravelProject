@@ -101,6 +101,7 @@ export default {
       if(tab.name == 'plane'){
         this.$router.push('/')
       }else{
+        this.$router.push('/')
         this.$router.push(tab.name)
       }
     },
