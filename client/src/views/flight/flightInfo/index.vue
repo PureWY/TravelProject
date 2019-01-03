@@ -147,6 +147,7 @@ export default {
 
         //选择舱位
         checkSite(value,planeId){
+            console.log(value)
             let checkType = value[0]
             this.flightInfo.map(item => {
                 if(item.planeInfo.planeId == planeId){
