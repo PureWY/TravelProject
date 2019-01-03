@@ -9,8 +9,8 @@ var planeSchema = new Schema({
     secondClassPrice: {type: Number,trim: true},           //商务舱价格
     thirdClassPrice: {type: Number,trim: true},            //头等舱价格
     firstClassSite: {type: Number,trim: true},             //经济舱座位
-    secondClassPrice: {type: Number,trim: true},           //商务舱座位
-    thirdClassPrice: {type: Number,trim: true},            //头等舱座位
+    secondClassSite: {type: Number,trim: true},           //商务舱座位
+    thirdClassSite: {type: Number,trim: true},            //头等舱座位
     allSite: {type: Number,trim: true},                    //总座位
     siteType: {type: Array, default: []},                  //选择的座位类型
     checkPrice: {type: Number,trim: true}                  //选择的价格
