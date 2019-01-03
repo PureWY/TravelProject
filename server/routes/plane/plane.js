@@ -92,13 +92,12 @@ router.post('/subFlightOrder', function(req, res, next) {
       })
     }
   })
-
-  Plane.findOneAndUpdate({
+  let site = req.body.siteEngType
+  Plane.findOne({
     planeId: req.body.planeId
-  },{
-    $inc: { [`${req.body.siteEngType}`]: -1 }
   },(err,plane) => {
-    console.log(plane)
+    plane[site] -= 1
+    plane.save()
   })
 })
 
