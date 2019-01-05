@@ -33,10 +33,15 @@
               <el-input v-model="registerForm.userphone" :maxlength="11" placeholder="请输入手机号码"></el-input>
             </el-form-item>
             <el-form-item prop="password">
-              <el-input type="password" v-model="registerForm.password" placeholder="请输入密码" ></el-input>
+              <el-input type="password" :maxlength="8" v-model="registerForm.password" placeholder="请输入密码" ></el-input>
             </el-form-item>
             <el-form-item prop="checkpass">
-              <el-input type="password" v-model="registerForm.checkpass" placeholder="请确认密码" ></el-input>
+              <el-input type="password" :maxlength="8" v-model="registerForm.checkpass" placeholder="请确认密码" ></el-input>
+            </el-form-item>
+            <el-form-item class="codeForm">
+              <el-input :maxlength="6" class="codeInput" v-model="checkcode" placeholder="请输入验证码" ></el-input>
+              <el-button class="codeBtn" v-if="!haveCode" @click="getAuthCode" type="success">获取验证码</el-button>
+              <el-button class="codeBtn" v-if="haveCode" type="success">{{second}} S</el-button>
             </el-form-item>
             <el-form-item class="btnGroup">
               <el-button type="primary" @click="handleRegister">注册</el-button>
@@ -50,6 +55,7 @@
 </template>
 
 <script>
+import axios from 'axios'
 export default {
   name: 'login',
   data() {
@@ -78,12 +84,13 @@ export default {
       if (value === '') {
         callback(new Error('请再次输入密码'))
       } else if (value !== this.registerForm.password) {
-        callback(new Error('两次输入密码不一致!'))
+        callback(new Error('两次输入密码不一致'))
       } else {
         callback()
       }
     }
     return {
+      haveCode: false,
       isLogin: true,
       loginForm: {
         userphone: '',
@@ -92,7 +99,7 @@ export default {
       registerForm: {
         userphone: '',
         password: '',
-        checkpass: ''
+        checkpass: '',
       },
       rules: {
         userphone: [{ validator: checkUser, trigger: 'change' }],
@@ -101,8 +108,11 @@ export default {
       regisRule: {
         userphone: [{ validator: checkUser, trigger: 'change' }],
         password: [{ validator: validatePass, trigger: 'change' }],
-        checkpass: [{ validator: validatePass2, trigger: 'change' }]
-      }
+        checkpass: [{ validator: validatePass2, trigger: 'blur' }],
+      },
+      checkcode: '',
+      second: 10,
+      randomCode: ''
     }
   },
   created () {
@@ -145,28 +155,73 @@ export default {
       })
     },
     handleRegister(){
-      this.$refs.registerForm.validate(valid => {
+        this.$refs.registerForm.validate(valid => {
         if (valid) {
-          this.loading = true
-          this.$store
-            .dispatch('RegisterByUserPhone', this.registerForm)
-            .then(() => {
-              this.$message.success('注册成功!')
-              this.loading = false
-            })
-            .catch(e => {
-              this.loading = false
-            })
+            if(!this.checkcode){
+            this.$message.warning('请获取验证码！')
+            return
+          }else if(this.checkcode != this.randomCode){
+            this.$message.warning('验证码错误！')
+            return
+          }else{
+            this.loading = true
+            this.$store
+              .dispatch('RegisterByUserPhone', this.registerForm)
+              .then(() => {
+                this.$message.success('注册成功!')
+                // this.$refs['registerForm'].resetFields()
+                this.loading = false
+              })
+              .catch(e => {
+                this.loading = false
+              })
+          }
         } else {
           console.log('error submit!!')
           return false
         }
       })
     },
+    getAuthCode(){
+      if(!this.registerForm.userphone){
+        this.$message.warning('请填写手机号码!')
+      }else{
+        this.haveCode = !this.haveCode
+        let getCode = setInterval(() => {
+          if(this.second == 1){
+            this.haveCode = !this.haveCode
+            this.second = 10
+            clearInterval(getCode)
+          }
+          this.second--
+        },1000)
+        this.randomCode = (Math.random() + '0').substring(2,8)
+        console.log(this.randomCode)
+
+        let url = '/authCode'
+        let data = {
+            mobile: this.registerForm.userphone,
+            tpl_id: 125504,
+            tpl_value: '#app#=草鹨旅行网&#code#=' + this.randomCode,
+            key: 'be9597def9ecf3dc72a9473459572100'
+        }
+        axios({
+            method: 'get',
+            url: url,
+            params: data
+        }).then((res) => {
+            if(res.data.reason =='操作成功'){
+                this.$message.success('验证码已发送!')
+            }
+        })
+      }
+    },
     toRegister() {
+      this.$refs['registerForm'].resetFields()
       this.isLogin = false
     },
     toLogin(){
+      this.$refs['loginForm'].resetFields()
       this.isLogin = true
     }
   }
@@ -202,7 +257,7 @@ export default {
       display: block;
       width: 350px;
       height: 400px;
-      margin: 10% auto 100px;
+      margin: 8% auto 100px;
       padding: 5px;
       cursor: pointer;
       z-index: 3;
@@ -226,6 +281,21 @@ export default {
       }
       .loginForm {
         margin: 40px 20px;
+        .codeForm{
+          .el-form-item__content{
+              display: flex;
+            .codeInput{
+              width: 54%;
+              .el-input__inner{
+                width: 97%;
+              }
+            }
+            .codeBtn{
+              padding: 12px 7px;
+              width: 31%;
+            }
+          }
+        }
       }
       .el-form-item {
           padding: 0 14px;

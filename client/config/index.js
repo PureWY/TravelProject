@@ -18,6 +18,13 @@ module.exports = {
               '^/weather': ''
           }
       },
+      '/authCode': {
+        target: 'http://v.juhe.cn/sms/send',
+        changeOrigin: true,
+        pathRewrite: {
+            '^/authCode': ''
+        }
+    },
     },
 
     // Various Dev Server settings
