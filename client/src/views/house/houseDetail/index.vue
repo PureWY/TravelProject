@@ -224,7 +224,7 @@ export default {
     name: 'houseDetail',
     data(){
         return{
-            url: "http://192.168.43.10:3333/",
+            url: "http://192.168.31.16:3333/",
             roomId: '',
             detailInfo: {},
             map: null,
@@ -258,6 +258,7 @@ export default {
                 citysearch.getLocalCity(function(status, result) {
                     if (status === 'complete' && result.info === 'OK') {
                         _this.currentCity = result.city
+                        console.log(_this.currentCity)
                         _this.getWeather()
                     }else{
                         console.log('获取地理信息失败')
