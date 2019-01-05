@@ -169,7 +169,7 @@ export default {
               .dispatch('RegisterByUserPhone', this.registerForm)
               .then(() => {
                 this.$message.success('注册成功!')
-                // this.$refs['registerForm'].resetFields()
+                this.$refs['registerForm'].resetFields()
                 this.loading = false
               })
               .catch(e => {
@@ -222,6 +222,7 @@ export default {
     },
     toLogin(){
       this.$refs['loginForm'].resetFields()
+      this.checkcode = ''
       this.isLogin = true
     }
   }
