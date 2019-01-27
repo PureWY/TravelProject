@@ -21,63 +21,47 @@
                     <el-col :span="5">
                         <div class="commonStyle leftSelect">
                             <el-collapse v-model="activeNames"  @change="handleChange">
-                            <el-collapse-item class="commonStyle" title="星级" name="1">
-                                <div class="starSelect">
-                                    <el-rate
-                                        :texts="starClass"
-                                        show-text
-                                        v-model="listQuery.starNums">
-                                    </el-rate>
+                            <el-collapse-item class="commonStyle" title="地点" name="1">
+                                <div class="placesSelect">
+                                    <el-input placeholder="请输入租车位置" v-model="carCity" class="input-with-select">
+                                        <el-button slot="append" @click="handleQuery" icon="el-icon-search"></el-button>
+                                    </el-input>
                                 </div>
                             </el-collapse-item>
-                            <el-collapse-item class="commonStyle" title="点评分数" name="2">
-                                <div class="numberSelect">
-                                    <el-rate
-                                        v-model="listQuery.gradeClass"
-                                        show-score
-                                        text-color="#3E4B59"
-                                        score-template="{value}分">
-                                    </el-rate>
-                                </div>
+                            <el-collapse-item class="commonStyle" title="车辆价格" name="2">
+                                    <div class="lowPrice">
+                                        <span>最低价：</span>
+                                        <el-input-number :min='100' :max='499' size="mini" v-model="listQuery.lowPrice"></el-input-number>
+                                    </div>
+                                    <div>
+                                        <span>最高价：</span>
+                                        <el-input-number :max='500' :min='101' size="mini" v-model="listQuery.highPrice"></el-input-number>
+                                    </div>
                             </el-collapse-item>
-                            <el-collapse-item class="commonStyle" title="免费提供" name="3">
+                            <el-collapse-item class="commonStyle" title="车身类型" name="3">
                                 <div class="eatSelect">
                                     <ul class="eatUl">
-                                        <li v-for="(value,index) in serviceName" :key="value">
+                                        <li v-for="(value,index) in carType" :key="value">
                                             <span>{{value}}</span>
-                                            <span class="middleNum">233家</span>
+                                            <span class="middleNum">21辆</span>
                                             <span class="rightCheck">
                                                 <el-switch
-                                                v-model="listQuery.freeService[index]"
+                                                v-model="listQuery.carType[index]"
                                                 active-color="#E9451A">
                                                 </el-switch>
                                             </span></li>
                                     </ul>
                                 </div>
                             </el-collapse-item>
-                            <el-collapse-item class="commonStyle" title="酒店名称" name="4">
-                                <div class="nameSelect">
-                                    <el-input placeholder="请输入酒店名称" v-model="houseName" class="input-with-select">
-                                        <el-button slot="append" @click="handleQuery" icon="el-icon-search"></el-button>
-                                    </el-input>
-                                </div>
-                            </el-collapse-item>
-                            <el-collapse-item class="commonStyle" title="地点" name="5">
-                                <div class="placesSelect">
-                                    <el-input placeholder="请输入酒店位置" v-model="houseCity" class="input-with-select">
-                                        <el-button slot="append" @click="handleQuery" icon="el-icon-search"></el-button>
-                                    </el-input>
-                                </div>
-                            </el-collapse-item>
-                            <el-collapse-item class="commonStyle" title="住宿类型" name="6">
-                                <div class="typeSelect">
-                                    <ul class="typeUl">
-                                        <li v-for="(value,index) in typeName" :key="value">
+                            <el-collapse-item class="commonStyle" title="车辆座位" name="4">
+                                <div class="eatSelect">
+                                    <ul class="eatUl">
+                                        <li v-for="(value,index) in carSite" :key="value">
                                             <span>{{value}}</span>
-                                            <span class="middleNum">233家</span>
+                                            <span class="middleNum">21辆</span>
                                             <span class="rightCheck">
                                                 <el-switch
-                                                v-model="listQuery.houseType[index]"
+                                                v-model="listQuery.carSite[index]"
                                                 active-color="#E9451A">
                                                 </el-switch>
                                             </span></li>
@@ -117,23 +101,22 @@ export default {
   data() {
     return {
         queryCity:'',
-        activeNames: ['1','2','3','4','5','6'],
+        num7: 3,
+        activeNames: ['1','2','3','4'],
         // activeNames: [],
         loading: false,
         listQuery: {
-            starNums: null,
-            gradeClass: null,
-            freeService: [true,true,true,false],
-            houseType: [true,true,true],
+            lowPrice: 102,
+            highPrice: 201,
+            carType: [true,true,true,false,false],
+            carSite: [true,true,true],
             houseName: '',
             houseDetailPlace: ''
         },
-        houseName: '',
-        houseCity: '',
-        serviceName: ["免费早餐","免费网络","免费停车","免费取消"],
-        typeName: ["经济型酒店","舒适型酒店","豪华型酒店"],
-        starClass: ["一星级","二星级","三星级","四星级","五星级"],
-        loop: [1,2,3,4,5,6,7,8,9,10],
+        carCity: '',
+        carType: ["小型车","中型车","SUV","大型SUV"],
+        carSite: ["双人座","五人座","七人座"],
+        carPrice: [100,200,300],
         houseInfo: []
     };
   },
@@ -141,6 +124,10 @@ export default {
       this.queryCity = JSON.parse(sessionStorage.getItem('queryHotel'))
   },
   methods: {
+      handleChange(val) {
+      },
+      handleQuery(){
+      }
   }
 };
 </script>
@@ -197,6 +184,9 @@ export default {
             }
             .commonStyle{
                 margin-bottom: 10px;
+                .lowPrice{
+                    margin-bottom: 15px;
+                }
             }
             .leftSelect{
                 .starSelect{
