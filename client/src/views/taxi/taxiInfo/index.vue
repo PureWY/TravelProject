@@ -74,9 +74,85 @@
                             </div>
                         </div>
                     </el-col>
-                    <el-col v-loading="loading" element-loading-text="正在查询酒店信息" :span="13">
-                        <div class="commonStyle middleContent" v-for="house in houseInfo" :key="house._id">
-                            
+                    <el-col v-loading="loading" element-loading-text="正在查询租车信息" :span="13">
+                        <div class="commonStyle middleContent" v-for="taxi in taxiInfo" :key="taxi._id">
+                            <el-row>
+                              <el-col :span="18">
+                                  <div class="common detailInfo">
+                                      <div class="carName">
+                                          <div class="title">
+                                              <span>{{taxi.carEngName}}</span>
+                                              <i class="el-icon-question"></i>
+                                          </div>
+                                          <div class="tag">
+                                              <span>{{taxi.carType}}</span> / <span>{{taxi.carDoorType}}</span>
+                                          </div>
+                                      </div>
+                                      <div class="carMainInfo">
+                                          <el-row>
+                                            <el-col :span="12">
+                                                <div class="carService">
+                                                    <div class="serverList">
+                                                        <ul>
+                                                            <li>
+                                                                <div class="icon"><img src="../../../assets/img/user.png" /><span>{{taxi.carSites}} 人</span></div>
+                                                            </li>
+                                                            <li>
+                                                                <div class="icon"><img src="../../../assets/img/bag.png" /><span>{{taxi.carBaggages}} L</span></div>
+                                                            </li>
+                                                            <li>
+                                                                <div class="icon"><img src="../../../assets/img/oil.png" /><span>{{taxi.carOil}} L</span></div>
+                                                            </li>
+                                                            <li>
+                                                                <div class="icon"><img src="../../../assets/img/lihe.png" /><span>{{taxi.carAuto}}</span></div>
+                                                            </li>
+                                                            <li>
+                                                                <div class="icon"><img src="../../../assets/img/kongtiao.png" /><span>{{taxi.carHaveMotion}}</span></div>
+                                                            </li>
+                                                            <li>
+                                                                <div class="icon"><img src="../../../assets/img/window.png" /><span>{{taxi.carHaveWindow}}</span></div>
+                                                            </li>
+                                                        </ul>
+                                                    </div>
+                                                </div>
+                                                
+                                            </el-col>
+                                            <el-col :span="12">
+                                                <div class="carImg">
+                                                    <img src="../../../assets/img/troc.jpg" />
+                                                </div>
+                                            </el-col>
+                                          </el-row>
+                                      </div>
+                                      <div class="offer">
+                                          <div class="offerInfo"><img src="../../../assets/img/yes.png" /> 燃油政策：等量取还</div>
+                                          <div class="offerInfo"><img src="../../../assets/img/yes.png" /> {{taxi.carHaveLimit}}</div>
+                                          <div class="offerInfo"><img src="../../../assets/img/yes.png" /> 车损险</div>
+                                          <div class="offerInfo"><img src="../../../assets/img/yes.png" /> {{taxi.carForFunc}}</div>
+                                      </div>
+                                  </div>
+                              </el-col>
+                              <el-col :span="6">
+                                  <div class="common priceInfo">
+                                      <div class="top">
+                                          <div>*温馨提示：</div>
+                                          <ul>
+                                              <li>请勿酒后驾车</li>
+                                              <li>请勿车内吸烟</li>
+                                              <li>请勿携带宠物</li>
+                                              <li>请勿疲劳驾驶</li>
+                                              <li>请勿损坏车辆</li>
+                                          </ul>
+                                          <div class="prices">
+                                              ￥{{taxi.carPrice}}
+                                          </div>
+                                      </div>
+                                      <div class="bottom">
+                                          <el-button class="button">确认预订</el-button>
+                                      </div>
+                                  </div>    
+                              </el-col>
+                            </el-row>
                         </div>
                     </el-col>
                     <el-col :span="6">
@@ -96,6 +172,9 @@ import {
     queryHotel,
     screenQueryHotel
 } from '../../../api/hotel/index.js'
+import {
+    queryTaxi
+} from '../../../api/taxi/index.js'
 export default {
   name: "taxiInfo",
   data() {
@@ -117,16 +196,33 @@ export default {
         carType: ["小型车","中型车","SUV","大型SUV"],
         carSite: ["双人座","五人座","七人座"],
         carPrice: [100,200,300],
-        houseInfo: []
+        taxiInfo: []
     };
   },
   created() {
-      this.queryCity = JSON.parse(sessionStorage.getItem('queryHotel'))
+      this.queryCity = sessionStorage.getItem('taxiCity')
+      this.handleQuery()
   },
   methods: {
       handleChange(val) {
       },
       handleQuery(){
+        let parmas = {
+            taxiCity: this.queryCity
+        }
+        queryTaxi(parmas).then(res => {
+            if(res.data.code == 200){
+                this.taxiInfo = res.data.body
+                console.log(this.taxiInfo)
+            }else{
+                this.$message({
+                    message: res.data.message,
+                    type: 'warning'
+                });
+            }
+        }).catch((err) => {
+            console.log(err)
+        })
       }
   }
 };
@@ -281,6 +377,133 @@ export default {
                 border-color: transparent!important;
                 box-shadow: 0 0 2px 0 rgba(19,26,31,0.12),0 2px 4px 0 rgba(19,26,31,0.22)!important;
                 margin-bottom: 20px;
+                .common{
+                    height: 240px;
+                }
+                .detailInfo{
+                    padding: 15px;
+                    .carName{
+                        height: 45px;
+                        .title{
+                            display: flex;
+                            align-items: center;
+                            span{
+                                font-weight: 500;
+                                color: #17232c;
+                                font-size: 1.1rem;
+                                margin-right: 5px;
+                            }
+                        }
+                        .tag{
+                            padding-top: 4px;
+                            span{
+                                color: #6d8494;
+                                font-size: 0.8rem;
+                            }
+                        }
+                        
+                    }
+                    .carMainInfo{
+                        .carService{
+                            .serverList{
+                                height: 70px;
+                                ul{
+                                    list-style: none;
+                                    padding: 0;
+                                    margin: 0;
+                                    display: block;
+                                    li{
+                                        float: left;
+                                        display: inline-block;
+                                        margin: 0 10px 10px 0px;
+                                        border-radius: 3%;
+                                        width: 80px;
+                                        height: 40px;
+                                        overflow: hidden;
+                                        cursor: pointer;
+                                        padding: 0;
+                                        .icon{
+                                            display: flex;
+                                            align-items: center;
+                                            padding-top: 15px;
+                                            span{
+                                                margin-left: 7px;
+                                                font-size: 0.8rem
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                            .outService{
+                                height: 70px;
+                            }
+                        }
+                        
+                        .carImg{
+                            height: 140px;
+                            img{
+                                width: 100%;
+                                height: 100%;
+                            }
+                        }
+                    }
+                    .offer{
+                        height: 45px;
+                        border-top-color: #dae0e5;
+                        border-top-width: 1px;
+                        border-top-style: solid;
+                        padding-top: 10px;
+                        .offerInfo{
+                            width: 180px;
+                            height: 20px;
+                            float: left;
+                        }
+                    }
+                }
+                .priceInfo{
+                    padding: 15px 15px 15px 0;
+                    border-left-color: #dae0e5;
+                    border-left-style: solid;
+                    border-left-width: 1px;
+                    .top{
+                        height: 175px;
+                        padding-left: 15px;
+                        padding-top: 10px;
+                        .prices{
+                            color: #EC6916;
+                            font-weight: 600;
+                            font-size: 1.6rem;
+                        }
+                        ul{
+                            margin: 0;
+                            padding: 10px 10px 5px 10px;
+                            li{
+                                font-size: 0.9rem;
+                                color: #6d8494;
+                                margin-bottom: 5px;
+                            }
+                        }
+                    }
+                    .bottom{
+                        height: 60px;
+                        padding-left: 15px;
+                        display: flex;
+                        align-items: center;
+                        .button{
+                            background-color: #E9451A;
+                            color: #fff;
+                            border-radius: 0px;
+                        }
+                       .el-button{
+                            border-radius: 0px;
+                            background-color: #EC6916;
+                            color: #fff;
+                        }
+                        .el-button:hover{
+                            background-color: #E9451A;
+                        }
+                    }
+                }
                 
             }
             .rightAdvs{

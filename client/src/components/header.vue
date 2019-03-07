@@ -57,7 +57,7 @@ export default {
     return {
       userphone: '',
       activeName: '',
-      baseUrl: 'http://192.168.43.10:3333/',
+      baseUrl: 'http://192.168.1.101:3333/',
     }
   },
   created() {
