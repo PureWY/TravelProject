@@ -267,8 +267,8 @@ export default {
         usercard: '',
         useraddress: ''
       },
-      imgServer: 'http://192.168.43.10:3333/user/uploadHeadImg',
-      baseUrl: 'http://192.168.43.10:3333/',
+      imgServer: 'http://192.168.1.101:3333/user/uploadHeadImg',
+      baseUrl: 'http://192.168.1.101:3333/',
       userHeadImg: '',
       options: [
         {

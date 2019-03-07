@@ -123,7 +123,7 @@ export default {
                             message: res.data.message,
                             type: 'success'
                         });
-                      sessionStorage.setItem('taxiCity',this.hireCity)
+                      sessionStorage.setItem('taxiCity',this.listQuery.hireCity)
                       this.$router.push('taxi/taxiInfo')
                   }else{
                       this.$message({
