@@ -148,7 +148,7 @@
                                           </div>
                                       </div>
                                       <div class="bottom">
-                                          <el-button class="button">确认预订</el-button>
+                                          <el-button @click="handlePay" class="button">确认预订</el-button>
                                       </div>
                                   </div>    
                               </el-col>
@@ -205,6 +205,9 @@ export default {
   },
   methods: {
       handleChange(val) {
+      },
+      handlePay(){
+          this.$router.push('./taxiPay')
       },
       handleQuery(){
         let parmas = {
