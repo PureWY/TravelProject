@@ -20,7 +20,7 @@
                           <div class="carName">
                               <h3>TRO-C 探歌</h3>
                               <div class="info">三厢/自动/1.5T</div>
-                              <el-button size="medium" type="primary">查看配置信息</el-button>
+                              <el-button size="medium" @click="dialogVisible = true" type="primary">查看配置信息</el-button>
                               <el-button size="medium">修改订单</el-button>
                           </div>
                       </div>
@@ -103,6 +103,57 @@
                 </div>
                 
             </div>
+
+            <el-dialog
+            title="雪佛兰科鲁兹配置信息"
+            :visible.sync="dialogVisible"
+            width="580px"
+            :before-close="handleClose">
+            <div class="detailList">
+                <ul>
+                    <li>
+                        <b>座 位 数: </b><span>5个</span>
+                    </li>
+                    <li>
+                        <b>车 门 数：</b><span>4个</span>
+                    </li>
+                    <li>
+                        <b>燃料类型：</b><span>汽油</span>
+                    </li>
+                    <li>
+                        <b>变速箱类型：</b><span>AT</span>
+                    </li>
+                    <li>
+                        <b>排　　量：</b><span>1.6T</span>
+                    </li>
+                    <li>
+                        <b>燃油标号：</b><span>92-93汽油</span>
+                    </li>
+                    <li>
+                        <b>驱动方式：</b><span>前驱</span>
+                    </li>
+                    <li>
+                        <b>发动机进气形式：</b><span>自然吸气</span>
+                    </li>
+                    <li>
+                        <b>天　　窗：</b><span>单天窗</span>
+                    </li>
+                    <li>
+                        <b>油箱容量：</b><span>60L</span>
+                    </li>
+                    <li>
+                        <b>倒车雷达：</b><span>无</span>
+                    </li>
+                    <li>
+                        <b>GPS导航：</b><span>无</span>
+                    </li>
+                </ul>
+            </div>
+            <span slot="footer" class="dialog-footer">
+                <el-button @click="dialogVisible = false">取 消</el-button>
+                <el-button type="primary" @click="dialogVisible = false">确 定</el-button>
+            </span>
+            </el-dialog>
         </div>
     </div>
   </div>
@@ -149,6 +200,7 @@ export default {
     }
     }
     return {
+        dialogVisible: false,
         orderForm: {
             username: '',
             userphone: '',
@@ -165,8 +217,18 @@ export default {
                 { validator: validate3, trigger: 'change' }
             ]
         }
-    };
-  }
+    }
+  },
+
+  methods: {
+    handleClose(done) {
+    this.$confirm('确认关闭？')
+        .then(_ => {
+        done();
+        })
+        .catch(_ => {});
+    }
+}
 };
 </script>
 
@@ -315,6 +377,25 @@ export default {
                     .el-button:hover{
                         background-color: #E9451A;
                     }
+                }
+            }
+        }
+        .detailList{
+            ul{
+                width: 560px;
+                margin: 0 auto;
+                padding: 0;
+                overflow: hidden;
+                list-style: none;
+                margin-left: 3%;
+                li{
+                    float: left;
+                    width: 45%;
+                    border-bottom: 1px dashed #e4e6e9;
+                    font-size: 14px;
+                    height: 39px;
+                    line-height: 39px;
+                    color: #93939e;
                 }
             }
         }
