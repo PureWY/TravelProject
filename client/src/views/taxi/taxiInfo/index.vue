@@ -125,10 +125,9 @@
                                           </el-row>
                                       </div>
                                       <div class="offer">
-                                          <div class="offerInfo"><img src="../../../assets/img/yes.png" /> 燃油政策：等量取还</div>
                                           <div class="offerInfo"><img src="../../../assets/img/yes.png" /> {{taxi.carHaveLimit}}</div>
-                                          <div class="offerInfo"><img src="../../../assets/img/yes.png" /> 车损险</div>
                                           <div class="offerInfo"><img src="../../../assets/img/yes.png" /> {{taxi.carForFunc}}</div>
+                                          <div class="offerInfoPlus"><i class="el-icon-location"></i>{{taxi.carDetailPlace}}</div>
                                       </div>
                                   </div>
                               </el-col>
@@ -474,6 +473,16 @@ export default {
                             width: 180px;
                             height: 20px;
                             float: left;
+                        }
+                        .offerInfoPlus{
+                            height: 20px;
+                            padding-top: 5px;
+                            margin-left: -2px;
+                            color: #6d8494;
+                            float: left;
+                            i{
+                                margin-right: 2px;
+                            }
                         }
                     }
                 }
