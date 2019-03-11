@@ -15,13 +15,13 @@
               </div>
               <div class="detailRight">
                 <p>个性签名</p>
-                <span class="middle" v-if="userInfo.usersign">
+                <span class="middle">
                   <span v-show="!changeSign">{{userInfo.usersign}}</span>&nbsp;&nbsp;
                   <el-button @click="handleUserSign" v-show="!changeSign" size="mini" round>修改</el-button>
                   <el-input :maxlength="20" v-show="changeSign" v-model="userInfo.usersign" :placeholder="userInfo.usersign"></el-input>
                   <el-button @click="handleSaveSign" v-show="changeSign" size="mini" type="primary" round>保存</el-button>
                 </span>
-                <span class="middle" v-else>你曾是少年</span>
+                <!-- <span class="middle" v-else>你曾是少年</span> -->
               </div>
             </div>
           </div>
@@ -267,8 +267,8 @@ export default {
         usercard: '',
         useraddress: ''
       },
-      imgServer: 'http://192.168.1.106:3333/user/uploadHeadImg',
-      baseUrl: 'http://192.168.1.106:3333/',
+      imgServer: 'http://192.168.43.10:3333/user/uploadHeadImg',
+      baseUrl: 'http://192.168.43.10:3333/',
       userHeadImg: '',
       options: [
         {
@@ -319,7 +319,7 @@ export default {
   },
   methods: {
     handleClick(tab) {
-      console.log(this.$store.state)
+      console.log(this.userInfo)
     },
     hanleChange(formName) {
       this.$refs[formName].validate(valid => {
@@ -383,8 +383,6 @@ export default {
       let form = new FormData();
       //文件对象，key是后台接受的参数名称
       form.append("uploadFile",fileObj);
-
-      console.log(form)
       uploadHeadImg(form).then((res) => {
 
       })

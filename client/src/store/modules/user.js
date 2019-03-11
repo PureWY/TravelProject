@@ -24,7 +24,7 @@ const user = {
       username: '',
       usercard: '',
       useraddress: '',
-      usersign: '',
+      usersign: '你曾是少年',
       userimg: ''
     }
   },
