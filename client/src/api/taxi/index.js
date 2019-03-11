@@ -8,3 +8,12 @@ export function queryTaxi(data) {
         data: JSON.stringify(data)
       })
  }
+
+ //模糊查询租车信息
+export function screenQueryTaxi(data) { 
+    return request({
+        url: '/car/screenQueryTaxi',
+        method: 'post',
+        data: JSON.stringify(data)
+      })
+ }
