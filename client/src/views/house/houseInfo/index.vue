@@ -214,6 +214,7 @@ export default {
           this.listQuery.houseCityPlace = this.queryCity
           this.listQuery.houseName = this.houseName == '' ? '' : this.houseName
           this.listQuery.houseDetailPlace = this.houseCity == '' ? '' : this.houseCity
+          console.log(this.listQuery)
           screenQueryHotel(this.listQuery).then(res => {
               if(res.data.code == 200){
                   setTimeout(() => {

@@ -23,8 +23,8 @@
                             <el-collapse v-model="activeNames"  @change="handleChange">
                             <el-collapse-item class="commonStyle" title="地点" name="1">
                                 <div class="placesSelect">
-                                    <el-input placeholder="请输入租车位置" v-model="carCity" class="input-with-select">
-                                        <el-button slot="append" @click="handleQuery" icon="el-icon-search"></el-button>
+                                    <el-input placeholder="请输入租车位置" v-model="listQuery.taxiPlace" class="input-with-select">
+                                        <el-button slot="append" @click="handleScreenQuery" icon="el-icon-search"></el-button>
                                     </el-input>
                                 </div>
                             </el-collapse-item>
@@ -70,7 +70,7 @@
                             </el-collapse-item>
                             </el-collapse>
                             <div class="screenQuery">
-                                <el-button @click="handleQuery" class="btn">筛选查询</el-button>
+                                <el-button @click="handleScreenQuery" class="btn">筛选查询</el-button>
                             </div>
                         </div>
                     </el-col>
@@ -169,11 +169,8 @@
 
 <script>
 import {
-    queryHotel,
-    screenQueryHotel
-} from '../../../api/hotel/index.js'
-import {
-    queryTaxi
+    queryTaxi,
+    screenQueryTaxi
 } from '../../../api/taxi/index.js'
 export default {
   name: "taxiInfo",
@@ -181,16 +178,15 @@ export default {
     return {
         queryCity:'',
         num7: 3,
+        loading: false,
         activeNames: ['1','2','3','4'],
         // activeNames: [],
-        loading: false,
         listQuery: {
             lowPrice: 100,
             highPrice: 499,
             carType: [true,true,true,true],
             carSite: [true,true,true],
-            houseName: '',
-            houseDetailPlace: ''
+            taxiPlace: '',
         },
         carCity: '',
         carType: ["小型车","中型车","SUV","大型SUV"],
@@ -225,6 +221,24 @@ export default {
             }
         }).catch((err) => {
             console.log(err)
+        })
+      },
+
+      handleScreenQuery(){
+        this.loading = true
+        this.listQuery.carCity = this.queryCity
+        console.log(this.listQuery)
+        screenQueryTaxi(this.listQuery).then(res => {
+            if(res.data.code == 200){
+                setTimeout(() => {
+                    this.taxiInfo = res.data.body
+                    this.loading = false
+                },2000)
+            }
+        }).catch(() => {
+            setTimeout(() => {
+            this.loading = false
+            },1000)
         })
       }
   }
