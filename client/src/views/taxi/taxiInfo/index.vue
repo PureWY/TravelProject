@@ -31,11 +31,11 @@
                             <el-collapse-item class="commonStyle" title="车辆价格" name="2">
                                     <div class="lowPrice">
                                         <span>最低价：</span>
-                                        <el-input-number :min='100' :max='499' size="mini" v-model="listQuery.lowPrice"></el-input-number>
+                                        <el-input-number :min='100' :max="listQuery.highPrice-1" size="mini" v-model="listQuery.lowPrice"></el-input-number>
                                     </div>
                                     <div>
                                         <span>最高价：</span>
-                                        <el-input-number :max='500' :min='101' size="mini" v-model="listQuery.highPrice"></el-input-number>
+                                        <el-input-number :max='500' :min="listQuery.lowPrice+1" size="mini" v-model="listQuery.highPrice"></el-input-number>
                                     </div>
                             </el-collapse-item>
                             <el-collapse-item class="commonStyle" title="车身类型" name="3">
@@ -185,9 +185,9 @@ export default {
         // activeNames: [],
         loading: false,
         listQuery: {
-            lowPrice: 102,
-            highPrice: 201,
-            carType: [true,true,true,false,false],
+            lowPrice: 100,
+            highPrice: 499,
+            carType: [true,true,true,true],
             carSite: [true,true,true],
             houseName: '',
             houseDetailPlace: ''
