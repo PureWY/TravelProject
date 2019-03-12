@@ -27,10 +27,10 @@
                         <el-date-picker
                         class="datePicker"
                         v-model="listQuery.hireTime"
-                        type="daterange"
+                        type="datetimerange"
                         align="right"
                         unlink-panels
-                        value-format="yyyy-MM-dd"
+                        value-format="yyyy-MM-dd HH:mm:ss"
                         range-separator="|"
                         start-placeholder="租车日期"
                         end-placeholder="还车日期"
@@ -124,6 +124,7 @@ export default {
                             type: 'success'
                         });
                       sessionStorage.setItem('taxiCity',this.listQuery.hireCity)
+                      sessionStorage.setItem('hireTime',this.listQuery.hireTime)
                       this.$router.push('taxi/taxiInfo')
                   }else{
                       this.$message({

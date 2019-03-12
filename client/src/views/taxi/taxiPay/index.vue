@@ -18,8 +18,8 @@
                               <img src="../../../assets/img/troc.jpg" />
                           </div>
                           <div class="carName">
-                              <h3>TRO-C 探歌</h3>
-                              <div class="info">三厢/自动/1.5T</div>
+                              <h3>{{this.carInfo.carEngName}}</h3>
+                              <div class="info">{{this.carInfo.carDoorType}}/{{this.carInfo.carAuto}}/{{this.carInfo.carDisplacement}}T</div>
                               <el-button size="medium" @click="dialogVisible = true" type="primary">查看配置信息</el-button>
                               <el-button size="medium">修改订单</el-button>
                           </div>
@@ -37,11 +37,11 @@
                                     <div class="timeInfo">
                                         <p>
                                             <i class="el-icon-time"></i>
-                                            <span> 2019-03-08 13:56</span>
+                                            <span> {{this.hireTime[0]}}</span>
                                         </p>
                                         <p>
                                             <i class="el-icon-location-outline"></i>
-                                            <span>石家庄 正定机场接送点</span>
+                                            <span>{{this.carInfo.carGetPlace}}</span>
                                         </p>
                                     </div>
                                 </div>
@@ -55,11 +55,11 @@
                                     <div class="timeInfo">
                                         <p>
                                             <i class="el-icon-time"></i>
-                                            <span> 2019-03-15 12:00</span>
+                                            <span> {{this.hireTime[1]}}</span>
                                         </p>
                                         <p>
                                             <i class="el-icon-location-outline"></i>
-                                            <span>石家庄 正定机场接送点</span>
+                                            <span>{{this.carInfo.carGetPlace}}</span>
                                         </p>
                                     </div>
                                 </div>
@@ -98,54 +98,57 @@
                     </div>
                     <hr/>
                     <div class="subOrder">
-                        <el-button>提交订单</el-button>
+                        <div class="orderBtn">
+                            共计：<span class="price">￥{{this.allPrice}}</span>
+                            <el-button @click="handleSubmit">提交订单</el-button>
+                        </div>
                     </div>
                 </div>
                 
             </div>
 
             <el-dialog
-            title="雪佛兰科鲁兹配置信息"
+            :title="this.carEngName"
             :visible.sync="dialogVisible"
             width="580px"
             :before-close="handleClose">
             <div class="detailList">
                 <ul>
                     <li>
-                        <b>座 位 数: </b><span>5个</span>
+                        <b>座 位 数: </b><span>{{this.carInfo.carSites}}个</span>
                     </li>
                     <li>
-                        <b>车 门 数：</b><span>4个</span>
+                        <b>车 门 数：</b><span>{{this.carInfo.carDoorNum}}个</span>
                     </li>
                     <li>
-                        <b>燃料类型：</b><span>汽油</span>
+                        <b>燃料类型：</b><span>{{this.carInfo.carOliType}}</span>
                     </li>
                     <li>
-                        <b>变速箱类型：</b><span>AT</span>
+                        <b>变速箱类型：</b><span>{{this.carInfo.carBoxType}}</span>
                     </li>
                     <li>
-                        <b>排　　量：</b><span>1.6T</span>
+                        <b>排　　量：</b><span>{{this.carInfo.carDisplacement}}T</span>
                     </li>
                     <li>
-                        <b>燃油标号：</b><span>92-93汽油</span>
+                        <b>行李箱容积：</b><span>{{this.carInfo.carBaggages}}L</span>
                     </li>
                     <li>
-                        <b>驱动方式：</b><span>前驱</span>
+                        <b>驱动方式：</b><span>{{this.carInfo.carPrime}}</span>
                     </li>
                     <li>
-                        <b>发动机进气形式：</b><span>自然吸气</span>
+                        <b>发动机进气形式：</b><span>{{this.carInfo.carEnterprising}}</span>
                     </li>
                     <li>
-                        <b>天　　窗：</b><span>单天窗</span>
+                        <b>天　　窗：</b><span>{{this.carInfo.carWindowType}}</span>
                     </li>
                     <li>
-                        <b>油箱容量：</b><span>60L</span>
+                        <b>油箱容量：</b><span>{{this.carInfo.carOil}}L</span>
                     </li>
                     <li>
-                        <b>倒车雷达：</b><span>无</span>
+                        <b>倒车雷达：</b><span>{{this.carInfo.carBackRadar}}</span>
                     </li>
                     <li>
-                        <b>GPS导航：</b><span>无</span>
+                        <b>GPS导航：</b><span>{{this.carInfo.carGPS}}</span>
                     </li>
                 </ul>
             </div>
@@ -160,6 +163,9 @@
 </template>
 
 <script>
+var moment = require('moment');
+import { queryTaxiById }
+from '../../../api/taxi'
 export default {
   name: "taxiPay",
   
@@ -201,6 +207,9 @@ export default {
     }
     return {
         dialogVisible: false,
+        carInfo: {},
+        hireTime: [],
+        carEngName: '',
         orderForm: {
             username: '',
             userphone: '',
@@ -219,16 +228,45 @@ export default {
         }
     }
   },
+    created() {
+        this.getCarInfo()
+        this.hireTime[0] = sessionStorage.getItem('hireTime').substring(0,19)
+        this.hireTime[1] = sessionStorage.getItem('hireTime').substring(20,40)
+    },
+    computed: {
+      allTime(){
+          return moment(this.hireTime[1]).diff(moment(this.hireTime[0]),'days')
+      },
+      allPrice(){
+          return this.allTime * this.carInfo.carPrice
+      }  
+    },
+    methods: {
+        handleClose(done) {
+        this.$confirm('确认关闭？')
+            .then(_ => {
+            done();
+            })
+            .catch(_ => {});
+        },
 
-  methods: {
-    handleClose(done) {
-    this.$confirm('确认关闭？')
-        .then(_ => {
-        done();
-        })
-        .catch(_ => {});
-    }
-}
+        getCarInfo(){
+            queryTaxiById({
+                carId: sessionStorage.getItem('carId')
+            }).then(res => {
+                if(res.data.code == '200'){
+                    this.carInfo = res.data.body
+                    this.carEngName = this.carInfo.carEngName + ' 配置信息'
+                    console.log(this.carInfo)
+                }else{
+                    message.error('租车信息查询失败')
+                }
+            })
+        },
+
+        handleSubmit(){
+        }
+    },
 };
 </script>
 
@@ -365,17 +403,29 @@ export default {
                     margin: 20px 0;
                 }   
                 .subOrder{
-                    height: 50px;
-                    .el-button{
-                        float: right;
-                        height: 100%;
-                        width: 120px;
-                        border-radius: 0px;
-                        background-color: #EC6916;
-                        color: #fff;
-                    }
-                    .el-button:hover{
-                        background-color: #E9451A;
+                    height: 60px;
+                    padding-top: 10px;
+                    display: flex;
+                    align-items: center;
+                    flex-direction: row-reverse;
+                    .orderBtn{
+                        height: 50px;
+                        .price{
+                            color: #EB5456;
+                            font-size: 1.7rem;
+                            font-weight: 500;
+                        }
+                        .el-button{
+                            height: 100%;
+                            width: 120px;
+                            border-radius: 0px;
+                            background-color: #EC6916;
+                            color: #fff;
+                            margin-left: 40px;
+                        }
+                        .el-button:hover{
+                            background-color: #E9451A;
+                        }
                     }
                 }
             }

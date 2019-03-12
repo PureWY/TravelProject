@@ -117,7 +117,7 @@ const router =  new Router({
           path: 'taxiInfo',
           name: 'taxiInfo',
           component: _import('taxi/taxiInfo/index'),
-          // meta: { keepAlive: true },
+          meta: { keepAlive: true },
         },
         {
           path: 'taxiDetail',

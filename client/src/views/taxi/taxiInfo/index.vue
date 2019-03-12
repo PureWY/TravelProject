@@ -147,7 +147,7 @@
                                           </div>
                                       </div>
                                       <div class="bottom">
-                                          <el-button @click="handlePay" class="button">确认预订</el-button>
+                                          <el-button @click="handlePay(taxi.carId)" class="button">确认预订</el-button>
                                       </div>
                                   </div>    
                               </el-col>
@@ -201,7 +201,8 @@ export default {
   methods: {
       handleChange(val) {
       },
-      handlePay(){
+      handlePay(carId){
+          sessionStorage.setItem('carId',carId)
           this.$router.push('./taxiPay')
       },
       handleQuery(){

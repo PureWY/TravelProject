@@ -76,4 +76,31 @@ router.post('/screenQueryTaxi', function(req, res, next) {
   })
 })
 
+//根据Id查询租车信息
+router.post('/queryTaxiById', function(req, res, next) {
+  Car.find({
+      carId: req.body.carId
+  }, (err, car) => {
+  if (err) {
+    res.json({
+      code: 201,
+      message: '数据库异常'
+    })
+  } else {
+    if (!car.length) {
+      res.json({
+        code: 202,
+        message: '暂无租车信息'
+      })
+    } else {
+      res.json({
+        code: 200,
+        body: car[0],
+        message: '租车信息查询成功'
+      })
+    }
+  }
+})
+})
+
 module.exports = router;
