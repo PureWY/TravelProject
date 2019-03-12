@@ -21,6 +21,16 @@ var carSchema = new Schema({
     carImg: {type: String,trim: true},                     //汽车图片
     carTransit: {type: Array,default: []},                 //汽车经纬度
     carDoorType: {type: String,trim: true},                //汽车车门类型
+    carGetPlace: {type: String,trim: true},                //汽车接送点
+    carDoorNum: {type: Number,trim: true},                //汽车车门数
+    carOliType: {type: String,trim: true},                //汽车燃油类型
+    carBoxType: {type: String,trim: true},                //汽车变速箱类型
+    carDisplacement: {type: Number,trim: true},            //汽车排量
+    carPrime: {type: String,trim: true},                  //汽车驱动类型
+    carEnterprising: {type: String,trim: true},           //汽车进气类型
+    carWindowType: {type: String,trim: true},             //汽车天窗类型
+    carBackRadar: {type: String,trim: true},              //汽车倒车雷达
+    carGPS: {type: String,trim: true},                    //汽车GPS导航
   })
 
 //创建model
