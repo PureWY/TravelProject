@@ -99,7 +99,7 @@
                     <hr/>
                     <div class="subOrder">
                         <div class="orderBtn">
-                            共计：<span class="price">￥{{this.allPrice}}</span>
+                            <span>共计：<span class="price">￥{{this.allPrice}}</span></span>
                             <el-button @click="handleSubmit">提交订单</el-button>
                         </div>
                     </div>
@@ -164,7 +164,7 @@
 
 <script>
 var moment = require('moment');
-import { queryTaxiById }
+import { queryTaxiById,subTaxiOrder }
 from '../../../api/taxi'
 export default {
   name: "taxiPay",
@@ -265,6 +265,32 @@ export default {
         },
 
         handleSubmit(){
+            this.$refs.orderForm.validate(valid => {
+                if (valid) {
+                    let params = {
+                        ...this.orderForm,
+                        carName: this.carInfo.carName,
+                        carId: this.carInfo.carId,
+                        hireTime: this.hireTime,
+                        allTime: this.allTime,
+                        allPrice: this.allPrice,
+                        carCity: this.carInfo.carCity
+                    }
+                    subTaxiOrder(params).then(res => {
+                        if (res.data.code == 200) {
+                        this.$confirm('预订成功', '提示', {
+                            confirmButtonText: '确定',
+                            type: 'success'
+                        })
+                        } else {
+                            this.$message.error(res.data.message)
+                        }
+                    })
+                    } else {
+                        console.log('error submit!!')
+                        return false
+                    }
+            })
         }
     },
 };
@@ -410,6 +436,8 @@ export default {
                     flex-direction: row-reverse;
                     .orderBtn{
                         height: 50px;
+                        display: flex;
+                        align-items: center;
                         .price{
                             color: #EB5456;
                             font-size: 1.7rem;

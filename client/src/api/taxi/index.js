@@ -25,4 +25,13 @@ export function queryTaxiById(data) {
         method: 'post',
         data: JSON.stringify(data)
       })
+ }subTaxiOrder
+
+ //创建租车订单
+export function subTaxiOrder(data) { 
+    return request({
+        url: '/car/subTaxiOrder',
+        method: 'post',
+        data: JSON.stringify(data)
+      })
  }

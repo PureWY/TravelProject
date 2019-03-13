@@ -3,6 +3,7 @@ const router = express.Router();
 
 //引入模型
 const Car = require('../../models/car/taxi')
+const CarOrder = require('../../models/car/taxiOrder')
 
 //整体查询租车信息
 router.post('/queryTaxi', function(req, res, next) {
@@ -101,6 +102,23 @@ router.post('/queryTaxiById', function(req, res, next) {
     }
   }
 })
+})
+
+//创建租车订单
+router.post('/subTaxiOrder', function(req, res, next) {
+  CarOrder.create(req.body,(err,order) => {
+    if(err){
+      res.json({
+        code: 201,
+        message: '数据库异常'
+      })
+    }else{
+      res.json({
+        code: 200,
+        message: '订单创建成功'
+      })
+    }
+  })
 })
 
 module.exports = router;
