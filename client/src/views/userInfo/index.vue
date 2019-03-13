@@ -139,42 +139,42 @@
                       <div class="place divHeight">
                         <span v-if="choiceOrder == 'plane'">{{order.planeId}}</span>
                         <span v-else-if="choiceOrder == 'hotel'">{{order.roomId}}</span>
-                        <span v-else>{{order.planeId}}</span>
+                        <span v-else>{{order.carId}}</span>
                       </div>
                     </el-col>
                     <el-col :span="3">
                       <div class="place divHeight">
                         <span v-if="choiceOrder == 'plane'">{{order.flightName}}</span>
                         <span v-else-if="choiceOrder == 'hotel'">{{order.houseName}}</span>
-                        <span v-else>{{order.planeId}}</span>
+                        <span v-else>{{order.carName}}</span>
                       </div>
                     </el-col>
                     <el-col :span="3">
                       <div class="place divHeight">
                         <span v-if="choiceOrder == 'plane'">{{order.startCity}} - {{order.endCity}}</span>
                         <span v-else-if="choiceOrder == 'hotel'">{{order.name}}</span>
-                        <span v-else>{{order.planeId}}</span>
+                        <span v-else>{{order.carCity}}</span>
                       </div>
                     </el-col>
                     <el-col :span="8">
                       <div class="divHeight">
                         <span v-if="choiceOrder == 'plane'">{{order.startTime}} &nbsp;-&nbsp; {{order.endTime}}</span>
                         <span v-else-if="choiceOrder == 'hotel'">{{order.startTime}} &nbsp;-&nbsp; {{order.endTime}}</span>
-                        <span v-else>{{order.planeId}}</span>
+                        <span v-else>{{order.startTime}} &nbsp;-&nbsp; {{order.endTime}}</span>
                       </div>
                     </el-col>
                     <el-col :span="4">
                       <div class="divHeight">
                         <span v-if="choiceOrder == 'plane'">{{order.siteType}} &nbsp; ￥{{order.checkPrice}}</span>
                         <span v-else-if="choiceOrder == 'hotel'">{{order.allAmount}} 间 &nbsp;{{order.allTime}} 晚 &nbsp; ￥{{order.allPrice}}</span>
-                        <span v-else>{{order.planeId}}</span>
+                        <span v-else>{{order.allTime}} 天 &nbsp; ￥{{order.allPrice}}</span>
                       </div>
                     </el-col>
                     <el-col :span="3">
                       <div class="divHeight">
                         <span class="planeIcon" v-if="choiceOrder == 'plane'">已完成</span>
                         <span class="hotelIcon" v-else-if="choiceOrder == 'hotel'">去评论</span>
-                        <span class="carIcon" v-else>{{order.planeId}}</span>
+                        <span class="carIcon" v-else>已完成</span>
                       </div>
                     </el-col>
                   </el-row>
@@ -195,7 +195,7 @@ import headerComponent from '../../components/header'
 import footerComponent from '../../components/footer'
 import { VueCropper } from 'vue-cropper'
 import { changeInfo,uploadHeadImg,changeSign } from '../../api/user/modifiInfo.js'
-import { queryFlightOrder, deleteAllOrder, queryHouseOrder } from '../../api/order/orderInfo.js'
+import { queryFlightOrder, deleteAllOrder, queryHouseOrder, queryTaxiOrder } from '../../api/order/orderInfo.js'
 import { CHANGE_IMG } from '../../store/modules/user.js'
 export default {
   name: 'userInfo',
@@ -458,6 +458,22 @@ export default {
               i.startTime = i.time[0]
               i.endTime = i.time[1]
             }
+            this.isNoOrder = this.allOrderList.length == 0 ? true : false
+          } else {
+          }
+        })
+      }else{
+        let params = {
+          userphone: localStorage.getItem('userphone')
+        }
+        queryTaxiOrder(params).then(res => {
+          if (res.data.code == 200) {
+            this.allOrderList = res.data.body
+            for(let i of this.allOrderList){
+              i.startTime = i.hireTime[0]
+              i.endTime = i.hireTime[1]
+            }
+            console.log(this.allOrderList)
             this.isNoOrder = this.allOrderList.length == 0 ? true : false
           } else {
           }

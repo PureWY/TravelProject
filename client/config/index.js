@@ -9,6 +9,7 @@ module.exports = {
 
     // Paths
     assetsSubDirectory: 'static',
+    disableHostCheck: true,
     assetsPublicPath: '/',
     proxyTable: {
       '/weather': {

@@ -18,6 +18,15 @@ export function queryHouseOrder(data) {
   })
 }
 
+// 获取租车订单信息
+export function queryTaxiOrder(data) {
+  return request({
+    url: '/order/queryTaxiOrder',
+    method: 'post',
+    data: JSON.stringify(data)
+  })
+}
+
   // 删除所有订单信息
 export function deleteAllOrder(data) {
   return request({
