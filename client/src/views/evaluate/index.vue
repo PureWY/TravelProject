@@ -125,7 +125,7 @@ export default {
         }
     },
     created () {
-      this.hotelInfo = this.$route.params.orderInfo
+      this.hotelInfo = JSON.parse(sessionStorage.getItem('order'))
       console.log(this.hotelInfo)
     },
     methods: {

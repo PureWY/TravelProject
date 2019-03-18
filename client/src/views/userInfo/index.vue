@@ -482,7 +482,8 @@ export default {
     },
     handleEvaluate(order){
       console.log(order)
-      this.$router.push({name: 'evaluate', params: { orderInfo: order}})
+      sessionStorage.setItem('order',JSON.stringify(order))
+      this.$router.push('./evaluate')
     }
   }
 }
