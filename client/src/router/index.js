@@ -134,12 +134,12 @@ const router =  new Router({
       ]
     },
     {
-      path: '/evaluate/:orderInfo',
+      path: '/evaluate',
       name: 'evaluate',
       component: _import('evaluate/index'),
       meta: {
         title: '酒店评价',
-        keepAlive: true
+        // keepAlive: true
       }
     },
   ]
