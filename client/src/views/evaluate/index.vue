@@ -156,7 +156,10 @@ export default {
 
             createHotelComments(params).then(res => {
                 if(res.data.code == '200'){
-                    this.$message.success("评价成功！")
+                    this.$confirm('评价成功', '提示', {
+                        confirmButtonText: '确定',
+                        type: 'success'
+                    })
                 }else{
                     this.$message.success("评价失败！")
                 }
