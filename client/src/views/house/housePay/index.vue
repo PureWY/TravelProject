@@ -217,6 +217,7 @@ export default {
                     this.orderForm.houseName = this.orderInfo.houseName
                     this.orderForm.allTime = this.allTime
                     this.orderForm.allPrice = this.allPrice
+                    this.orderForm.houseImg = this.roomInfo.img
                     subHouseOrder(this.orderForm).then(res => {
                         if (res.data.code == 200) {
                         this.$confirm('预订成功', '提示', {

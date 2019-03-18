@@ -5,6 +5,7 @@ const router = express.Router();
 const House = require('../../models/hotel/house')
 const HouseOrder = require('../../models/hotel/houseOrder');
 const HouseRoom = require('../../models/hotel/houseRoom');
+const HouseComment = require('../../models/hotel/HouseComment')
 
 //整体查询酒店信息
 router.post('/queryHotel', function(req, res, next) {
@@ -197,5 +198,48 @@ router.post('/subHouseOrder', function(req, res, next) {
     console.log(room)
   })
 })
+
+//创建酒店评论
+router.post('/createHotelComments', function(req, res, next) {
+  House.aggregate([{
+      $lookup: {
+        from: 'housecomments',
+        localField: 'commentId',
+        foreignField: 'commentId',
+        as: 'roomComments'
+      }
+    },
+    {
+      $match: {
+        roomId: req.body.roomId
+      }
+    }
+  ], (err, house) => {
+    if (err) {
+      console.log(err)
+      res.json({
+        code: 201,
+        message: '数据库异常'
+      })
+    } else {
+      let {roomId,...params} = req.body
+      params.commentId = house[0].commentId
+      HouseComment.create(params,(err,comment) => {
+        if(err){
+          res.json({
+            code: 201,
+            message: '数据库异常'
+          })
+          return
+        }
+        return res.json({
+          code: 200,
+          message: '评论成功'
+        })
+      })
+    }
+  })
+})
+
 
 module.exports = router;

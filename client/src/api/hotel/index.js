@@ -43,4 +43,13 @@ export function subHouseOrder(data) {
         method: 'post',
         data: JSON.stringify(data)
       })
+ }queryHotelComments
+
+ //创建酒店评论
+ export function createHotelComments(data) { 
+    return request({
+        url: '/hotel/createHotelComments',
+        method: 'post',
+        data: JSON.stringify(data)
+      })
  }

@@ -5,6 +5,7 @@ const Schema = mongoose.Schema;
 var houseOrderSchema = new Schema({
     houseName: {type: String,trim: true},     //酒店名称
     roomId: {type: String,trim: true},        //房间Id
+    houseImg: {type: String, trim: true},     //酒店图片
     name: {type: String,trim: true},          //房间类型名称
     engName: {type: String,trim: true},       //房间类型英文名
     username: {type: String,trim: true},      //用户名

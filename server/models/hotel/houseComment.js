@@ -8,6 +8,9 @@ var commentSchema = new Schema({
     commentTime: {type: String,trim: true},                     //评论时间
     commentContent: {type: String,trim: true},                  //评论内容
     commentGrade: {type: Number,trim: true},                    //评价分数
+    commentSoft: {type: String,trim: true},                    //评价舒适度
+    commentBackground: {type: String,trim: true},              //评价周边环境
+    commentService: {type: String,trim: true},                 //评价服务态度
   })
 
 //创建model
