@@ -173,7 +173,7 @@
                     <el-col :span="3">
                       <div class="divHeight">
                         <span class="planeIcon" v-if="choiceOrder == 'plane'">已完成</span>
-                        <span class="hotelIcon" v-else-if="choiceOrder == 'hotel'">去评论</span>
+                        <span class="hotelIcon" @click="handleEvaluate(order)" v-else-if="choiceOrder == 'hotel'">去评论</span>
                         <span class="carIcon" v-else>已完成</span>
                       </div>
                     </el-col>
@@ -479,6 +479,10 @@ export default {
           }
         })
       }
+    },
+    handleEvaluate(order){
+      console.log(order)
+      this.$router.push({name: 'evaluate', params: { orderInfo: order}})
     }
   }
 }
