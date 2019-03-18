@@ -31,43 +31,33 @@
                               <p><i class="el-icon-warning"></i> 请认真填写酒店评价</p>
                               <div class="evaluateStar commonContainer">
                                   <div class="commonTitle">酒店评分：</div>
-                                  <div class="commonContent">
                                       <el-rate
                                         :texts="starClass"
                                         show-text
                                         v-model="listQuery.commentGrade">
                                     </el-rate>
-                                  </div>
                               </div>
-                              <div class="commonContainer">
+                              <div class="commonContainer evaluateComment">
                                   <div class="commonTitle">酒店评价：</div>
-                                  <div class="commonContent">
-                                      <textarea v-model="listQuery.commentContent" class="textArea" placeholder=" 分享住店心得，让更多人了解这家酒店~"></textarea>
-                                  </div>
+                                    <textarea v-model="listQuery.commentContent" class="textArea" placeholder=" 分享住店心得，让更多人了解这家酒店~"></textarea>
                               </div>
                               <div class="evaluateCheck commonContainer">
                                   <div class="commonTitle">舒适度：</div>
-                                  <div class="commonContent">
-                                      <el-radio-group v-model="listQuery.commentSoft">
-                                        <el-radio-button v-for="soft in softList" :label="soft.text" :key="soft.id"></el-radio-button>
-                                      </el-radio-group>
-                                  </div>
+                                    <el-radio-group v-model="listQuery.commentSoft">
+                                    <el-radio-button v-for="soft in softList" :label="soft.text" :key="soft.id"></el-radio-button>
+                                    </el-radio-group>
                               </div>
                               <div class="evaluateCheck commonContainer">
                                   <div class="commonTitle">服务质量：</div>
-                                  <div class="commonContent">
-                                      <el-radio-group v-model="listQuery.commentService">
-                                        <el-radio-button v-for="service in softList" :label="service.text" :key="service.id"></el-radio-button>
-                                      </el-radio-group>
-                                  </div>
+                                    <el-radio-group v-model="listQuery.commentService">
+                                    <el-radio-button v-for="service in softList" :label="service.text" :key="service.id"></el-radio-button>
+                                    </el-radio-group>
                               </div>
                               <div class="evaluateCheck commonContainer">
                                   <div class="commonTitle">周边环境：</div>
-                                  <div class="commonContent">
-                                      <el-radio-group v-model="listQuery.commentBackground">
-                                        <el-radio-button v-for="background in softList" :label="background.text" :key="background.id"></el-radio-button>
-                                      </el-radio-group>
-                                  </div>
+                                    <el-radio-group v-model="listQuery.commentBackground">
+                                    <el-radio-button v-for="background in softList" :label="background.text" :key="background.id"></el-radio-button>
+                                    </el-radio-group>
                               </div>
                           </div>
                       </el-col>
@@ -156,10 +146,12 @@ export default {
 
             createHotelComments(params).then(res => {
                 if(res.data.code == '200'){
-                    this.$confirm('评价成功', '提示', {
-                        confirmButtonText: '确定',
+                    this.$confirm('评价成功，跳转至个人中心', '提示', {
                         type: 'success'
-                    })
+                    }).then(() => {
+                        this.$router.push({ name: 'userInfo', params: { tab: 'accountInfo' }})
+                    }).catch(() => {        
+                    });
                 }else{
                     this.$message.success("评价失败！")
                 }
@@ -238,31 +230,38 @@ export default {
                     color: #fc982c;
                   }
                   .commonContainer{
-                      display: flex;
-                      padding: 20px 0;
-                      .commonTitle{
-                          width: 15%;
-                      }
-                      .commonContent{
-                          flex: 1;
-                          .textArea{
-                              width: 70%;
-                              min-height: 100px;
-                              font-size: 1rem;
-                          }
-                          .el-radio-button__orig-radio:checked+.el-radio-button__inner{
-                              background-color: #EC6916;
-                              border-color: #EC6916;
-                          }
-                          .el-rate__icon {
-                              font-size: 22px;
-                          }
-                          .el-rate__text {
-                                font-size: 16px;
-                            }
-                      }
+                    display: flex;
+                    padding: 20px 0;
+                    .commonTitle{
+                        width: 15%;
+                    }
+                    .textArea{
+                        width: 70%;
+                        min-height: 100px;
+                        font-size: 1rem;
+                    }
+                    .el-radio-button__orig-radio:checked+.el-radio-button__inner{
+                        background-color: #EC6916;
+                        border-color: #EC6916;
+                    }
+                    .el-rate__icon {
+                        font-size: 22px;
+                    }
+                    .el-rate__text {
+                        font-size: 16px;
+                    }
+                  }
+                  .evaluateStar{
+                      height: 30px;
+                  }
+                  .evaluateComment{
+                      height: 110px;
+                  }
+                  .evaluateStar{
+                      height: 30px;
                   }
                   .evaluateCheck{
+                      height: 36px;
                       display: flex;
                       align-items: center;
                   }
