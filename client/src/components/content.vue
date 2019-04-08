@@ -3,18 +3,20 @@
     <div class="localHot">
       <div class="hotTitle">南京热门之选</div>
       <div class="hotInfo">
-        <div class="infoCard" v-for="n in loop1" :key="n">
-          <div class="cardImg"></div>
+        <div class="infoCard" v-for="city in hotCity" :key="city.id">
+          <div class="cardImg">
+            <img :src="city.img"/>
+          </div>
           <div class="cardText">
-            <div class="cardCountry">曼谷</div>
-            <div class="cardLine">南京(NKG)至曼谷(BKK) </div>
-            <div class="cardDate">12月24日 – 12月29日 • 5天 </div>
+            <div class="cardCountry">{{city.name}}</div>
+            <div class="cardLine">{{city.flight}} </div>
+            <div class="cardDate">{{city.time}} </div>
           </div>
           <div class="cardPlane">
             <div class="cardIcon"></div>
             <div class="cardPrice">
-              <div class="price">¥1103起</div>
-              <div class="type">直飞</div>
+              <div class="price">¥{{city.price}}起</div>
+              <div class="type">{{city.type}}</div>
             </div>
             <div class="cardSearch">
               <button>搜索航班</button>
@@ -27,18 +29,20 @@
     <div class="localHot">
       <div class="hotTitle">热门沙滩目的地</div>
       <div class="hotInfo">
-        <div class="infoCard" v-for="n in loop1" :key="n">
-          <div class="cardImg1"></div>
+        <div class="infoCard" v-for="beach in hotBeach" :key="beach.id">
+          <div class="cardImg1">
+            <img :src="beach.img"/>
+          </div>
           <div class="cardText">
-            <div class="cardCountry">帕南海滩</div>
-            <div class="cardLine">南京(NKG)至普吉岛(HKT) </div>
-            <div class="cardDate">12月1日 – 12月3日 • 2天 </div>
+            <div class="cardCountry">{{beach.name}}</div>
+            <div class="cardLine">{{beach.flight}} </div>
+            <div class="cardDate">{{beach.time}} </div>
           </div>
           <div class="cardPlane">
             <div class="cardIcon"></div>
             <div class="cardPrice">
-              <div class="price">¥1103起</div>
-              <div class="type">直飞</div>
+              <div class="price">¥{{beach.price}}起</div>
+              <div class="type">{{beach.type}}</div>
             </div>
             <div class="cardSearch">
               <button>搜索航班</button>
@@ -75,8 +79,64 @@ export default {
   data() {
     return {
       isLogin: false,
-        loop: [0,1,2,3,4],
-        loop1: [0,1,2],
+      loop: [0,1,2,3,4],
+      loop1: [0,1,2],
+      hotCity: [{
+        id: 1,
+        name: '北京',
+        img: require('../assets/img/beijing.jpg'),
+        flight: '南京(NKG)至北京(PEK)',
+        time: '04月05日 – 04月10日 • 5天',
+        price: 1129,
+        type: '直飞'
+      },
+      {
+        id: 2,
+        name: '上海',
+        img: require('../assets/img/shanghai.jpg'),
+        flight: '南京(NKG)至上海(PVG)',
+        time: '04月05日 – 04月10日 • 5天',
+        price: 459,
+        type: '直飞'
+      },
+      {
+        id: 3,
+        name: '石家庄',
+        img: require('../assets/img/shijiazhuang.jpg'),
+        flight: '南京(NKG)至石家庄(SJW)',
+        time: '04月05日 – 04月10日 • 5天',
+        price: 799,
+        type: '直飞'
+      }
+      ],
+      hotBeach: [{
+          id: 1,
+          name: '亚龙湾',
+          img: require('../assets/img/sanya.jpg'),
+          flight: '南京(NKG)至三亚(PEK)',
+          time: '04月05日 – 04月10日 • 5天',
+          price: 1299,
+          type: '直飞'
+        },
+        {
+          id: 2,
+          name: '黄金海岸',
+          img: require('../assets/img/hebei.jpg'),
+          flight: '南京(NKG)至石家庄(PVG)',
+          time: '04月05日 – 04月10日 • 5天',
+          price: 759,
+          type: '直飞'
+        },
+        {
+          id: 3,
+          name: '维多利亚海湾',
+          img: require('../assets/img/xianggang.jpeg'),
+          flight: '南京(NKG)至香港(SJW)',
+          time: '04月05日 – 04月10日 • 5天',
+          price: 1599,
+          type: '直飞'
+        }
+      ],
       cities: [
         {
           value: '¥427起',
@@ -133,13 +193,17 @@ export default {
         border: 1px solid #d9e1e8;
         .cardImg {
           height: 184px;
-          background-image: url(../assets/img/mangu.jpg);
-          background-size: cover;
+          img{
+            width: 100%;
+            height: 100%;
+          }
         }
         .cardImg1 {
           height: 184px;
-          background-image: url(../assets/img/beach.jpg);
-          background-size: cover;
+          img{
+            width: 100%;
+            height: 100%;
+          }
         }
         .cardText {
           height: 61px;

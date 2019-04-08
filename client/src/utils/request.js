@@ -7,7 +7,7 @@ import {
 import store from '@/store'
 
 const service = axios.create({
-  baseURL: 'http://192.168.43.10:3333/', //api的base_url
+  baseURL: 'http://10.73.222.92:3333/', //api的base_url
   // baseURL: 'http://192.168.0.104:3333/',
   timeout: 120000,
   method: 'post',
