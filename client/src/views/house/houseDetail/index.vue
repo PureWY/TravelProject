@@ -224,7 +224,7 @@ export default {
     name: 'houseDetail',
     data(){
         return{
-            url: "http://192.168.43.10:3333/",
+            url: "http://10.73.222.92:3333/",
             roomId: '',
             detailInfo: {},
             map: null,
