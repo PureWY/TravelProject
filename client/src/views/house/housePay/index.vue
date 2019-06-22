@@ -151,7 +151,7 @@ export default {
         }
         }
         return {
-            url: "http://10.73.222.92:3333/",
+            url: "http://192.168.43.10:3333/",
             roomId: '',
             roomInfo: {},
             orderInfo: {},

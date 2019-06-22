@@ -104,8 +104,8 @@
                 </div>
               </div>
             </el-tab-pane>
-            <el-tab-pane label="订单历史" name="searchHistory">
-              <h1>订单历史</h1>
+            <el-tab-pane label="历史订单" name="searchHistory">
+              <h1>历史订单</h1>
               <div v-if="isNoOrder || !userphone" class="noOrderContainer">
                 <p class="p1">没有找到搜索历史</p>
                 <p class="p2">现在就开始搜索！</p>
@@ -267,8 +267,8 @@ export default {
         usercard: '',
         useraddress: ''
       },
-      imgServer: 'http://10.73.222.92:3333/user/uploadHeadImg',
-      baseUrl: 'http://10.73.222.92:3333/',
+      imgServer: 'http://192.168.43.10:3333/user/uploadHeadImg',
+      baseUrl: 'http://192.168.43.10:3333/',
       userHeadImg: '',
       options: [
         {

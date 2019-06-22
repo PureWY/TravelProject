@@ -14,7 +14,7 @@
                         <div>
                             <span>您在这里：</span>
                             <span><i class="el-icon-location-outline"/></span>
-                            <span>中国 - {{currentCity}}</span>
+                            <span>中国 - 芜湖市</span>
                         </div>
                         <div class="weather">
                             <img src="../../../assets/img/sunday.png"/>
@@ -224,7 +224,7 @@ export default {
     name: 'houseDetail',
     data(){
         return{
-            url: "http://10.73.222.92:3333/",
+            url: "http://192.168.43.10:3333/",
             roomId: '',
             detailInfo: {},
             map: null,

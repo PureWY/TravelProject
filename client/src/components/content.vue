@@ -1,7 +1,7 @@
 <template>
   <div class="commonContent">
     <div class="localHot">
-      <div class="hotTitle">南京热门之选</div>
+      <div class="hotTitle">热门景点目的地</div>
       <div class="hotInfo">
         <div class="infoCard" v-for="city in hotCity" :key="city.id">
           <div class="cardImg">
@@ -60,7 +60,7 @@
       <div class="planSelect">
         <div class="selectDetail" v-for="n in loop1" :key="n">
           <div class="selectContent" v-for="n in loop" :key="n">
-            <el-select v-model="values" placeholder="曼谷">
+            <el-select v-model="values" placeholder="南京">
               <el-option v-for="item in cities" :key="item.value" :label="item.label" :value="item.value">
                 <span style="float: left">{{ item.label }}</span>
                 <span style="float: right; color: #8492a6; font-size: 13px">{{ item.value }}</span>
@@ -255,6 +255,7 @@ export default {
               height: 34px;
               color: #fff;
               background-color: #1e93f5;
+              cursor: pointer;
             }
           }
         }
