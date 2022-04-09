@@ -17,7 +17,7 @@
     "babel-polyfill": "^6.26.0",
     "element-ui": "^2.4.8",
     "es6-promise": "^4.2.5",
-    "moment": "^2.22.2",
+    "moment": "^2.29.2",
     "sass": "^1.14.3",
     "vue": "^2.5.2",
     "vue-amap": "^0.5.8",
